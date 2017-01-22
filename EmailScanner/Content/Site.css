@@ -1,0 +1,71 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+.padding-zero {
+    padding: 15px !important;
+}
+
+.padding-5 {
+    padding: 5px !important;
+}
+
+.padding-15 {
+    padding: 15px !important;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+textarea {
+    min-height: 600px;
+}
+
+.ui-tabs-panel > iframe,
+.ui-accordion-content > iframe {
+    width: 100%;
+    min-height: 800px;
+    background-color: transparent;
+    border: 0 none transparent;
+    padding: 0;
+    overflow: hidden;
+}
+
+.mail-body pre {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    border: none;
+    -ms-text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+ .email-address:link {
+    text-decoration: none;
+}
+
+.email-address:visited,
+.email-address:active,
+.email-address:link,
+.email-address:hover {
+    color: #0066cc;
+}
+
+.email-address:hover {
+    text-decoration: underline;
+}

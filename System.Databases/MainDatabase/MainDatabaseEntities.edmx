@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MainDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ImportMails">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ContactID" Type="int" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Recursive" Type="bit" Nullable="false" />
+          <Property Name="Hostname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PasswordSalt" Type="nvarchar" MaxLength="10" />
+          <Property Name="Port" Type="int" />
+          <Property Name="SSL" Type="bit" />
+          <Property Name="SkipSslValidation" Type="bit" />
+          <Property Name="ScanFromDate" Type="datetime" />
+          <Property Name="ScanToDate" Type="datetime" />
+          <Property Name="Status" Type="nvarchar(max)" />
+          <Property Name="MailboxName" Type="nvarchar" MaxLength="100" />
+          <Property Name="MailboxCurrent" Type="nvarchar" MaxLength="100" />
+          <Property Name="MessageCount" Type="bigint" />
+          <Property Name="Processing" Type="bit" />
+          <Property Name="Error" Type="bit" />
+          <Property Name="LastSeenId" Type="bigint" />
+          <Property Name="LastSeenMessageId" Type="nvarchar" MaxLength="255" />
+          <Property Name="LastSeenMessageDate" Type="datetime" />
+          <Property Name="PageSize" Type="int" />
+          <Property Name="OffSet" Type="int" />
+        </EntityType>
+        <EntityType Name="MainDatabasePostProcessingQueues">
+          <Key>
+            <PropertyRef Name="TaskID" />
+          </Key>
+          <Property Name="TaskID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TaskCommand" Type="int" />
+          <Property Name="TaskArg1" Type="varbinary(max)" />
+          <Property Name="TaskArg2" Type="varbinary(max)" />
+          <Property Name="TaskDataInt" Type="int" />
+          <Property Name="TaskDataBigInt" Type="bigint" />
+          <Property Name="TaskDataGuid" Type="uniqueidentifier" />
+          <Property Name="TaskDataString" Type="nvarchar(max)" />
+          <Property Name="ExecutionTime" Type="datetime" />
+          <Property Name="Priority" Type="smallint" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="IsScheduled" Type="bit" />
+          <Property Name="FetchedAt" Type="datetime" />
+          <Property Name="Hangfire" Type="datetime" />
+          <Property Name="AutoDelete" Type="bit" />
+          <Property Name="Abort" Type="bit" />
+          <Property Name="CreationTime" Type="datetime" />
+        </EntityType>
+        <EntityContainer Name="MainDatabaseModelStoreContainer">
+          <EntitySet Name="ImportMails" EntityType="Self.ImportMails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MainDatabasePostProcessingQueues" EntityType="Self.MainDatabasePostProcessingQueues" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MainDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="MainDatabaseEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="ImportMails" EntityType="MainDatabaseModel.ImportMail" />
+          <EntitySet Name="MainDatabasePostProcessingQueues" EntityType="MainDatabaseModel.MainDatabasePostProcessingQueue" />
+        </EntityContainer>
+        <EntityType Name="ImportMail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="ContactID" Type="Int32" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Recursive" Type="Boolean" Nullable="false" />
+          <Property Name="Hostname" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordSalt" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Port" Type="Int32" />
+          <Property Name="SSL" Type="Boolean" />
+          <Property Name="SkipSslValidation" Type="Boolean" />
+          <Property Name="ScanFromDate" Type="DateTime" Precision="3" />
+          <Property Name="ScanToDate" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MailboxName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MailboxCurrent" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MessageCount" Type="Int64" />
+          <Property Name="Processing" Type="Boolean" />
+          <Property Name="Error" Type="Boolean" />
+          <Property Name="LastSeenId" Type="Int64" />
+          <Property Name="LastSeenMessageId" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="LastSeenMessageDate" Type="DateTime" Precision="3" />
+          <Property Name="PageSize" Type="Int32" />
+          <Property Name="OffSet" Type="Int32" />
+        </EntityType>
+        <EntityType Name="MainDatabasePostProcessingQueue">
+          <Key>
+            <PropertyRef Name="TaskID" />
+          </Key>
+          <Property Name="TaskID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TaskCommand" Type="Int32" />
+          <Property Name="TaskArg1" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="TaskArg2" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="TaskDataInt" Type="Int32" />
+          <Property Name="TaskDataBigInt" Type="Int64" />
+          <Property Name="TaskDataGuid" Type="Guid" />
+          <Property Name="TaskDataString" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExecutionTime" Type="DateTime" Precision="3" />
+          <Property Name="Priority" Type="Int16" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsScheduled" Type="Boolean" />
+          <Property Name="FetchedAt" Type="DateTime" Precision="3" />
+          <Property Name="Hangfire" Type="DateTime" Precision="3" />
+          <Property Name="AutoDelete" Type="Boolean" />
+          <Property Name="Abort" Type="Boolean" />
+          <Property Name="CreationTime" Type="DateTime" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MainDatabaseModelStoreContainer" CdmEntityContainer="MainDatabaseEntities" >
+          <EntitySetMapping Name="ImportMails">
+            <EntityTypeMapping TypeName="MainDatabaseModel.ImportMail">
+              <MappingFragment StoreEntitySet="ImportMails">
+                <ScalarProperty Name="OffSet" ColumnName="OffSet" />
+                <ScalarProperty Name="PageSize" ColumnName="PageSize" />
+                <ScalarProperty Name="LastSeenMessageDate" ColumnName="LastSeenMessageDate" />
+                <ScalarProperty Name="LastSeenMessageId" ColumnName="LastSeenMessageId" />
+                <ScalarProperty Name="LastSeenId" ColumnName="LastSeenId" />
+                <ScalarProperty Name="Error" ColumnName="Error" />
+                <ScalarProperty Name="Processing" ColumnName="Processing" />
+                <ScalarProperty Name="MessageCount" ColumnName="MessageCount" />
+                <ScalarProperty Name="MailboxCurrent" ColumnName="MailboxCurrent" />
+                <ScalarProperty Name="MailboxName" ColumnName="MailboxName" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ScanToDate" ColumnName="ScanToDate" />
+                <ScalarProperty Name="ScanFromDate" ColumnName="ScanFromDate" />
+                <ScalarProperty Name="SkipSslValidation" ColumnName="SkipSslValidation" />
+                <ScalarProperty Name="SSL" ColumnName="SSL" />
+                <ScalarProperty Name="Port" ColumnName="Port" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Hostname" ColumnName="Hostname" />
+                <ScalarProperty Name="Recursive" ColumnName="Recursive" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MainDatabasePostProcessingQueues">
+            <EntityTypeMapping TypeName="MainDatabaseModel.MainDatabasePostProcessingQueue">
+              <MappingFragment StoreEntitySet="MainDatabasePostProcessingQueues">
+                <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
+                <ScalarProperty Name="Abort" ColumnName="Abort" />
+                <ScalarProperty Name="AutoDelete" ColumnName="AutoDelete" />
+                <ScalarProperty Name="Hangfire" ColumnName="Hangfire" />
+                <ScalarProperty Name="FetchedAt" ColumnName="FetchedAt" />
+                <ScalarProperty Name="IsScheduled" ColumnName="IsScheduled" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="ExecutionTime" ColumnName="ExecutionTime" />
+                <ScalarProperty Name="TaskDataString" ColumnName="TaskDataString" />
+                <ScalarProperty Name="TaskDataGuid" ColumnName="TaskDataGuid" />
+                <ScalarProperty Name="TaskDataBigInt" ColumnName="TaskDataBigInt" />
+                <ScalarProperty Name="TaskDataInt" ColumnName="TaskDataInt" />
+                <ScalarProperty Name="TaskArg2" ColumnName="TaskArg2" />
+                <ScalarProperty Name="TaskArg1" ColumnName="TaskArg1" />
+                <ScalarProperty Name="TaskCommand" ColumnName="TaskCommand" />
+                <ScalarProperty Name="TaskID" ColumnName="TaskID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

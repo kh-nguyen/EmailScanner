@@ -1,0 +1,144 @@
+﻿@using System.Utilities
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "System Status";
+
+    var language = "en";
+    var isLanguageEnglish = true;
+}
+
+<div class="site-width">
+    <div class="content-wrapper col-xs-12">
+        <div ng-controller="SystemController">
+            <div class="form-group" accordion="{ heightStyle: 'content', collapsible: true }">
+                <h3><i class="fa fa-tachometer"></i>&nbsp;Status</h3>
+                <div class="padding-15">
+                    <div class="form-group">
+                        <div>
+                            <span>License Type: @License.Current.LicenseType</span>
+                            <span>@License.Current.Status</span>
+                            @if (License.Current.LicenseType != License.LicenseType.Trial) {
+                                <span>Expiration: @License.Current.ExpirationDate.ToShortDateString()</span>
+                            } else {
+
+                            }
+                        </div>
+                    </div>
+
+                    <div jq-tabs>
+                        <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+                            <li class="ui-state-default ui-corner-top">
+                                <a href="#communications-main">
+                                    <i class="fa fa-comments"></i>
+                                    &nbsp;<span class="hidden-xs">Main&nbsp;</span>
+                                    <span class='badge' ng-bind="emailMainCounter | number"></span>
+                                </a>
+                            </li>
+                            <li class="ui-state-default ui-corner-top">
+                                <a class="bg-warning"
+                                   href="#communications-promotion">
+                                    <i class="fa fa-bullhorn"></i>
+                                    &nbsp;<span class="hidden-xs">Promotion&nbsp;</span>
+                                    <span class='badge' ng-bind="emailPromotionsCounter | number"></span>
+                                </a>
+                            </li>
+                            <li class="ui-state-default ui-corner-top">
+                                <a class="bg-danger"
+                                   href="#communications-junk">
+                                    <i class="fa fa-trash-o"></i>
+                                    &nbsp;<span class="hidden-xs">Junk&nbsp;</span>
+                                    <span class='badge' ng-bind="emailJunksCounter | number"></span>
+                                </a>
+                            </li>
+                            <li class="ui-state-default ui-corner-top">
+                                <a class="bg-info"
+                                   href="#communications-all">
+                                    <i class="fa fa-newspaper-o"></i>
+                                    &nbsp;<span class="hidden-xs">All&nbsp;</span>
+                                    <span class='badge' ng-bind="emailAllCounter | number"></span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div id="communications-main" class="ui-tabs-panel ui-widget-content">
+                            <table mails-list data-counter-name="emailMainCounter" data-url='@Url.Action("Main", "Email")'></table>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div id="communications-promotion" class="ui-tabs-panel ui-widget-content">
+                            <table mails-list data-counter-name="emailPromotionsCounter" data-url='@Url.Action("Promotions", "Email")'></table>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div id="communications-junk" class="ui-tabs-panel ui-widget-content">
+                            <table mails-list data-counter-name="emailJunksCounter" data-url='@Url.Action("Junks", "Email")'></table>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div id="communications-all" class="ui-tabs-panel ui-widget-content">
+                            <table mails-list data-counter-name="emailAllCounter" data-url='@Url.Action("Index", "Email")'></table>
+
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3><i class="fa fa-tasks"></i>&nbsp;Scheduler</h3>
+                <div class="padding-15" data-type="iframe" data-url="/hangfire"></div>
+
+                <h3><i class="fa fa-wrench"></i>&nbsp;Settings</h3>
+                <div class="padding-15">
+                    <table import-mails-list data-url='@Url.Action("Mail")'></table>
+                </div>
+
+                <h3><i class="fa fa-file-text-o"></i>&nbsp;Logs</h3>
+                <div class="padding-15">
+                    <table id="system-logs-table" system-logs></table>
+                    <div id="system-logs-table-pager"></div>
+
+                    <div>
+                        <label for="system-logs-table-rows-limit">Rows Limit:</label>&nbsp;
+                        <select id="system-logs-table-rows-limit">
+                            <option value="50">50</option>
+                            <option value="100" selected="selected">100</option>
+                            <option value="500">500</option>
+                            <option value="1000">1000</option>
+                            <option value="5000">5000</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section externalScripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @if (!isLanguageEnglish) { @Scripts.Render(String.Format("~/bundles/jqgrid.js/js/i18n/grid.locale-{0}.js", language)) }
+    @Scripts.Render("~/bundles/jqgrid.js/plugins/ui.multiselect.js")
+    @Scripts.Render("~/bundles/jqgrid.js")
+    @Scripts.Render("~/bundles/qtip/js")
+    @Scripts.Render("~/bundles/pnotify/js")
+    @Scripts.Render("~/bundles/timepicker/js")
+    @if (!isLanguageEnglish) { @Scripts.Render(String.Format("~/bundles/timepicker/js/i18n/jquery-ui-timepicker-{0}.js", language)) }
+    @Scripts.Render("~/bundles/timeago.js")
+    @if (!isLanguageEnglish) { @Scripts.Render(String.Format("~/bundles/timeago.js/locales/jquery.timeago.{0}.js", language)) }
+    <!--Reference the SignalR library. -->
+    @Scripts.Render("~/bundles/signalR/js")
+    <!--Reference the auto-generated SignalR hub script. -->
+    <script src="~/signalr/hubs"></script>
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/system/js")
+}
+
+@section styles {
+    @Styles.Render("~/bundles/jqgrid.css/plugins/ui.multiselect.css")
+    @Styles.Render("~/bundles/jqgrid.css")
+    @Styles.Render("~/bundles/qtip/css")
+    @Styles.Render("~/bundles/pnotify/css")
+    @Styles.Render("~/bundles/timepicker/css")
+}

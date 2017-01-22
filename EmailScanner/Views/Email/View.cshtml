@@ -1,0 +1,120 @@
+﻿@using System.Databases.Exchange
+@using System.Services.EmailStorage
+@model MsgTrackingLog
+@{
+    ViewBag.Title = Model.message_subject;
+    IEnumerable<MsgTrackingLogsAttachment> attachments = ViewBag.attachments;
+    IEnumerable<MsgTrackingLogsRecipientAddress> to_recipients = ViewBag.to_recipients;
+    IEnumerable<MsgTrackingLogsRecipientAddress> cc_recipients = ViewBag.cc_recipients;
+    IEnumerable<MsgTrackingLogsHeader> messageInternetHeaders = ViewBag.messageInternetHeaders;
+}
+
+<div class="site-width">
+    <div class="content-wrapper col-xs-12">
+        <div class="exchange-message" jq-tabs="{ active: 0 }" ng-controller="EmailMessageController">
+            <ul>
+                <li><a href="#exchange-message"><i class="fa fa-envelope-o"></i>&nbsp;Message</a></li>
+                <li><a href="#message-headers"><i class="fa fa-file-text"></i>&nbsp;Headers</a></li>
+            </ul>
+            <div id="exchange-message" class="container-fluid">
+                <div class="row">
+                    <dl class="dl-horizontal">
+                        <dt>From:</dt>
+                        <dd>
+                            <a class="email-address" title="@Model.sender_address" href="mailto:@Model.sender_address">
+                                @(Model.MsgTrackingExtendedLog.sender_name ?? Model.sender_address)
+                            </a>
+                            @if (!String.IsNullOrEmpty(Model.MsgTrackingExtendedLog.from_address)) {
+                                <span>&nbsp;on behalf of&nbsp;</span>
+                                <a class="email-address" title="@Model.MsgTrackingExtendedLog.from_address" href="mailto:@Model.MsgTrackingExtendedLog.from_address">
+                                    @(Model.MsgTrackingExtendedLog.from_name ?? Model.MsgTrackingExtendedLog.from_address)
+                                </a>
+                            }
+                        </dd>
+
+                        <dt>Sent:</dt>
+                        <dd><time class="timeago">@Model.date_time</time></dd>
+
+                        <dt>To:</dt>
+                        <dd>
+                            @foreach (var recipient in to_recipients) {
+                                <a class="email-address" title="@recipient.recipient_address" href="mailto:@recipient.recipient_address">
+                                    @(recipient.recipient_name ?? recipient.recipient_address)
+                                </a>
+                            }
+                        </dd>
+
+                        @if (cc_recipients.Any()) {
+                            <dt>CC:</dt>
+                            <dd>
+                                @foreach (var recipient in cc_recipients) {
+                                    <a class="email-address" title="@recipient.recipient_address" href="mailto:@recipient.recipient_address">
+                                        @(recipient.recipient_name ?? recipient.recipient_address)
+                                    </a>
+                                }
+                            </dd>
+                        }
+
+                        <dt>Subject:</dt>
+                        <dd>@Model.message_subject</dd>
+
+                        @if (attachments != null && attachments.Any()) {
+                            <dt>Attachments:</dt>
+                            <dd>
+                                <ul class="inline-block list-unstyled">
+                                    @foreach (var item in attachments) {
+                                        if (EmailStorageService.isAttachmentFileAvailableForDownload(item)) {
+                                            <li>
+                                                <a title="Click to download" href="@Url.Action("Attachment", new { ID = item.ID })">
+                                                    @item.attachment_name&nbsp;<span file-size>@((long)item.attachment_size)</span>
+                                                </a>
+                                            </li>
+                                        }
+                                        else if (item is MsgTrackingLogsAttachment) {
+                                            <li><div title="Not available for download">@item.attachment_name</div></li>
+                                        }
+                                    }
+                                </ul>
+                            </dd>
+                        }
+                    </dl>
+
+                    <div class="clearfix"></div>
+
+                    <div>
+                        @if (Model.MsgTrackingExtendedLog.message_body_type == "HTML") {
+                            <textarea class="ckeditor" name="editor1" id="editor1">
+                                @Model.MsgTrackingExtendedLog.message_body
+                            </textarea>
+                        }
+                        else {
+                            <textarea class="form-control">@Model.MsgTrackingExtendedLog.message_body</textarea>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div id="message-headers">
+                @if (messageInternetHeaders.Any()) {
+                    <dl class="dl-horizontal">
+                        @foreach (var item in messageInternetHeaders) {
+                            <dt>@item.FieldName</dt>
+                            <dd><samp>@item.FieldBody</samp></dd>
+                        }
+                    </dl>
+                }
+                else {
+                    <p>Not Available</p>
+                }
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+@section externalScripts {
+    @Scripts.Render("~/bundles/ckeditor")
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/system/js")
+}

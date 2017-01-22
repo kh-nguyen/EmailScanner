@@ -1,0 +1,1245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ExchangeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="MsgTrackingExtendedLogs">
+          <Key>
+            <PropertyRef Name="MsgTrackingLogsID" />
+          </Key>
+          <Property Name="message-body" Type="nvarchar(max)" />
+          <Property Name="message-body-type" Type="nvarchar" MaxLength="4" />
+          <Property Name="attachments" Type="nvarchar(max)" />
+          <Property Name="sender-name" Type="nvarchar" MaxLength="255" />
+          <Property Name="display-to" Type="nvarchar(max)" />
+          <Property Name="display-cc" Type="nvarchar(max)" />
+          <Property Name="journal-message-id" Type="nvarchar" MaxLength="255" />
+          <Property Name="MsgTrackingLogsID" Type="bigint" Nullable="false" />
+          <Property Name="conversation-id" Type="uniqueidentifier" />
+          <Property Name="conversation-count" Type="int" />
+          <Property Name="message-body-sha1" Type="char" MaxLength="40" />
+          <Property Name="message-body-text" Type="nvarchar(max)" />
+          <Property Name="list-unsubscribe-headers-id" Type="bigint" />
+          <Property Name="is-message-receipt" Type="bit" />
+          <Property Name="from-address" Type="nvarchar" MaxLength="255" />
+          <Property Name="from-name" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogs">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="client-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="client-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="source-context" Type="nvarchar(max)" />
+          <Property Name="connector-id" Type="nvarchar(max)" />
+          <Property Name="source" Type="nvarchar" MaxLength="11" />
+          <Property Name="event-id" Type="nvarchar" MaxLength="13" />
+          <Property Name="internal-message-id" Type="bigint" />
+          <Property Name="message-id" Type="nvarchar" MaxLength="255" />
+          <Property Name="recipient-address" Type="nvarchar(max)" />
+          <Property Name="recipient-status" Type="nvarchar(max)" />
+          <Property Name="total-bytes" Type="bigint" />
+          <Property Name="recipient-count" Type="int" />
+          <Property Name="related-recipient-address" Type="nvarchar(max)" />
+          <Property Name="reference" Type="nvarchar(max)" />
+          <Property Name="message-subject" Type="nvarchar(max)" />
+          <Property Name="sender-address" Type="nvarchar" MaxLength="255" />
+          <Property Name="return-path" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-info" Type="nvarchar" MaxLength="255" />
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="date-time" Type="datetime2" Precision="7" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsAttachments">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MsgTrackingLogsID" Type="bigint" Nullable="false" />
+          <Property Name="attachment-name" Type="nvarchar(max)" />
+          <Property Name="attachment-location" Type="nvarchar(max)" />
+          <Property Name="attachment-content-type" Type="nvarchar" MaxLength="255" />
+          <Property Name="attachment-size" Type="bigint" />
+          <Property Name="attachment-is-inline" Type="bit" />
+          <Property Name="SHA256" Type="char" MaxLength="64" />
+          <Property Name="verified" Type="bit" />
+          <Property Name="verified-time" Type="datetime" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsBounces">
+          <Key>
+            <PropertyRef Name="MsgTrackingLogsID" />
+            <PropertyRef Name="source-id" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MsgTrackingLogsID" Type="bigint" Nullable="false" />
+          <Property Name="source-id" Type="bigint" Nullable="false" />
+          <Property Name="date-time" Type="datetime" />
+          <Property Name="smtp-code" Type="int" />
+          <Property Name="extended-smtp-code" Type="char" MaxLength="10" />
+          <Property Name="error-message" Type="nvarchar(max)" />
+          <Property Name="recipient-address" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-address" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsCategories">
+          <Key>
+            <PropertyRef Name="MsgTrackingLogsID" />
+            <PropertyRef Name="Category" />
+          </Key>
+          <Property Name="MsgTrackingLogsID" Type="bigint" Nullable="false" />
+          <Property Name="Category" Type="int" Nullable="false" />
+          <Property Name="Assignor" Type="int" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsHeaders">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MsgTrackingLogsID" Type="bigint" Nullable="false" />
+          <Property Name="Line" Type="smallint" Nullable="false" />
+          <Property Name="FieldName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="FieldBody" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsReceipts">
+          <Key>
+            <PropertyRef Name="MsgTrackingLogsID" />
+            <PropertyRef Name="receipt-id" />
+          </Key>
+          <Property Name="MsgTrackingLogsID" Type="bigint" Nullable="false" />
+          <Property Name="receipt-id" Type="bigint" Nullable="false" />
+          <Property Name="receipt-type" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsRecipientAddresses">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="recipient-address" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MsgTrackingLogsID" Type="bigint" Nullable="false" />
+          <Property Name="recipient-name" Type="nvarchar(max)" />
+          <Property Name="domain-part" Type="nvarchar" MaxLength="255" />
+          <Property Name="MsgTrackingLogsBounceID" Type="bigint" />
+          <Property Name="recipient-type" Type="nvarchar" MaxLength="4" />
+          <Property Name="MsgTrackingLogsReceiptDeliveryID" Type="bigint" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtended' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MsgTrackingLogsExtended">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="date-time" Type="datetime2" Precision="7" />
+          <Property Name="client-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="client-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="source-context" Type="nvarchar(max)" />
+          <Property Name="connector-id" Type="nvarchar(max)" />
+          <Property Name="source" Type="nvarchar" MaxLength="11" />
+          <Property Name="event-id" Type="nvarchar" MaxLength="13" />
+          <Property Name="internal-message-id" Type="bigint" />
+          <Property Name="message-id" Type="nvarchar" MaxLength="255" />
+          <Property Name="recipient-address" Type="nvarchar(max)" />
+          <Property Name="recipient-status" Type="nvarchar(max)" />
+          <Property Name="total-bytes" Type="bigint" />
+          <Property Name="recipient-count" Type="int" />
+          <Property Name="related-recipient-address" Type="nvarchar(max)" />
+          <Property Name="reference" Type="nvarchar(max)" />
+          <Property Name="message-subject" Type="nvarchar(max)" />
+          <Property Name="sender-address" Type="nvarchar" MaxLength="255" />
+          <Property Name="return-path" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-info" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-body" Type="nvarchar(max)" />
+          <Property Name="message-body-text" Type="nvarchar(max)" />
+          <Property Name="message-body-type" Type="nvarchar" MaxLength="4" />
+          <Property Name="attachments" Type="nvarchar(max)" />
+          <Property Name="sender-name" Type="nvarchar" MaxLength="255" />
+          <Property Name="display-to" Type="nvarchar(max)" />
+          <Property Name="display-cc" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtendedJunks' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MsgTrackingLogsExtendedJunks">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="date-time" Type="datetime2" Precision="7" />
+          <Property Name="client-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="client-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="source-context" Type="nvarchar(max)" />
+          <Property Name="connector-id" Type="nvarchar(max)" />
+          <Property Name="source" Type="nvarchar" MaxLength="11" />
+          <Property Name="event-id" Type="nvarchar" MaxLength="13" />
+          <Property Name="internal-message-id" Type="bigint" />
+          <Property Name="message-id" Type="nvarchar" MaxLength="255" />
+          <Property Name="recipient-address" Type="nvarchar(max)" />
+          <Property Name="recipient-status" Type="nvarchar(max)" />
+          <Property Name="total-bytes" Type="bigint" />
+          <Property Name="recipient-count" Type="int" />
+          <Property Name="related-recipient-address" Type="nvarchar(max)" />
+          <Property Name="reference" Type="nvarchar(max)" />
+          <Property Name="message-subject" Type="nvarchar(max)" />
+          <Property Name="sender-address" Type="nvarchar" MaxLength="255" />
+          <Property Name="return-path" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-info" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-body" Type="nvarchar(max)" />
+          <Property Name="message-body-text" Type="nvarchar(max)" />
+          <Property Name="message-body-type" Type="nvarchar" MaxLength="4" />
+          <Property Name="attachments" Type="nvarchar(max)" />
+          <Property Name="sender-name" Type="nvarchar" MaxLength="255" />
+          <Property Name="display-to" Type="nvarchar(max)" />
+          <Property Name="display-cc" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtendedMain' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MsgTrackingLogsExtendedMain">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="date-time" Type="datetime2" Precision="7" />
+          <Property Name="client-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="client-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="source-context" Type="nvarchar(max)" />
+          <Property Name="connector-id" Type="nvarchar(max)" />
+          <Property Name="source" Type="nvarchar" MaxLength="11" />
+          <Property Name="event-id" Type="nvarchar" MaxLength="13" />
+          <Property Name="internal-message-id" Type="bigint" />
+          <Property Name="message-id" Type="nvarchar" MaxLength="255" />
+          <Property Name="recipient-address" Type="nvarchar(max)" />
+          <Property Name="recipient-status" Type="nvarchar(max)" />
+          <Property Name="total-bytes" Type="bigint" />
+          <Property Name="recipient-count" Type="int" />
+          <Property Name="related-recipient-address" Type="nvarchar(max)" />
+          <Property Name="reference" Type="nvarchar(max)" />
+          <Property Name="message-subject" Type="nvarchar(max)" />
+          <Property Name="sender-address" Type="nvarchar" MaxLength="255" />
+          <Property Name="return-path" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-info" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-body" Type="nvarchar(max)" />
+          <Property Name="message-body-text" Type="nvarchar(max)" />
+          <Property Name="message-body-type" Type="nvarchar" MaxLength="4" />
+          <Property Name="attachments" Type="nvarchar(max)" />
+          <Property Name="sender-name" Type="nvarchar" MaxLength="255" />
+          <Property Name="display-to" Type="nvarchar(max)" />
+          <Property Name="display-cc" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtendedPromotions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MsgTrackingLogsExtendedPromotions">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="date-time" Type="datetime2" Precision="7" />
+          <Property Name="client-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="client-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="source-context" Type="nvarchar(max)" />
+          <Property Name="connector-id" Type="nvarchar(max)" />
+          <Property Name="source" Type="nvarchar" MaxLength="11" />
+          <Property Name="event-id" Type="nvarchar" MaxLength="13" />
+          <Property Name="internal-message-id" Type="bigint" />
+          <Property Name="message-id" Type="nvarchar" MaxLength="255" />
+          <Property Name="recipient-address" Type="nvarchar(max)" />
+          <Property Name="recipient-status" Type="nvarchar(max)" />
+          <Property Name="total-bytes" Type="bigint" />
+          <Property Name="recipient-count" Type="int" />
+          <Property Name="related-recipient-address" Type="nvarchar(max)" />
+          <Property Name="reference" Type="nvarchar(max)" />
+          <Property Name="message-subject" Type="nvarchar(max)" />
+          <Property Name="sender-address" Type="nvarchar" MaxLength="255" />
+          <Property Name="return-path" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-info" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-body" Type="nvarchar(max)" />
+          <Property Name="message-body-text" Type="nvarchar(max)" />
+          <Property Name="message-body-type" Type="nvarchar" MaxLength="4" />
+          <Property Name="attachments" Type="nvarchar(max)" />
+          <Property Name="sender-name" Type="nvarchar" MaxLength="255" />
+          <Property Name="display-to" Type="nvarchar(max)" />
+          <Property Name="display-cc" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_MsgTrackingExtendedLogs_MsgTrackingLogs">
+          <End Role="MsgTrackingLogs" Type="Self.MsgTrackingLogs" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MsgTrackingExtendedLogs" Type="Self.MsgTrackingExtendedLogs" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="MsgTrackingLogs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MsgTrackingExtendedLogs">
+              <PropertyRef Name="MsgTrackingLogsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MsgTrackingLogsAttachments_MsgTrackingLogs">
+          <End Role="MsgTrackingLogs" Type="Self.MsgTrackingLogs" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MsgTrackingLogsAttachments" Type="Self.MsgTrackingLogsAttachments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MsgTrackingLogs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MsgTrackingLogsAttachments">
+              <PropertyRef Name="MsgTrackingLogsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MsgTrackingLogsBounces_MsgTrackingLogs">
+          <End Role="MsgTrackingLogs" Type="Self.MsgTrackingLogs" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MsgTrackingLogsBounces" Type="Self.MsgTrackingLogsBounces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MsgTrackingLogs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MsgTrackingLogsBounces">
+              <PropertyRef Name="MsgTrackingLogsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MsgTrackingLogsCategories_MsgTrackingLogs">
+          <End Role="MsgTrackingLogs" Type="Self.MsgTrackingLogs" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MsgTrackingLogsCategories" Type="Self.MsgTrackingLogsCategories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MsgTrackingLogs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MsgTrackingLogsCategories">
+              <PropertyRef Name="MsgTrackingLogsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MsgTrackingLogsHeaders_MsgTrackingLogs">
+          <End Role="MsgTrackingLogs" Type="Self.MsgTrackingLogs" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MsgTrackingLogsHeaders" Type="Self.MsgTrackingLogsHeaders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MsgTrackingLogs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MsgTrackingLogsHeaders">
+              <PropertyRef Name="MsgTrackingLogsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MsgTrackingLogsReceipts_MsgTrackingLogs">
+          <End Role="MsgTrackingLogs" Type="Self.MsgTrackingLogs" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MsgTrackingLogsReceipts" Type="Self.MsgTrackingLogsReceipts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MsgTrackingLogs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MsgTrackingLogsReceipts">
+              <PropertyRef Name="MsgTrackingLogsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MsgTrackingLogsRecipientAddresses_MsgTrackingLogs">
+          <End Role="MsgTrackingLogs" Type="Self.MsgTrackingLogs" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MsgTrackingLogsRecipientAddresses" Type="Self.MsgTrackingLogsRecipientAddresses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MsgTrackingLogs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MsgTrackingLogsRecipientAddresses">
+              <PropertyRef Name="MsgTrackingLogsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExchangeModelStoreContainer">
+          <EntitySet Name="MsgTrackingExtendedLogs" EntityType="Self.MsgTrackingExtendedLogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MsgTrackingLogs" EntityType="Self.MsgTrackingLogs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MsgTrackingLogsAttachments" EntityType="Self.MsgTrackingLogsAttachments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MsgTrackingLogsBounces" EntityType="Self.MsgTrackingLogsBounces" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MsgTrackingLogsCategories" EntityType="Self.MsgTrackingLogsCategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MsgTrackingLogsHeaders" EntityType="Self.MsgTrackingLogsHeaders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MsgTrackingLogsReceipts" EntityType="Self.MsgTrackingLogsReceipts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MsgTrackingLogsRecipientAddresses" EntityType="Self.MsgTrackingLogsRecipientAddresses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MsgTrackingLogsExtended" EntityType="Self.MsgTrackingLogsExtended" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MsgTrackingLogsExtended].[ID] AS [ID], 
+    [MsgTrackingLogsExtended].[date-time] AS [date-time], 
+    [MsgTrackingLogsExtended].[client-ip] AS [client-ip], 
+    [MsgTrackingLogsExtended].[client-hostname] AS [client-hostname], 
+    [MsgTrackingLogsExtended].[server-ip] AS [server-ip], 
+    [MsgTrackingLogsExtended].[server-hostname] AS [server-hostname], 
+    [MsgTrackingLogsExtended].[source-context] AS [source-context], 
+    [MsgTrackingLogsExtended].[connector-id] AS [connector-id], 
+    [MsgTrackingLogsExtended].[source] AS [source], 
+    [MsgTrackingLogsExtended].[event-id] AS [event-id], 
+    [MsgTrackingLogsExtended].[internal-message-id] AS [internal-message-id], 
+    [MsgTrackingLogsExtended].[message-id] AS [message-id], 
+    [MsgTrackingLogsExtended].[recipient-address] AS [recipient-address], 
+    [MsgTrackingLogsExtended].[recipient-status] AS [recipient-status], 
+    [MsgTrackingLogsExtended].[total-bytes] AS [total-bytes], 
+    [MsgTrackingLogsExtended].[recipient-count] AS [recipient-count], 
+    [MsgTrackingLogsExtended].[related-recipient-address] AS [related-recipient-address], 
+    [MsgTrackingLogsExtended].[reference] AS [reference], 
+    [MsgTrackingLogsExtended].[message-subject] AS [message-subject], 
+    [MsgTrackingLogsExtended].[sender-address] AS [sender-address], 
+    [MsgTrackingLogsExtended].[return-path] AS [return-path], 
+    [MsgTrackingLogsExtended].[message-info] AS [message-info], 
+    [MsgTrackingLogsExtended].[message-body] AS [message-body], 
+    [MsgTrackingLogsExtended].[message-body-text] AS [message-body-text], 
+    [MsgTrackingLogsExtended].[message-body-type] AS [message-body-type], 
+    [MsgTrackingLogsExtended].[attachments] AS [attachments], 
+    [MsgTrackingLogsExtended].[sender-name] AS [sender-name], 
+    [MsgTrackingLogsExtended].[display-to] AS [display-to], 
+    [MsgTrackingLogsExtended].[display-cc] AS [display-cc]
+    FROM [dbo].[MsgTrackingLogsExtended] AS [MsgTrackingLogsExtended]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MsgTrackingLogsExtendedJunks" EntityType="Self.MsgTrackingLogsExtendedJunks" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MsgTrackingLogsExtendedJunks].[ID] AS [ID], 
+    [MsgTrackingLogsExtendedJunks].[date-time] AS [date-time], 
+    [MsgTrackingLogsExtendedJunks].[client-ip] AS [client-ip], 
+    [MsgTrackingLogsExtendedJunks].[client-hostname] AS [client-hostname], 
+    [MsgTrackingLogsExtendedJunks].[server-ip] AS [server-ip], 
+    [MsgTrackingLogsExtendedJunks].[server-hostname] AS [server-hostname], 
+    [MsgTrackingLogsExtendedJunks].[source-context] AS [source-context], 
+    [MsgTrackingLogsExtendedJunks].[connector-id] AS [connector-id], 
+    [MsgTrackingLogsExtendedJunks].[source] AS [source], 
+    [MsgTrackingLogsExtendedJunks].[event-id] AS [event-id], 
+    [MsgTrackingLogsExtendedJunks].[internal-message-id] AS [internal-message-id], 
+    [MsgTrackingLogsExtendedJunks].[message-id] AS [message-id], 
+    [MsgTrackingLogsExtendedJunks].[recipient-address] AS [recipient-address], 
+    [MsgTrackingLogsExtendedJunks].[recipient-status] AS [recipient-status], 
+    [MsgTrackingLogsExtendedJunks].[total-bytes] AS [total-bytes], 
+    [MsgTrackingLogsExtendedJunks].[recipient-count] AS [recipient-count], 
+    [MsgTrackingLogsExtendedJunks].[related-recipient-address] AS [related-recipient-address], 
+    [MsgTrackingLogsExtendedJunks].[reference] AS [reference], 
+    [MsgTrackingLogsExtendedJunks].[message-subject] AS [message-subject], 
+    [MsgTrackingLogsExtendedJunks].[sender-address] AS [sender-address], 
+    [MsgTrackingLogsExtendedJunks].[return-path] AS [return-path], 
+    [MsgTrackingLogsExtendedJunks].[message-info] AS [message-info], 
+    [MsgTrackingLogsExtendedJunks].[message-body] AS [message-body], 
+    [MsgTrackingLogsExtendedJunks].[message-body-text] AS [message-body-text], 
+    [MsgTrackingLogsExtendedJunks].[message-body-type] AS [message-body-type], 
+    [MsgTrackingLogsExtendedJunks].[attachments] AS [attachments], 
+    [MsgTrackingLogsExtendedJunks].[sender-name] AS [sender-name], 
+    [MsgTrackingLogsExtendedJunks].[display-to] AS [display-to], 
+    [MsgTrackingLogsExtendedJunks].[display-cc] AS [display-cc]
+    FROM [dbo].[MsgTrackingLogsExtendedJunks] AS [MsgTrackingLogsExtendedJunks]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MsgTrackingLogsExtendedMain" EntityType="Self.MsgTrackingLogsExtendedMain" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MsgTrackingLogsExtendedMain].[ID] AS [ID], 
+    [MsgTrackingLogsExtendedMain].[date-time] AS [date-time], 
+    [MsgTrackingLogsExtendedMain].[client-ip] AS [client-ip], 
+    [MsgTrackingLogsExtendedMain].[client-hostname] AS [client-hostname], 
+    [MsgTrackingLogsExtendedMain].[server-ip] AS [server-ip], 
+    [MsgTrackingLogsExtendedMain].[server-hostname] AS [server-hostname], 
+    [MsgTrackingLogsExtendedMain].[source-context] AS [source-context], 
+    [MsgTrackingLogsExtendedMain].[connector-id] AS [connector-id], 
+    [MsgTrackingLogsExtendedMain].[source] AS [source], 
+    [MsgTrackingLogsExtendedMain].[event-id] AS [event-id], 
+    [MsgTrackingLogsExtendedMain].[internal-message-id] AS [internal-message-id], 
+    [MsgTrackingLogsExtendedMain].[message-id] AS [message-id], 
+    [MsgTrackingLogsExtendedMain].[recipient-address] AS [recipient-address], 
+    [MsgTrackingLogsExtendedMain].[recipient-status] AS [recipient-status], 
+    [MsgTrackingLogsExtendedMain].[total-bytes] AS [total-bytes], 
+    [MsgTrackingLogsExtendedMain].[recipient-count] AS [recipient-count], 
+    [MsgTrackingLogsExtendedMain].[related-recipient-address] AS [related-recipient-address], 
+    [MsgTrackingLogsExtendedMain].[reference] AS [reference], 
+    [MsgTrackingLogsExtendedMain].[message-subject] AS [message-subject], 
+    [MsgTrackingLogsExtendedMain].[sender-address] AS [sender-address], 
+    [MsgTrackingLogsExtendedMain].[return-path] AS [return-path], 
+    [MsgTrackingLogsExtendedMain].[message-info] AS [message-info], 
+    [MsgTrackingLogsExtendedMain].[message-body] AS [message-body], 
+    [MsgTrackingLogsExtendedMain].[message-body-text] AS [message-body-text], 
+    [MsgTrackingLogsExtendedMain].[message-body-type] AS [message-body-type], 
+    [MsgTrackingLogsExtendedMain].[attachments] AS [attachments], 
+    [MsgTrackingLogsExtendedMain].[sender-name] AS [sender-name], 
+    [MsgTrackingLogsExtendedMain].[display-to] AS [display-to], 
+    [MsgTrackingLogsExtendedMain].[display-cc] AS [display-cc]
+    FROM [dbo].[MsgTrackingLogsExtendedMain] AS [MsgTrackingLogsExtendedMain]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MsgTrackingLogsExtendedPromotions" EntityType="Self.MsgTrackingLogsExtendedPromotions" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MsgTrackingLogsExtendedPromotions].[ID] AS [ID], 
+    [MsgTrackingLogsExtendedPromotions].[date-time] AS [date-time], 
+    [MsgTrackingLogsExtendedPromotions].[client-ip] AS [client-ip], 
+    [MsgTrackingLogsExtendedPromotions].[client-hostname] AS [client-hostname], 
+    [MsgTrackingLogsExtendedPromotions].[server-ip] AS [server-ip], 
+    [MsgTrackingLogsExtendedPromotions].[server-hostname] AS [server-hostname], 
+    [MsgTrackingLogsExtendedPromotions].[source-context] AS [source-context], 
+    [MsgTrackingLogsExtendedPromotions].[connector-id] AS [connector-id], 
+    [MsgTrackingLogsExtendedPromotions].[source] AS [source], 
+    [MsgTrackingLogsExtendedPromotions].[event-id] AS [event-id], 
+    [MsgTrackingLogsExtendedPromotions].[internal-message-id] AS [internal-message-id], 
+    [MsgTrackingLogsExtendedPromotions].[message-id] AS [message-id], 
+    [MsgTrackingLogsExtendedPromotions].[recipient-address] AS [recipient-address], 
+    [MsgTrackingLogsExtendedPromotions].[recipient-status] AS [recipient-status], 
+    [MsgTrackingLogsExtendedPromotions].[total-bytes] AS [total-bytes], 
+    [MsgTrackingLogsExtendedPromotions].[recipient-count] AS [recipient-count], 
+    [MsgTrackingLogsExtendedPromotions].[related-recipient-address] AS [related-recipient-address], 
+    [MsgTrackingLogsExtendedPromotions].[reference] AS [reference], 
+    [MsgTrackingLogsExtendedPromotions].[message-subject] AS [message-subject], 
+    [MsgTrackingLogsExtendedPromotions].[sender-address] AS [sender-address], 
+    [MsgTrackingLogsExtendedPromotions].[return-path] AS [return-path], 
+    [MsgTrackingLogsExtendedPromotions].[message-info] AS [message-info], 
+    [MsgTrackingLogsExtendedPromotions].[message-body] AS [message-body], 
+    [MsgTrackingLogsExtendedPromotions].[message-body-text] AS [message-body-text], 
+    [MsgTrackingLogsExtendedPromotions].[message-body-type] AS [message-body-type], 
+    [MsgTrackingLogsExtendedPromotions].[attachments] AS [attachments], 
+    [MsgTrackingLogsExtendedPromotions].[sender-name] AS [sender-name], 
+    [MsgTrackingLogsExtendedPromotions].[display-to] AS [display-to], 
+    [MsgTrackingLogsExtendedPromotions].[display-cc] AS [display-cc]
+    FROM [dbo].[MsgTrackingLogsExtendedPromotions] AS [MsgTrackingLogsExtendedPromotions]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_MsgTrackingExtendedLogs_MsgTrackingLogs" Association="Self.FK_MsgTrackingExtendedLogs_MsgTrackingLogs">
+            <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
+            <End Role="MsgTrackingExtendedLogs" EntitySet="MsgTrackingExtendedLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MsgTrackingLogsAttachments_MsgTrackingLogs" Association="Self.FK_MsgTrackingLogsAttachments_MsgTrackingLogs">
+            <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
+            <End Role="MsgTrackingLogsAttachments" EntitySet="MsgTrackingLogsAttachments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MsgTrackingLogsBounces_MsgTrackingLogs" Association="Self.FK_MsgTrackingLogsBounces_MsgTrackingLogs">
+            <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
+            <End Role="MsgTrackingLogsBounces" EntitySet="MsgTrackingLogsBounces" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MsgTrackingLogsCategories_MsgTrackingLogs" Association="Self.FK_MsgTrackingLogsCategories_MsgTrackingLogs">
+            <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
+            <End Role="MsgTrackingLogsCategories" EntitySet="MsgTrackingLogsCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MsgTrackingLogsHeaders_MsgTrackingLogs" Association="Self.FK_MsgTrackingLogsHeaders_MsgTrackingLogs">
+            <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
+            <End Role="MsgTrackingLogsHeaders" EntitySet="MsgTrackingLogsHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MsgTrackingLogsReceipts_MsgTrackingLogs" Association="Self.FK_MsgTrackingLogsReceipts_MsgTrackingLogs">
+            <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
+            <End Role="MsgTrackingLogsReceipts" EntitySet="MsgTrackingLogsReceipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MsgTrackingLogsRecipientAddresses_MsgTrackingLogs" Association="Self.FK_MsgTrackingLogsRecipientAddresses_MsgTrackingLogs">
+            <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
+            <End Role="MsgTrackingLogsRecipientAddresses" EntitySet="MsgTrackingLogsRecipientAddresses" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ExchangeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="MsgTrackingExtendedLog">
+          <Key>
+            <PropertyRef Name="MsgTrackingLogsID" />
+          </Key>
+          <Property Name="message_body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_type" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="attachments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="display_to" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="display_cc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="journal_message_id" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MsgTrackingLogsID" Type="Int64" Nullable="false" />
+          <Property Name="conversation_id" Type="Guid" />
+          <Property Name="conversation_count" Type="Int32" />
+          <Property Name="message_body_sha1" Type="String" MaxLength="40" FixedLength="true" Unicode="false" />
+          <Property Name="message_body_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="list_unsubscribe_headers_id" Type="Int64" />
+          <Property Name="is_message_receipt" Type="Boolean" />
+          <Property Name="from_address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="from_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MsgTrackingLog" Relationship="Self.FK_MsgTrackingExtendedLogs_MsgTrackingLogs" FromRole="MsgTrackingExtendedLogs" ToRole="MsgTrackingLogs" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLog">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="client_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="client_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="source_context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="connector_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="source" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="event_id" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="internal_message_id" Type="Int64" />
+          <Property Name="message_id" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="total_bytes" Type="Int64" />
+          <Property Name="recipient_count" Type="Int32" />
+          <Property Name="related_recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="reference" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="return_path" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_info" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="date_time" Type="DateTime" Precision="7" />
+          <NavigationProperty Name="MsgTrackingExtendedLog" Relationship="Self.FK_MsgTrackingExtendedLogs_MsgTrackingLogs" FromRole="MsgTrackingLogs" ToRole="MsgTrackingExtendedLogs" />
+          <NavigationProperty Name="MsgTrackingLogsAttachments" Relationship="Self.FK_MsgTrackingLogsAttachments_MsgTrackingLogs" FromRole="MsgTrackingLogs" ToRole="MsgTrackingLogsAttachments" />
+          <NavigationProperty Name="MsgTrackingLogsBounces" Relationship="Self.FK_MsgTrackingLogsBounces_MsgTrackingLogs" FromRole="MsgTrackingLogs" ToRole="MsgTrackingLogsBounces" />
+          <NavigationProperty Name="MsgTrackingLogsCategories" Relationship="Self.FK_MsgTrackingLogsCategories_MsgTrackingLogs" FromRole="MsgTrackingLogs" ToRole="MsgTrackingLogsCategories" />
+          <NavigationProperty Name="MsgTrackingLogsHeaders" Relationship="Self.FK_MsgTrackingLogsHeaders_MsgTrackingLogs" FromRole="MsgTrackingLogs" ToRole="MsgTrackingLogsHeaders" />
+          <NavigationProperty Name="MsgTrackingLogsReceipts" Relationship="Self.FK_MsgTrackingLogsReceipts_MsgTrackingLogs" FromRole="MsgTrackingLogs" ToRole="MsgTrackingLogsReceipts" />
+          <NavigationProperty Name="MsgTrackingLogsRecipientAddresses" Relationship="Self.FK_MsgTrackingLogsRecipientAddresses_MsgTrackingLogs" FromRole="MsgTrackingLogs" ToRole="MsgTrackingLogsRecipientAddresses" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsAttachment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MsgTrackingLogsID" Type="Int64" Nullable="false" />
+          <Property Name="attachment_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="attachment_location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="attachment_content_type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="attachment_size" Type="Int64" />
+          <Property Name="attachment_is_inline" Type="Boolean" />
+          <Property Name="SHA256" Type="String" MaxLength="64" FixedLength="true" Unicode="false" />
+          <Property Name="verified" Type="Boolean" />
+          <Property Name="verified_time" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="MsgTrackingLog" Relationship="Self.FK_MsgTrackingLogsAttachments_MsgTrackingLogs" FromRole="MsgTrackingLogsAttachments" ToRole="MsgTrackingLogs" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsBounce">
+          <Key>
+            <PropertyRef Name="MsgTrackingLogsID" />
+            <PropertyRef Name="source_id" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MsgTrackingLogsID" Type="Int64" Nullable="false" />
+          <Property Name="source_id" Type="Int64" Nullable="false" />
+          <Property Name="date_time" Type="DateTime" Precision="3" />
+          <Property Name="smtp_code" Type="Int32" />
+          <Property Name="extended_smtp_code" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="error_message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MsgTrackingLog" Relationship="Self.FK_MsgTrackingLogsBounces_MsgTrackingLogs" FromRole="MsgTrackingLogsBounces" ToRole="MsgTrackingLogs" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsCategory">
+          <Key>
+            <PropertyRef Name="MsgTrackingLogsID" />
+            <PropertyRef Name="Category" />
+          </Key>
+          <Property Name="MsgTrackingLogsID" Type="Int64" Nullable="false" />
+          <Property Name="Category" Type="Int32" Nullable="false" />
+          <Property Name="Assignor" Type="Int32" />
+          <NavigationProperty Name="MsgTrackingLog" Relationship="Self.FK_MsgTrackingLogsCategories_MsgTrackingLogs" FromRole="MsgTrackingLogsCategories" ToRole="MsgTrackingLogs" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsHeader">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MsgTrackingLogsID" Type="Int64" Nullable="false" />
+          <Property Name="Line" Type="Int16" Nullable="false" />
+          <Property Name="FieldName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FieldBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MsgTrackingLog" Relationship="Self.FK_MsgTrackingLogsHeaders_MsgTrackingLogs" FromRole="MsgTrackingLogsHeaders" ToRole="MsgTrackingLogs" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsReceipt">
+          <Key>
+            <PropertyRef Name="MsgTrackingLogsID" />
+            <PropertyRef Name="receipt_id" />
+          </Key>
+          <Property Name="MsgTrackingLogsID" Type="Int64" Nullable="false" />
+          <Property Name="receipt_id" Type="Int64" Nullable="false" />
+          <Property Name="receipt_type" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="MsgTrackingLog" Relationship="Self.FK_MsgTrackingLogsReceipts_MsgTrackingLogs" FromRole="MsgTrackingLogsReceipts" ToRole="MsgTrackingLogs" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsRecipientAddress">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="recipient_address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MsgTrackingLogsID" Type="Int64" Nullable="false" />
+          <Property Name="recipient_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="domain_part" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MsgTrackingLogsBounceID" Type="Int64" />
+          <Property Name="recipient_type" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="MsgTrackingLogsReceiptDeliveryID" Type="Int64" />
+          <NavigationProperty Name="MsgTrackingLog" Relationship="Self.FK_MsgTrackingLogsRecipientAddresses_MsgTrackingLogs" FromRole="MsgTrackingLogsRecipientAddresses" ToRole="MsgTrackingLogs" />
+        </EntityType>
+        <Association Name="FK_MsgTrackingExtendedLogs_MsgTrackingLogs">
+          <End Role="MsgTrackingLogs" Type="Self.MsgTrackingLog" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MsgTrackingExtendedLogs" Type="Self.MsgTrackingExtendedLog" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="MsgTrackingLogs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MsgTrackingExtendedLogs">
+              <PropertyRef Name="MsgTrackingLogsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MsgTrackingLogsAttachments_MsgTrackingLogs">
+          <End Role="MsgTrackingLogs" Type="Self.MsgTrackingLog" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MsgTrackingLogsAttachments" Type="Self.MsgTrackingLogsAttachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MsgTrackingLogs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MsgTrackingLogsAttachments">
+              <PropertyRef Name="MsgTrackingLogsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MsgTrackingLogsBounces_MsgTrackingLogs">
+          <End Role="MsgTrackingLogs" Type="Self.MsgTrackingLog" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MsgTrackingLogsBounces" Type="Self.MsgTrackingLogsBounce" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MsgTrackingLogs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MsgTrackingLogsBounces">
+              <PropertyRef Name="MsgTrackingLogsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MsgTrackingLogsCategories_MsgTrackingLogs">
+          <End Role="MsgTrackingLogs" Type="Self.MsgTrackingLog" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MsgTrackingLogsCategories" Type="Self.MsgTrackingLogsCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MsgTrackingLogs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MsgTrackingLogsCategories">
+              <PropertyRef Name="MsgTrackingLogsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MsgTrackingLogsHeaders_MsgTrackingLogs">
+          <End Role="MsgTrackingLogs" Type="Self.MsgTrackingLog" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MsgTrackingLogsHeaders" Type="Self.MsgTrackingLogsHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MsgTrackingLogs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MsgTrackingLogsHeaders">
+              <PropertyRef Name="MsgTrackingLogsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MsgTrackingLogsReceipts_MsgTrackingLogs">
+          <End Role="MsgTrackingLogs" Type="Self.MsgTrackingLog" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MsgTrackingLogsReceipts" Type="Self.MsgTrackingLogsReceipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MsgTrackingLogs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MsgTrackingLogsReceipts">
+              <PropertyRef Name="MsgTrackingLogsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MsgTrackingLogsRecipientAddresses_MsgTrackingLogs">
+          <End Role="MsgTrackingLogs" Type="Self.MsgTrackingLog" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="MsgTrackingLogsRecipientAddresses" Type="Self.MsgTrackingLogsRecipientAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MsgTrackingLogs">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MsgTrackingLogsRecipientAddresses">
+              <PropertyRef Name="MsgTrackingLogsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExchangeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="MsgTrackingExtendedLogs" EntityType="Self.MsgTrackingExtendedLog" />
+          <EntitySet Name="MsgTrackingLogs" EntityType="Self.MsgTrackingLog" />
+          <EntitySet Name="MsgTrackingLogsAttachments" EntityType="Self.MsgTrackingLogsAttachment" />
+          <EntitySet Name="MsgTrackingLogsBounces" EntityType="Self.MsgTrackingLogsBounce" />
+          <EntitySet Name="MsgTrackingLogsCategories" EntityType="Self.MsgTrackingLogsCategory" />
+          <EntitySet Name="MsgTrackingLogsHeaders" EntityType="Self.MsgTrackingLogsHeader" />
+          <EntitySet Name="MsgTrackingLogsReceipts" EntityType="Self.MsgTrackingLogsReceipt" />
+          <EntitySet Name="MsgTrackingLogsRecipientAddresses" EntityType="Self.MsgTrackingLogsRecipientAddress" />
+          <AssociationSet Name="FK_MsgTrackingExtendedLogs_MsgTrackingLogs" Association="Self.FK_MsgTrackingExtendedLogs_MsgTrackingLogs">
+            <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
+            <End Role="MsgTrackingExtendedLogs" EntitySet="MsgTrackingExtendedLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MsgTrackingLogsAttachments_MsgTrackingLogs" Association="Self.FK_MsgTrackingLogsAttachments_MsgTrackingLogs">
+            <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
+            <End Role="MsgTrackingLogsAttachments" EntitySet="MsgTrackingLogsAttachments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MsgTrackingLogsBounces_MsgTrackingLogs" Association="Self.FK_MsgTrackingLogsBounces_MsgTrackingLogs">
+            <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
+            <End Role="MsgTrackingLogsBounces" EntitySet="MsgTrackingLogsBounces" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MsgTrackingLogsCategories_MsgTrackingLogs" Association="Self.FK_MsgTrackingLogsCategories_MsgTrackingLogs">
+            <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
+            <End Role="MsgTrackingLogsCategories" EntitySet="MsgTrackingLogsCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MsgTrackingLogsHeaders_MsgTrackingLogs" Association="Self.FK_MsgTrackingLogsHeaders_MsgTrackingLogs">
+            <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
+            <End Role="MsgTrackingLogsHeaders" EntitySet="MsgTrackingLogsHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MsgTrackingLogsReceipts_MsgTrackingLogs" Association="Self.FK_MsgTrackingLogsReceipts_MsgTrackingLogs">
+            <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
+            <End Role="MsgTrackingLogsReceipts" EntitySet="MsgTrackingLogsReceipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MsgTrackingLogsRecipientAddresses_MsgTrackingLogs" Association="Self.FK_MsgTrackingLogsRecipientAddresses_MsgTrackingLogs">
+            <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
+            <End Role="MsgTrackingLogsRecipientAddresses" EntitySet="MsgTrackingLogsRecipientAddresses" />
+          </AssociationSet>
+          <EntitySet Name="MsgTrackingLogsExtendeds" EntityType="ExchangeModel.MsgTrackingLogsExtended" />
+          <EntitySet Name="MsgTrackingLogsExtendedJunks" EntityType="ExchangeModel.MsgTrackingLogsExtendedJunk" />
+          <EntitySet Name="MsgTrackingLogsExtendedMains" EntityType="ExchangeModel.MsgTrackingLogsExtendedMain" />
+          <EntitySet Name="MsgTrackingLogsExtendedPromotions" EntityType="ExchangeModel.MsgTrackingLogsExtendedPromotion" />
+        </EntityContainer>
+        <EntityType Name="MsgTrackingLogsExtended">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="date_time" Type="DateTime" Precision="7" />
+          <Property Name="client_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="client_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="source_context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="connector_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="source" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="event_id" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="internal_message_id" Type="Int64" />
+          <Property Name="message_id" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="total_bytes" Type="Int64" />
+          <Property Name="recipient_count" Type="Int32" />
+          <Property Name="related_recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="reference" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="return_path" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_info" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_type" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="attachments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="display_to" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="display_cc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsExtendedJunk">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="date_time" Type="DateTime" Precision="7" />
+          <Property Name="client_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="client_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="source_context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="connector_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="source" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="event_id" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="internal_message_id" Type="Int64" />
+          <Property Name="message_id" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="total_bytes" Type="Int64" />
+          <Property Name="recipient_count" Type="Int32" />
+          <Property Name="related_recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="reference" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="return_path" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_info" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_type" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="attachments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="display_to" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="display_cc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsExtendedMain">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="date_time" Type="DateTime" Precision="7" />
+          <Property Name="client_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="client_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="source_context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="connector_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="source" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="event_id" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="internal_message_id" Type="Int64" />
+          <Property Name="message_id" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="total_bytes" Type="Int64" />
+          <Property Name="recipient_count" Type="Int32" />
+          <Property Name="related_recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="reference" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="return_path" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_info" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_type" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="attachments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="display_to" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="display_cc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsExtendedPromotion">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="date_time" Type="DateTime" Precision="7" />
+          <Property Name="client_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="client_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="source_context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="connector_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="source" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="event_id" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="internal_message_id" Type="Int64" />
+          <Property Name="message_id" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="total_bytes" Type="Int64" />
+          <Property Name="recipient_count" Type="Int32" />
+          <Property Name="related_recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="reference" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="return_path" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_info" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_type" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="attachments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="display_to" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="display_cc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ExchangeModelStoreContainer" CdmEntityContainer="ExchangeEntities">
+          <EntitySetMapping Name="MsgTrackingExtendedLogs">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingExtendedLog">
+              <MappingFragment StoreEntitySet="MsgTrackingExtendedLogs">
+                <ScalarProperty Name="message_body" ColumnName="message-body" />
+                <ScalarProperty Name="message_body_type" ColumnName="message-body-type" />
+                <ScalarProperty Name="attachments" ColumnName="attachments" />
+                <ScalarProperty Name="sender_name" ColumnName="sender-name" />
+                <ScalarProperty Name="display_to" ColumnName="display-to" />
+                <ScalarProperty Name="display_cc" ColumnName="display-cc" />
+                <ScalarProperty Name="journal_message_id" ColumnName="journal-message-id" />
+                <ScalarProperty Name="MsgTrackingLogsID" ColumnName="MsgTrackingLogsID" />
+                <ScalarProperty Name="conversation_id" ColumnName="conversation-id" />
+                <ScalarProperty Name="conversation_count" ColumnName="conversation-count" />
+                <ScalarProperty Name="message_body_sha1" ColumnName="message-body-sha1" />
+                <ScalarProperty Name="message_body_text" ColumnName="message-body-text" />
+                <ScalarProperty Name="list_unsubscribe_headers_id" ColumnName="list-unsubscribe-headers-id" />
+                <ScalarProperty Name="is_message_receipt" ColumnName="is-message-receipt" />
+                <ScalarProperty Name="from_address" ColumnName="from-address" />
+                <ScalarProperty Name="from_name" ColumnName="from-name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MsgTrackingLogs">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLog">
+              <MappingFragment StoreEntitySet="MsgTrackingLogs">
+                <ScalarProperty Name="client_ip" ColumnName="client-ip" />
+                <ScalarProperty Name="client_hostname" ColumnName="client-hostname" />
+                <ScalarProperty Name="server_ip" ColumnName="server-ip" />
+                <ScalarProperty Name="server_hostname" ColumnName="server-hostname" />
+                <ScalarProperty Name="source_context" ColumnName="source-context" />
+                <ScalarProperty Name="connector_id" ColumnName="connector-id" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="event_id" ColumnName="event-id" />
+                <ScalarProperty Name="internal_message_id" ColumnName="internal-message-id" />
+                <ScalarProperty Name="message_id" ColumnName="message-id" />
+                <ScalarProperty Name="recipient_address" ColumnName="recipient-address" />
+                <ScalarProperty Name="recipient_status" ColumnName="recipient-status" />
+                <ScalarProperty Name="total_bytes" ColumnName="total-bytes" />
+                <ScalarProperty Name="recipient_count" ColumnName="recipient-count" />
+                <ScalarProperty Name="related_recipient_address" ColumnName="related-recipient-address" />
+                <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="message_subject" ColumnName="message-subject" />
+                <ScalarProperty Name="sender_address" ColumnName="sender-address" />
+                <ScalarProperty Name="return_path" ColumnName="return-path" />
+                <ScalarProperty Name="message_info" ColumnName="message-info" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="date_time" ColumnName="date-time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MsgTrackingLogsAttachments">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLogsAttachment">
+              <MappingFragment StoreEntitySet="MsgTrackingLogsAttachments">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="MsgTrackingLogsID" ColumnName="MsgTrackingLogsID" />
+                <ScalarProperty Name="attachment_name" ColumnName="attachment-name" />
+                <ScalarProperty Name="attachment_location" ColumnName="attachment-location" />
+                <ScalarProperty Name="attachment_content_type" ColumnName="attachment-content-type" />
+                <ScalarProperty Name="attachment_size" ColumnName="attachment-size" />
+                <ScalarProperty Name="attachment_is_inline" ColumnName="attachment-is-inline" />
+                <ScalarProperty Name="SHA256" ColumnName="SHA256" />
+                <ScalarProperty Name="verified" ColumnName="verified" />
+                <ScalarProperty Name="verified_time" ColumnName="verified-time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MsgTrackingLogsBounces">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLogsBounce">
+              <MappingFragment StoreEntitySet="MsgTrackingLogsBounces">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="MsgTrackingLogsID" ColumnName="MsgTrackingLogsID" />
+                <ScalarProperty Name="source_id" ColumnName="source-id" />
+                <ScalarProperty Name="date_time" ColumnName="date-time" />
+                <ScalarProperty Name="smtp_code" ColumnName="smtp-code" />
+                <ScalarProperty Name="extended_smtp_code" ColumnName="extended-smtp-code" />
+                <ScalarProperty Name="error_message" ColumnName="error-message" />
+                <ScalarProperty Name="recipient_address" ColumnName="recipient-address" />
+                <ScalarProperty Name="server_address" ColumnName="server-address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MsgTrackingLogsCategories">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLogsCategory">
+              <MappingFragment StoreEntitySet="MsgTrackingLogsCategories">
+                <ScalarProperty Name="MsgTrackingLogsID" ColumnName="MsgTrackingLogsID" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Assignor" ColumnName="Assignor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MsgTrackingLogsHeaders">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLogsHeader">
+              <MappingFragment StoreEntitySet="MsgTrackingLogsHeaders">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="MsgTrackingLogsID" ColumnName="MsgTrackingLogsID" />
+                <ScalarProperty Name="Line" ColumnName="Line" />
+                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="FieldBody" ColumnName="FieldBody" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MsgTrackingLogsReceipts">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLogsReceipt">
+              <MappingFragment StoreEntitySet="MsgTrackingLogsReceipts">
+                <ScalarProperty Name="MsgTrackingLogsID" ColumnName="MsgTrackingLogsID" />
+                <ScalarProperty Name="receipt_id" ColumnName="receipt-id" />
+                <ScalarProperty Name="receipt_type" ColumnName="receipt-type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MsgTrackingLogsRecipientAddresses">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLogsRecipientAddress">
+              <MappingFragment StoreEntitySet="MsgTrackingLogsRecipientAddresses">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="recipient_address" ColumnName="recipient-address" />
+                <ScalarProperty Name="MsgTrackingLogsID" ColumnName="MsgTrackingLogsID" />
+                <ScalarProperty Name="recipient_name" ColumnName="recipient-name" />
+                <ScalarProperty Name="domain_part" ColumnName="domain-part" />
+                <ScalarProperty Name="MsgTrackingLogsBounceID" ColumnName="MsgTrackingLogsBounceID" />
+                <ScalarProperty Name="recipient_type" ColumnName="recipient-type" />
+                <ScalarProperty Name="MsgTrackingLogsReceiptDeliveryID" ColumnName="MsgTrackingLogsReceiptDeliveryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MsgTrackingLogsExtendeds">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLogsExtended">
+              <MappingFragment StoreEntitySet="MsgTrackingLogsExtended">
+                <ScalarProperty Name="display_cc" ColumnName="display-cc" />
+                <ScalarProperty Name="display_to" ColumnName="display-to" />
+                <ScalarProperty Name="sender_name" ColumnName="sender-name" />
+                <ScalarProperty Name="attachments" ColumnName="attachments" />
+                <ScalarProperty Name="message_body_type" ColumnName="message-body-type" />
+                <ScalarProperty Name="message_body_text" ColumnName="message-body-text" />
+                <ScalarProperty Name="message_body" ColumnName="message-body" />
+                <ScalarProperty Name="message_info" ColumnName="message-info" />
+                <ScalarProperty Name="return_path" ColumnName="return-path" />
+                <ScalarProperty Name="sender_address" ColumnName="sender-address" />
+                <ScalarProperty Name="message_subject" ColumnName="message-subject" />
+                <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="related_recipient_address" ColumnName="related-recipient-address" />
+                <ScalarProperty Name="recipient_count" ColumnName="recipient-count" />
+                <ScalarProperty Name="total_bytes" ColumnName="total-bytes" />
+                <ScalarProperty Name="recipient_status" ColumnName="recipient-status" />
+                <ScalarProperty Name="recipient_address" ColumnName="recipient-address" />
+                <ScalarProperty Name="message_id" ColumnName="message-id" />
+                <ScalarProperty Name="internal_message_id" ColumnName="internal-message-id" />
+                <ScalarProperty Name="event_id" ColumnName="event-id" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="connector_id" ColumnName="connector-id" />
+                <ScalarProperty Name="source_context" ColumnName="source-context" />
+                <ScalarProperty Name="server_hostname" ColumnName="server-hostname" />
+                <ScalarProperty Name="server_ip" ColumnName="server-ip" />
+                <ScalarProperty Name="client_hostname" ColumnName="client-hostname" />
+                <ScalarProperty Name="client_ip" ColumnName="client-ip" />
+                <ScalarProperty Name="date_time" ColumnName="date-time" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MsgTrackingLogsExtendedJunks">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLogsExtendedJunk">
+              <MappingFragment StoreEntitySet="MsgTrackingLogsExtendedJunks">
+                <ScalarProperty Name="display_cc" ColumnName="display-cc" />
+                <ScalarProperty Name="display_to" ColumnName="display-to" />
+                <ScalarProperty Name="sender_name" ColumnName="sender-name" />
+                <ScalarProperty Name="attachments" ColumnName="attachments" />
+                <ScalarProperty Name="message_body_type" ColumnName="message-body-type" />
+                <ScalarProperty Name="message_body_text" ColumnName="message-body-text" />
+                <ScalarProperty Name="message_body" ColumnName="message-body" />
+                <ScalarProperty Name="message_info" ColumnName="message-info" />
+                <ScalarProperty Name="return_path" ColumnName="return-path" />
+                <ScalarProperty Name="sender_address" ColumnName="sender-address" />
+                <ScalarProperty Name="message_subject" ColumnName="message-subject" />
+                <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="related_recipient_address" ColumnName="related-recipient-address" />
+                <ScalarProperty Name="recipient_count" ColumnName="recipient-count" />
+                <ScalarProperty Name="total_bytes" ColumnName="total-bytes" />
+                <ScalarProperty Name="recipient_status" ColumnName="recipient-status" />
+                <ScalarProperty Name="recipient_address" ColumnName="recipient-address" />
+                <ScalarProperty Name="message_id" ColumnName="message-id" />
+                <ScalarProperty Name="internal_message_id" ColumnName="internal-message-id" />
+                <ScalarProperty Name="event_id" ColumnName="event-id" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="connector_id" ColumnName="connector-id" />
+                <ScalarProperty Name="source_context" ColumnName="source-context" />
+                <ScalarProperty Name="server_hostname" ColumnName="server-hostname" />
+                <ScalarProperty Name="server_ip" ColumnName="server-ip" />
+                <ScalarProperty Name="client_hostname" ColumnName="client-hostname" />
+                <ScalarProperty Name="client_ip" ColumnName="client-ip" />
+                <ScalarProperty Name="date_time" ColumnName="date-time" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MsgTrackingLogsExtendedMains">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLogsExtendedMain">
+              <MappingFragment StoreEntitySet="MsgTrackingLogsExtendedMain">
+                <ScalarProperty Name="display_cc" ColumnName="display-cc" />
+                <ScalarProperty Name="display_to" ColumnName="display-to" />
+                <ScalarProperty Name="sender_name" ColumnName="sender-name" />
+                <ScalarProperty Name="attachments" ColumnName="attachments" />
+                <ScalarProperty Name="message_body_type" ColumnName="message-body-type" />
+                <ScalarProperty Name="message_body_text" ColumnName="message-body-text" />
+                <ScalarProperty Name="message_body" ColumnName="message-body" />
+                <ScalarProperty Name="message_info" ColumnName="message-info" />
+                <ScalarProperty Name="return_path" ColumnName="return-path" />
+                <ScalarProperty Name="sender_address" ColumnName="sender-address" />
+                <ScalarProperty Name="message_subject" ColumnName="message-subject" />
+                <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="related_recipient_address" ColumnName="related-recipient-address" />
+                <ScalarProperty Name="recipient_count" ColumnName="recipient-count" />
+                <ScalarProperty Name="total_bytes" ColumnName="total-bytes" />
+                <ScalarProperty Name="recipient_status" ColumnName="recipient-status" />
+                <ScalarProperty Name="recipient_address" ColumnName="recipient-address" />
+                <ScalarProperty Name="message_id" ColumnName="message-id" />
+                <ScalarProperty Name="internal_message_id" ColumnName="internal-message-id" />
+                <ScalarProperty Name="event_id" ColumnName="event-id" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="connector_id" ColumnName="connector-id" />
+                <ScalarProperty Name="source_context" ColumnName="source-context" />
+                <ScalarProperty Name="server_hostname" ColumnName="server-hostname" />
+                <ScalarProperty Name="server_ip" ColumnName="server-ip" />
+                <ScalarProperty Name="client_hostname" ColumnName="client-hostname" />
+                <ScalarProperty Name="client_ip" ColumnName="client-ip" />
+                <ScalarProperty Name="date_time" ColumnName="date-time" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MsgTrackingLogsExtendedPromotions">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLogsExtendedPromotion">
+              <MappingFragment StoreEntitySet="MsgTrackingLogsExtendedPromotions">
+                <ScalarProperty Name="display_cc" ColumnName="display-cc" />
+                <ScalarProperty Name="display_to" ColumnName="display-to" />
+                <ScalarProperty Name="sender_name" ColumnName="sender-name" />
+                <ScalarProperty Name="attachments" ColumnName="attachments" />
+                <ScalarProperty Name="message_body_type" ColumnName="message-body-type" />
+                <ScalarProperty Name="message_body_text" ColumnName="message-body-text" />
+                <ScalarProperty Name="message_body" ColumnName="message-body" />
+                <ScalarProperty Name="message_info" ColumnName="message-info" />
+                <ScalarProperty Name="return_path" ColumnName="return-path" />
+                <ScalarProperty Name="sender_address" ColumnName="sender-address" />
+                <ScalarProperty Name="message_subject" ColumnName="message-subject" />
+                <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="related_recipient_address" ColumnName="related-recipient-address" />
+                <ScalarProperty Name="recipient_count" ColumnName="recipient-count" />
+                <ScalarProperty Name="total_bytes" ColumnName="total-bytes" />
+                <ScalarProperty Name="recipient_status" ColumnName="recipient-status" />
+                <ScalarProperty Name="recipient_address" ColumnName="recipient-address" />
+                <ScalarProperty Name="message_id" ColumnName="message-id" />
+                <ScalarProperty Name="internal_message_id" ColumnName="internal-message-id" />
+                <ScalarProperty Name="event_id" ColumnName="event-id" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="connector_id" ColumnName="connector-id" />
+                <ScalarProperty Name="source_context" ColumnName="source-context" />
+                <ScalarProperty Name="server_hostname" ColumnName="server-hostname" />
+                <ScalarProperty Name="server_ip" ColumnName="server-ip" />
+                <ScalarProperty Name="client_hostname" ColumnName="client-hostname" />
+                <ScalarProperty Name="client_ip" ColumnName="client-ip" />
+                <ScalarProperty Name="date_time" ColumnName="date-time" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
