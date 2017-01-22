@@ -1,5 +1,5 @@
 # EmailScanner
-This is a web-based tool to retrieve emails from multiple email accounts and store the records into a basic database structure for archiving, or analyzing email records. It currently supports IMAP, POP3, Exchange, and Exchange Journal protocols.
+This is a web-based tool to retrieve emails from multiple email accounts and store the records into a basic database structure for archiving, or analyzing email records. It currently supports IMAP, POP3, Exchange, and Exchange Journal protocols. The trial license has a limit of 10,000 records.
 
 #Install
 Use Schemas\MSSQL\Exchange.sql file to install the database schema to a MS SQL Server Express 2012.
