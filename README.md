@@ -3,7 +3,7 @@ This is a web-based tool to retrieve emails from multiple email accounts and sto
 
 #Install
 Use Schemas\MSSQL\Exchange.sql file to install the database schema to a MS SQL Server Express 2012.
-You also need to modify the Web.config and/or App.config to update the database connection string, and attachments storage location for your computer.
+You also need to modify the Web.config to update the database connection string, and the attachments storage location for your computer.
 Please note that there is a size limit of 10GB for the MS SQL Server Express.
 Add your email account details to the Settings section of the web interface.
 
