@@ -88,7 +88,7 @@
                             </textarea>
                         }
                         else {
-                            <textarea class="form-control">@Model.MsgTrackingExtendedLog.message_body</textarea>
+                            <textarea class="form-control">@(Model.MsgTrackingExtendedLog.message_body ?? Model.MsgTrackingExtendedLog.message_body_text)</textarea>
                         }
                     </div>
                 </div>
