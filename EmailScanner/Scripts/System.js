@@ -929,7 +929,7 @@ if (!System) {
     }]);
 
     System.angular.directive('mailsList',
-    ['$compile', '$timeout', function ($compile, $timeout) {
+    ['$sce', '$compile', '$timeout', function ($sce, $compile, $timeout) {
         return {
             restrict: 'A',
             link: function (scope, element, attr) {
@@ -984,8 +984,20 @@ if (!System) {
                         repeatitems: false,
                         userdata: "userdata"
                     },
+                    beforeRequest: function () {
+                        $timeout(function () {
+                            // show a loading icon
+                            scope[$table.data('counter-name') + 'Loading'] = true;
+
+                            // reset the record counters
+                            scope[$table.data('counter-name')] = null;
+                        });
+                    },
                     loadComplete: function (data) {
                         $timeout(function () {
+                            // hide the loading icon
+                            scope[$table.data('counter-name') + 'Loading'] = false;
+
                             // update the record counters
                             scope[$table.data('counter-name')] = data.records;
                         });
