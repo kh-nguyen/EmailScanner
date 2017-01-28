@@ -53,6 +53,10 @@ textarea {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    color: gray;
+    font-size: 11px;
+    display: inline-block;
+    vertical-align:middle;
 }
 
  .email-address:link {

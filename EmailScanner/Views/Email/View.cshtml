@@ -2,11 +2,17 @@
 @using System.Services.EmailStorage
 @model MsgTrackingLog
 @{
+    var language = "en";
+    var isLanguageEnglish = true;
+
     ViewBag.Title = Model.message_subject;
     IEnumerable<MsgTrackingLogsAttachment> attachments = ViewBag.attachments;
     IEnumerable<MsgTrackingLogsRecipientAddress> to_recipients = ViewBag.to_recipients;
     IEnumerable<MsgTrackingLogsRecipientAddress> cc_recipients = ViewBag.cc_recipients;
     IEnumerable<MsgTrackingLogsHeader> messageInternetHeaders = ViewBag.messageInternetHeaders;
+
+    var hasReferences = messageInternetHeaders != null && messageInternetHeaders.Where(x => x.FieldName == "References").Any();
+    var hasReceipts = Model.MsgTrackingLogsReceipts.Any();
 }
 
 <div class="site-width">
@@ -15,6 +21,24 @@
             <ul>
                 <li><a href="#exchange-message"><i class="fa fa-envelope-o"></i>&nbsp;Message</a></li>
                 <li><a href="#message-headers"><i class="fa fa-file-text"></i>&nbsp;Headers</a></li>
+                @if (hasReferences) {
+                    <li>
+                        <a href="#message-references">
+                            <i class="fa fa-commenting"></i>&nbsp;References
+                            <span class='badge' ng-bind="emailReferencesCounter | number"></span>
+                            <i class="fa fa-spinner fa-spin" ng-show="emailReferencesCounterLoading"></i>
+                        </a>
+                    </li>
+                }
+                @if (hasReceipts) {
+                    <li>
+                        <a href="#message-receipts">
+                            <i class="fa fa-tags"></i>&nbsp;Receipts
+                            <span class='badge' ng-bind="emailReceiptsCounter | number"></span>
+                            <i class="fa fa-spinner fa-spin" ng-show="emailReceiptsCounterLoading"></i>
+                        </a>
+                    </li>
+                }
             </ul>
             <div id="exchange-message" class="container-fluid">
                 <div class="row">
@@ -106,15 +130,39 @@
                     <p>Not Available</p>
                 }
             </div>
+            @if (hasReferences) {
+                <div id="message-references">
+                    <table mails-list data-counter-name="emailReferencesCounter"
+                           data-url='@Url.Action("References", "Email", new { ID = Model.ID })'></table>
+                </div>
+            }
+            @if (hasReceipts) {
+                <div id="message-receipts">
+                    <table mails-list data-counter-name="emailReceiptsCounter"
+                           data-url='@Url.Action("Receipts", "Email", new { ID = Model.ID })'></table>
+                </div>
+            }
             <div class="clearfix"></div>
         </div>
     </div>
 </div>
 
 @section externalScripts {
+    @if (!isLanguageEnglish) { @Scripts.Render(String.Format("~/bundles/jqgrid.js/js/i18n/grid.locale-{0}.js", language)) }
+    @Scripts.Render("~/bundles/jqgrid.js/plugins/ui.multiselect.js")
+    @Scripts.Render("~/bundles/jqgrid.js")
+    @if (!isLanguageEnglish) { @Scripts.Render(String.Format("~/bundles/timepicker/js/i18n/jquery-ui-timepicker-{0}.js", language)) }
+    @Scripts.Render("~/bundles/timeago.js")
+    @if (!isLanguageEnglish) { @Scripts.Render(String.Format("~/bundles/timeago.js/locales/jquery.timeago.{0}.js", language)) }
     @Scripts.Render("~/bundles/ckeditor")
 }
 
 @section scripts {
     @Scripts.Render("~/bundles/system/js")
+}
+
+@section styles {
+    @Styles.Render("~/bundles/jqgrid.css/plugins/ui.multiselect.css")
+    @Styles.Render("~/bundles/jqgrid.css")
+    @Styles.Render("~/bundles/timepicker/css")
 }

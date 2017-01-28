@@ -23,8 +23,7 @@ namespace EmailScanner.Controllers
             MainDatabaseEntities mainDatabase,
             ExchangeEntities exchangeDatabase,
             HttpContextBase httpContext,
-            IEmailStorageService emailStorageService)
-        {
+            IEmailStorageService emailStorageService) {
             this.mainDatabase = mainDatabase;
             this.exchangeDatabase = exchangeDatabase;
             this.httpContext = httpContext;
@@ -32,8 +31,7 @@ namespace EmailScanner.Controllers
         }
 
         [HttpGet]
-        public JsonNetResult Index(jqGridParamModel grid)
-        {
+        public JsonNetResult Index(jqGridParamModel grid) {
             if (!ModelState.IsValid) {
                 return null;
             }
@@ -53,15 +51,12 @@ namespace EmailScanner.Controllers
         }
 
         [HttpGet]
-        public JsonNetResult Promotions(jqGridParamModel grid)
-        {
-            if (!ModelState.IsValid)
-            {
+        public JsonNetResult Promotions(jqGridParamModel grid) {
+            if (!ModelState.IsValid) {
                 return null;
             }
 
-            using (var scope = Scope.New(System.Transactions.IsolationLevel.ReadUncommitted))
-            {
+            using (var scope = Scope.New(System.Transactions.IsolationLevel.ReadUncommitted)) {
                 // turn off change tracking for high performance
                 exchangeDatabase.Configuration.AutoDetectChangesEnabled = false;
                 // UseDatabaseNullSemantics should be set true to improve filter performance
@@ -76,15 +71,12 @@ namespace EmailScanner.Controllers
         }
 
         [HttpGet]
-        public JsonNetResult Junks(jqGridParamModel grid)
-        {
-            if (!ModelState.IsValid)
-            {
+        public JsonNetResult Junks(jqGridParamModel grid) {
+            if (!ModelState.IsValid) {
                 return null;
             }
 
-            using (var scope = Scope.New(System.Transactions.IsolationLevel.ReadUncommitted))
-            {
+            using (var scope = Scope.New(System.Transactions.IsolationLevel.ReadUncommitted)) {
                 // turn off change tracking for high performance
                 exchangeDatabase.Configuration.AutoDetectChangesEnabled = false;
                 // UseDatabaseNullSemantics should be set true to improve filter performance
@@ -99,21 +91,77 @@ namespace EmailScanner.Controllers
         }
 
         [HttpGet]
-        public JsonNetResult Main(jqGridParamModel grid)
-        {
-            if (!ModelState.IsValid)
-            {
+        public JsonNetResult Main(jqGridParamModel grid) {
+            if (!ModelState.IsValid) {
                 return null;
             }
 
-            using (var scope = Scope.New(System.Transactions.IsolationLevel.ReadUncommitted))
-            {
+            using (var scope = Scope.New(System.Transactions.IsolationLevel.ReadUncommitted)) {
                 // turn off change tracking for high performance
                 exchangeDatabase.Configuration.AutoDetectChangesEnabled = false;
                 // UseDatabaseNullSemantics should be set true to improve filter performance
                 exchangeDatabase.Configuration.UseDatabaseNullSemantics = true;
 
                 var query = exchangeDatabase.MsgTrackingLogsExtendedMains;
+                var result = jqGridResponseDefaultModel.getDefaultResponse(query, grid);
+
+                //convert to JSON and return to client
+                return this.JsonEx(result);
+            }
+        }
+
+        [HttpGet]
+        public JsonNetResult References(long ID, jqGridParamModel grid) {
+            if (!ModelState.IsValid) {
+                return null;
+            }
+
+            using (var scope = Scope.New(System.Transactions.IsolationLevel.ReadUncommitted)) {
+                // turn off change tracking for high performance
+                exchangeDatabase.Configuration.AutoDetectChangesEnabled = false;
+                // UseDatabaseNullSemantics should be set true to improve filter performance
+                exchangeDatabase.Configuration.UseDatabaseNullSemantics = true;
+
+                var stringReferences = exchangeDatabase.MsgTrackingLogsHeaders
+                    .Where(x => x.MsgTrackingLogsID == ID && x.FieldName == "References")
+                    .Select(x => x.FieldBody).FirstOrDefault();
+
+                if (String.IsNullOrWhiteSpace(stringReferences))
+                    return null;
+
+                // break the ids string into a list
+                var references = EmailStorageService.ParseMultipleIDs(stringReferences);
+
+                // get a list of MsgTrackingLogsIDs associated with the references
+                var ids = exchangeDatabase.MsgTrackingLogs
+                    .Where(x => references.Contains(x.message_id))
+                    .Select(x => x.ID).ToList();
+
+                var query = exchangeDatabase.MsgTrackingLogsExtendeds.Where(x => ids.Contains(x.ID));
+                var result = jqGridResponseDefaultModel.getDefaultResponse(query, grid);
+
+                //convert to JSON and return to client
+                return this.JsonEx(result);
+            }
+        }
+
+        [HttpGet]
+        public JsonNetResult Receipts(long ID, jqGridParamModel grid) {
+            if (!ModelState.IsValid) {
+                return null;
+            }
+
+            using (var scope = Scope.New(System.Transactions.IsolationLevel.ReadUncommitted)) {
+                // turn off change tracking for high performance
+                exchangeDatabase.Configuration.AutoDetectChangesEnabled = false;
+                // UseDatabaseNullSemantics should be set true to improve filter performance
+                exchangeDatabase.Configuration.UseDatabaseNullSemantics = true;
+
+                var receipts = exchangeDatabase.MsgTrackingLogsReceipts
+                    .Where(x => x.MsgTrackingLogsID == ID)
+                    .Select(x => x.receipt_id).ToList();
+
+                var query = exchangeDatabase.MsgTrackingLogsExtendeds.Where(x => receipts.Contains(x.ID));
                 var result = jqGridResponseDefaultModel.getDefaultResponse(query, grid);
 
                 //convert to JSON and return to client

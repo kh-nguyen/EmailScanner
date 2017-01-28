@@ -11,4 +11,5 @@ Add your email account details to the Settings section of the web interface.
 BitCoin - [1PMXuwXE3iQ2DZiwgKF48EqkpiEaWdMCWU](bitcoin:1PMXuwXE3iQ2DZiwgKF48EqkpiEaWdMCWU)
 
 #Screenshots
-![ScreenShot 1](https://github.com/kh-nguyen/EmailScanner/blob/master/ScreenShoots/System%20Status.png)
+![ScreenShot 1](https://github.com/kh-nguyen/EmailScanner/blob/master/ScreenShoots/system.png)
+![ScreenShot 2](https://github.com/kh-nguyen/EmailScanner/blob/master/ScreenShoots/email_view.png)

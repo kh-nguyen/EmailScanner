@@ -607,9 +607,9 @@ if (!System) {
                         { name: 'ScanFromDate', width: 20, hidden: true, sortable: true, search: true, searchoptions: { searchhidden: true, sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge'], dataInit: System.getJqGridDefaultDatePicker }, editable: true, editrules: { edithidden: true }, editoptions: { dataInit: System.getJqGridDefaultDateTimePicker } },
                         { name: 'ScanToDate', width: 20, hidden: true, sortable: true, search: true, searchoptions: { searchhidden: true, sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge'], dataInit: System.getJqGridDefaultDatePicker }, editable: true, editrules: { edithidden: true }, editoptions: { dataInit: System.getJqGridDefaultDateTimePicker } },
                         { name: 'PageSize', width: 50, hidden: true, editable: true, sorttype: "int", searchtype: 'integer', searchoptions: { sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge'] } },
-                        { name: 'OffSet', width: 50, hidden: true, editable: true, sorttype: "int", searchtype: 'integer', searchoptions: { sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge'] } },
+                        { name: 'OffSet', width: 50, editable: false, sorttype: "int", searchtype: 'integer', searchoptions: { sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge'] } },
                         { name: 'Status', width: 80, hidden: true, editable: false, sortable: false },
-                        { name: 'MessageCount', width: 50, hidden: true, editable: false, sorttype: "int", searchtype: 'integer', searchoptions: { sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge'] } },
+                        { name: 'MessageCount', width: 50, editable: false, sorttype: "int", searchtype: 'integer', searchoptions: { sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge'] } },
                         { name: 'LastSeenId', width: 30, hidden: true, editable: false, sorttype: "int", searchtype: 'integer', searchoptions: { sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge'] } },
                         { name: 'LastSeenMessageId', width: 30, hidden: true, editable: false, sortable: true, search: true, searchoptions: { searchhidden: true } },
                         { name: 'LastSeenMessageDate', width: 30, hidden: true, editable: false, sortable: true, search: true, searchoptions: { searchhidden: true } }
@@ -952,7 +952,7 @@ if (!System) {
                         'To', 'CC', 'Subject', 'Body Type', 'Body', 'Attachments'
                     ],
                     colModel: [
-                        { name: 'ID', width: 5, editable: false, key: true, search: true, searchoptions: { searchhidden: true, sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge'] }, formatter: emailDetailFormatter },
+                        { name: 'ID', width: 50, fixed: true, editable: false, key: true, search: true, searchoptions: { searchhidden: true, sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge'] }, formatter: emailDetailFormatter },
                         { name: 'date_time', width: 120, fixed: true, sortable: true, search: true, searchoptions: { searchhidden: true, sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge'], dataInit: System.getJqGridDefaultDatePicker }, formatter: 'date', formatoptions: { srcformat: 'ISO8601Long', newformat: 'D M d Y h:i:s A' }, cellattr: function (rowId, tv, rowObject, cm, rdata) { return System.jqGridCellAttrAddTimeago(rowId, tv, rowObject, cm, rdata, rowObject.date_time); } },
                         { name: 'message_id', width: 10, editable: false, hidden: true, search: true, searchoptions: { searchhidden: true } },
                         { name: 'sender_address', width: 10, editable: false, hidden: true, search: true, searchoptions: { searchhidden: true } },
@@ -960,9 +960,9 @@ if (!System) {
                         { name: 'recipient_address', width: 10, editable: false, hidden: true, search: true, searchoptions: { searchhidden: true } },
                         { name: 'display_to', width: 10, editable: false },
                         { name: 'display_cc', width: 10, editable: false, hidden: true, viewable: true, editrules: { edithidden: true }, search: true, searchoptions: { searchhidden: true } },
-                        { name: 'message_subject', width: 40, editable: false, cellattr: cellattrBody },
+                        { name: 'message_subject', width: 80, editable: false, cellattr: cellattrBody, formatter: subjectFormatter },
                         { name: 'message_body_type', width: 5, editable: false, hidden: true, viewable: true, editrules: { edithidden: true }, search: true, searchoptions: { searchhidden: true } },
-                        { name: 'message_body_text', width: 40, editable: false, cellattr: cellattrBody, formatter: bodyFormatter },
+                        { name: 'message_body_text', width: 40, editable: false, hidden: true, viewable: true, editrules: { edithidden: true }, search: true, searchoptions: { searchhidden: true }, cellattr: cellattrBody, formatter: bodyFormatter },
                         { name: 'attachments', width: 10, editable: false, hidden: true, viewable: true, editrules: { edithidden: true }, search: true, searchoptions: { searchhidden: true } }
                     ],
                     rowNum: 20,
@@ -1054,6 +1054,20 @@ if (!System) {
                     result.push('<pre>');
                     result.push(cellvalue);
                     result.push('</pre>');
+
+                    return result.join('');
+                }
+
+                function subjectFormatter(cellvalue, formatoptions, rowObject) {
+                    var result = [];
+
+                    result.push(cellvalue);
+
+                    if (rowObject.message_body_text !== null) {
+                        result.push('&nbsp;-&nbsp;<pre>');
+                        result.push(rowObject.message_body_text);
+                        result.push('</pre>');
+                    }
 
                     return result.join('');
                 }

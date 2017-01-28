@@ -16,7 +16,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MSSQL", "MSSQL", "{E18F52B4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScreenShoots", "ScreenShoots", "{F95EC277-A069-48C0-B128-3AE39E84248C}"
 	ProjectSection(SolutionItems) = preProject
-		ScreenShoots\System Status.png = ScreenShoots\System Status.png
+		ScreenShoots\email_view.png = ScreenShoots\email_view.png
+		ScreenShoots\system.png = ScreenShoots\system.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A1B38217-D9C6-4F13-B12C-765F6FD470D8}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
