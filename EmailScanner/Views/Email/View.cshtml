@@ -107,9 +107,20 @@
 
                     <div>
                         @if (Model.MsgTrackingExtendedLog.message_body_type == "HTML") {
-                            <textarea class="ckeditor" name="editor1" id="editor1">
-                                @Model.MsgTrackingExtendedLog.message_body
-                            </textarea>
+                            <div jq-tabs="{ active: 0 }">
+                                <ul>
+                                    <li><a href="#message-html"><i class="fa fa-file-code-o"></i>&nbsp;HTML</a></li>
+                                    <li><a href="#message-text"><i class="fa fa-file-text-o"></i>&nbsp;Text</a></li>
+                                </ul>
+                                <div id="message-html" class="padding-zero">
+                                    <textarea class="ckeditor" name="editor1" id="editor1">
+                                        @Model.MsgTrackingExtendedLog.message_body
+                                    </textarea>
+                                </div>
+                                <div id="message-text" class="padding-zero">
+                                    <textarea class="form-control">@(Model.MsgTrackingExtendedLog.message_body_text)</textarea>
+                                </div>
+                            </div>
                         }
                         else {
                             <textarea class="form-control">@(Model.MsgTrackingExtendedLog.message_body ?? Model.MsgTrackingExtendedLog.message_body_text)</textarea>

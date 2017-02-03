@@ -554,6 +554,20 @@ if (!System) {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     };
 
+    System.htmlEncode = function (str) {
+        if (typeof str === 'undefined' || str === null) {
+            return '';
+        }
+
+        var buf = [];
+
+        for (var i = str.length - 1; i >= 0; i--) {
+            buf.unshift(['&#', str[i].charCodeAt(), ';'].join(''));
+        }
+
+        return buf.join('');
+    };
+
     // returns a unique number for this session
     System._nextUniqueID = 0;
     System.nextUniqueID = function () {
@@ -1064,7 +1078,9 @@ if (!System) {
                     result.push(cellvalue);
 
                     if (rowObject.message_body_text !== null) {
-                        result.push('&nbsp;-&nbsp;<pre>');
+                        result.push('&nbsp;-&nbsp;<pre title="');
+                        result.push(System.htmlEncode(rowObject.message_body_text));
+                        result.push('">');
                         result.push(rowObject.message_body_text);
                         result.push('</pre>');
                     }

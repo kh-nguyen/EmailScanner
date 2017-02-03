@@ -17,7 +17,7 @@
 }
 
 .padding-zero {
-    padding: 15px !important;
+    padding: 0 !important;
 }
 
 .padding-5 {
@@ -56,10 +56,11 @@ textarea {
     color: gray;
     font-size: 11px;
     display: inline-block;
-    vertical-align:middle;
+    vertical-align: middle;
+    height: inherit;
 }
 
- .email-address:link {
+.email-address:link {
     text-decoration: none;
 }
 
