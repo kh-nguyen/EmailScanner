@@ -7,6 +7,11 @@ You also need to modify the Web.config to update the database connection string,
 Please note that there is a size limit of 10GB for the MS SQL Server Express.
 Add your email account details to the Settings section of the web interface.
 
+# Technologies
+- Presentation tier: jQuery, AngularJS, MVC/Razor
+- Middle tier: ASP.NET MVC, C#
+- Data tier: MS SQL, EntityFramework
+
 #Donation:
 BitCoin - [1PMXuwXE3iQ2DZiwgKF48EqkpiEaWdMCWU](bitcoin:1PMXuwXE3iQ2DZiwgKF48EqkpiEaWdMCWU)
 
