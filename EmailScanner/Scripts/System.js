@@ -292,6 +292,20 @@ if (!System) {
                 }
             };
         }])
+        .directive('autosize', ['$timeout', function ($timeout) {
+            return {
+                restrict: 'A',
+                link: function (scope, element, attr) {
+                    var $element = $(element);
+                    var $options = $.extend({}, scope.$eval(attr.autosize));
+
+                    $timeout(function () {
+                        // source: github.com/jackmoore/autosize
+                        autosize($element);
+                    });
+                }
+            };
+        }])
         .directive('timeAgo', function () {
             return {
                 restrict: 'AEC',

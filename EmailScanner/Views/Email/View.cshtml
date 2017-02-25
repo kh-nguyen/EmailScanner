@@ -118,12 +118,12 @@
                                     </textarea>
                                 </div>
                                 <div id="message-text" class="padding-zero">
-                                    <textarea class="form-control">@(Model.MsgTrackingExtendedLog.message_body_text)</textarea>
+                                    <textarea autosize class="form-control">@(Model.MsgTrackingExtendedLog.message_body_text)</textarea>
                                 </div>
                             </div>
                         }
                         else {
-                            <textarea class="form-control">@(Model.MsgTrackingExtendedLog.message_body ?? Model.MsgTrackingExtendedLog.message_body_text)</textarea>
+                            <textarea autosize class="form-control">@(Model.MsgTrackingExtendedLog.message_body ?? Model.MsgTrackingExtendedLog.message_body_text)</textarea>
                         }
                     </div>
                 </div>
