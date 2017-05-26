@@ -39,15 +39,15 @@ namespace EmailScanner
             new string [] { "vader", "theme_90_black_matte.png", "Vader" }
         };
 
-        const string JQUERY_VERSION = "2.2.4";
+        const string JQUERY_VERSION = "3.2.1";
         const string JQUERY_UI_VERSION = "1.12.1";
-        const string JQGRID_VERSION = "4.13.4";
+        const string JQGRID_VERSION = "4.14.0";
         const string BOOTSTRAP_VERSION = "3.3.7";
         const string TIMEAGO_VERSION = "1.5.3";
         const string TIMEPICKER_VERSION = "1.6.1";
         const string ANGULARJS_VERSION = "1.5.9";
         const string FONT_AWESOME_VERSION = "4.7.0";
-        const string CKEDITOR_VERSION = "4.5.11";
+        const string CKEDITOR_VERSION = "4.6.2";
 
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles) {
@@ -103,7 +103,7 @@ namespace EmailScanner
                 .Include("~/Scripts/angular.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/signalR/js",
-                "//cdnjs.cloudflare.com/ajax/libs/signalr.js/2.2.1/jquery.signalR.min.js")
+                "//cdnjs.cloudflare.com/ajax/libs/signalr.js/2.2.2/jquery.signalR.min.js")
                 .Include("~/Scripts/jquery.signalR-{version}.js"));
 
             bundles.Add(new StyleBundle("~/bundles/font-awesome",
@@ -131,23 +131,25 @@ namespace EmailScanner
             #region jqGrid
             bundles.Add(new StyleBundle("~/bundles/jqgrid.css",
                 String.Format("//cdnjs.cloudflare.com/ajax/libs/free-jqgrid/{0}/css/ui.jqgrid.min.css", JQGRID_VERSION))
-                .Include("~/Scripts/jquery/plugins/jqGrid/css/ui.jqgrid.css"));
+                .Include("~/Scripts/free-jqGrid/css/ui.jqgrid.min.css"));
 
             bundles.Add(new StyleBundle("~/bundles/jqgrid.css/plugins/ui.multiselect.css",
-                String.Format("//cdnjs.cloudflare.com/ajax/libs/free-jqgrid/{0}/plugins/ui.multiselect.css", JQGRID_VERSION))
-                .Include("~/Scripts/jquery/plugins/jqGrid/plugins/ui.multiselect.css"));
+                String.Format("//cdnjs.cloudflare.com/ajax/libs/free-jqgrid/{0}/plugins/css/ui.multiselect.min.css", JQGRID_VERSION))
+                .Include("~/Scripts/free-jqGrid/plugins/css/ui.multiselect.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqgrid.js",
-                String.Format("//cdnjs.cloudflare.com/ajax/libs/free-jqgrid/{0}/js/jquery.jqgrid.min.js", JQGRID_VERSION))
-                .Include("~/Scripts/jquery/plugins/jqGrid/js/jquery.jqgrid.min.js"));
+                String.Format("//cdnjs.cloudflare.com/ajax/libs/free-jqgrid/{0}/jquery.jqgrid.min.js", JQGRID_VERSION))
+                .Include("~/Scripts/free-jqGrid/jquery.jqgrid.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqgrid.js/plugins/ui.multiselect.js",
-                String.Format("//cdnjs.cloudflare.com/ajax/libs/free-jqgrid/{0}/plugins/ui.multiselect.js", JQGRID_VERSION))
-                .Include("~/Scripts/jquery/plugins/jqGrid/plugins/ui.multiselect.js"));
+                String.Format("//cdnjs.cloudflare.com/ajax/libs/free-jqgrid/{0}/plugins/min/ui.multiselect.js", JQGRID_VERSION))
+                .Include("~/Scripts/free-jqGrid/plugins/min/ui.multiselect.js"));
 
-            bundles.Add(new ScriptBundle(String.Format("~/bundles/jqgrid.js/js/i18n/grid.locale-{0}.js", "en"),
-                String.Format("//cdnjs.cloudflare.com/ajax/libs/free-jqgrid/{0}/js/i18n/grid.locale-{1}.js", JQGRID_VERSION, "en"))
-                .Include(String.Format("~/Scripts/jquery/plugins/jqGrid/js/i18n/grid.locale-{0}.js", "en")));
+            foreach (var item in LANGUAGES) {
+                bundles.Add(new ScriptBundle(String.Format("~/bundles/jqgrid.js/js/i18n/grid.locale-{0}.js", item),
+                    String.Format("//cdnjs.cloudflare.com/ajax/libs/free-jqgrid/{0}/js/i18n/grid.locale-{1}.js", JQGRID_VERSION, item))
+                    .Include(String.Format("~/Scripts/free-jqGrid/i18n/grid.locale-{0}.js", item)));
+            }
             #endregion
 
             #region Timeago

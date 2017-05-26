@@ -6,15 +6,13 @@
     <edmx:Diagrams>
       <Diagram DiagramId="3ac544fbac814d71bb9ff4a86320b09b" Name="Diagram1">
         <EntityTypeShape EntityType="ExchangeModel.MsgTrackingExtendedLog" Width="1.5" PointX="3" PointY="2" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLog" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLogsAttachment" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLogsBounce" Width="1.5" PointX="3" PointY="13.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLogsCategory" Width="1.5" PointX="3" PointY="10.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLogsHeader" Width="1.5" PointX="3" PointY="17.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLogsReceipt" Width="1.5" PointX="3" PointY="20.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLogsRecipientAddress" Width="1.5" PointX="3" PointY="22.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLog" Width="1.5" PointX="0.75" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLogsBounce" Width="1.5" PointX="3" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLogsCategory" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLogsHeader" Width="1.5" PointX="3" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLogsReceipt" Width="1.5" PointX="3" PointY="16.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLogsRecipientAddress" Width="1.5" PointX="3" PointY="18.75" IsExpanded="true" />
         <AssociationConnector Association="ExchangeModel.FK_MsgTrackingExtendedLogs_MsgTrackingLogs" ManuallyRouted="false" />
-        <AssociationConnector Association="ExchangeModel.FK_MsgTrackingLogsAttachments_MsgTrackingLogs" ManuallyRouted="false" />
         <AssociationConnector Association="ExchangeModel.FK_MsgTrackingLogsBounces_MsgTrackingLogs" ManuallyRouted="false" />
         <AssociationConnector Association="ExchangeModel.FK_MsgTrackingLogsCategories_MsgTrackingLogs" ManuallyRouted="false" />
         <AssociationConnector Association="ExchangeModel.FK_MsgTrackingLogsHeaders_MsgTrackingLogs" ManuallyRouted="false" />
@@ -24,6 +22,8 @@
         <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLogsExtendedJunk" Width="1.5" PointX="7.75" PointY="0.75" />
         <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLogsExtendedMain" Width="1.5" PointX="5.75" PointY="8.75" />
         <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLogsExtendedPromotion" Width="1.5" PointX="7.75" PointY="8.75" />
+        <EntityTypeShape EntityType="ExchangeModel.MsgTrackingLogsAttachment" Width="1.5" PointX="3" PointY="22.25" />
+        <AssociationConnector Association="ExchangeModel.FK_MsgTrackingLogsAttachments_MsgTrackingLogs" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

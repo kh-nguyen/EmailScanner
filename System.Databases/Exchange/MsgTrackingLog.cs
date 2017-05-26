@@ -17,12 +17,12 @@ namespace System.Databases.Exchange
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MsgTrackingLog()
         {
-            this.MsgTrackingLogsAttachments = new HashSet<MsgTrackingLogsAttachment>();
             this.MsgTrackingLogsBounces = new HashSet<MsgTrackingLogsBounce>();
             this.MsgTrackingLogsCategories = new HashSet<MsgTrackingLogsCategory>();
             this.MsgTrackingLogsHeaders = new HashSet<MsgTrackingLogsHeader>();
             this.MsgTrackingLogsReceipts = new HashSet<MsgTrackingLogsReceipt>();
             this.MsgTrackingLogsRecipientAddresses = new HashSet<MsgTrackingLogsRecipientAddress>();
+            this.MsgTrackingLogsAttachments = new HashSet<MsgTrackingLogsAttachment>();
         }
     
         public string client_ip { get; set; }
@@ -50,8 +50,6 @@ namespace System.Databases.Exchange
     
         public virtual MsgTrackingExtendedLog MsgTrackingExtendedLog { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MsgTrackingLogsAttachment> MsgTrackingLogsAttachments { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MsgTrackingLogsBounce> MsgTrackingLogsBounces { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MsgTrackingLogsCategory> MsgTrackingLogsCategories { get; set; }
@@ -61,5 +59,7 @@ namespace System.Databases.Exchange
         public virtual ICollection<MsgTrackingLogsReceipt> MsgTrackingLogsReceipts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MsgTrackingLogsRecipientAddress> MsgTrackingLogsRecipientAddresses { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MsgTrackingLogsAttachment> MsgTrackingLogsAttachments { get; set; }
     }
 }

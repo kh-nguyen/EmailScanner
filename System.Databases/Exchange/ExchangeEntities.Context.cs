@@ -27,7 +27,6 @@ namespace System.Databases.Exchange
     
         public virtual DbSet<MsgTrackingExtendedLog> MsgTrackingExtendedLogs { get; set; }
         public virtual DbSet<MsgTrackingLog> MsgTrackingLogs { get; set; }
-        public virtual DbSet<MsgTrackingLogsAttachment> MsgTrackingLogsAttachments { get; set; }
         public virtual DbSet<MsgTrackingLogsBounce> MsgTrackingLogsBounces { get; set; }
         public virtual DbSet<MsgTrackingLogsCategory> MsgTrackingLogsCategories { get; set; }
         public virtual DbSet<MsgTrackingLogsHeader> MsgTrackingLogsHeaders { get; set; }
@@ -37,5 +36,6 @@ namespace System.Databases.Exchange
         public virtual DbSet<MsgTrackingLogsExtendedJunk> MsgTrackingLogsExtendedJunks { get; set; }
         public virtual DbSet<MsgTrackingLogsExtendedMain> MsgTrackingLogsExtendedMains { get; set; }
         public virtual DbSet<MsgTrackingLogsExtendedPromotion> MsgTrackingLogsExtendedPromotions { get; set; }
+        public virtual DbSet<MsgTrackingLogsAttachment> MsgTrackingLogsAttachments { get; set; }
     }
 }

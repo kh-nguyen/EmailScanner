@@ -64,6 +64,7 @@
           <Property Name="attachment-content-type" Type="nvarchar" MaxLength="255" />
           <Property Name="attachment-size" Type="bigint" />
           <Property Name="attachment-is-inline" Type="bit" />
+          <Property Name="attachment_content_id" Type="nvarchar(max)" />
           <Property Name="SHA256" Type="char" MaxLength="64" />
           <Property Name="verified" Type="bit" />
           <Property Name="verified-time" Type="datetime" />
@@ -125,7 +126,7 @@
           <Property Name="MsgTrackingLogsReceiptDeliveryID" Type="bigint" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtended' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtended' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="MsgTrackingLogsExtended">
           <Key>
             <PropertyRef Name="ID" />
@@ -161,7 +162,7 @@ warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtended' does not hav
           <Property Name="display-cc" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtendedJunks' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedJunks' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="MsgTrackingLogsExtendedJunks">
           <Key>
             <PropertyRef Name="ID" />
@@ -197,7 +198,7 @@ warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtendedJunks' does no
           <Property Name="display-cc" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtendedMain' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedMain' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="MsgTrackingLogsExtendedMain">
           <Key>
             <PropertyRef Name="ID" />
@@ -233,7 +234,7 @@ warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtendedMain' does not
           <Property Name="display-cc" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtendedPromotions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedPromotions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="MsgTrackingLogsExtendedPromotions">
           <Key>
             <PropertyRef Name="ID" />
@@ -589,28 +590,12 @@ warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtendedPromotions' do
           <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="date_time" Type="DateTime" Precision="7" />
           <NavigationProperty Name="MsgTrackingExtendedLog" Relationship="Self.FK_MsgTrackingExtendedLogs_MsgTrackingLogs" FromRole="MsgTrackingLogs" ToRole="MsgTrackingExtendedLogs" />
-          <NavigationProperty Name="MsgTrackingLogsAttachments" Relationship="Self.FK_MsgTrackingLogsAttachments_MsgTrackingLogs" FromRole="MsgTrackingLogs" ToRole="MsgTrackingLogsAttachments" />
           <NavigationProperty Name="MsgTrackingLogsBounces" Relationship="Self.FK_MsgTrackingLogsBounces_MsgTrackingLogs" FromRole="MsgTrackingLogs" ToRole="MsgTrackingLogsBounces" />
           <NavigationProperty Name="MsgTrackingLogsCategories" Relationship="Self.FK_MsgTrackingLogsCategories_MsgTrackingLogs" FromRole="MsgTrackingLogs" ToRole="MsgTrackingLogsCategories" />
           <NavigationProperty Name="MsgTrackingLogsHeaders" Relationship="Self.FK_MsgTrackingLogsHeaders_MsgTrackingLogs" FromRole="MsgTrackingLogs" ToRole="MsgTrackingLogsHeaders" />
           <NavigationProperty Name="MsgTrackingLogsReceipts" Relationship="Self.FK_MsgTrackingLogsReceipts_MsgTrackingLogs" FromRole="MsgTrackingLogs" ToRole="MsgTrackingLogsReceipts" />
           <NavigationProperty Name="MsgTrackingLogsRecipientAddresses" Relationship="Self.FK_MsgTrackingLogsRecipientAddresses_MsgTrackingLogs" FromRole="MsgTrackingLogs" ToRole="MsgTrackingLogsRecipientAddresses" />
-        </EntityType>
-        <EntityType Name="MsgTrackingLogsAttachment">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MsgTrackingLogsID" Type="Int64" Nullable="false" />
-          <Property Name="attachment_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="attachment_location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="attachment_content_type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="attachment_size" Type="Int64" />
-          <Property Name="attachment_is_inline" Type="Boolean" />
-          <Property Name="SHA256" Type="String" MaxLength="64" FixedLength="true" Unicode="false" />
-          <Property Name="verified" Type="Boolean" />
-          <Property Name="verified_time" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="MsgTrackingLog" Relationship="Self.FK_MsgTrackingLogsAttachments_MsgTrackingLogs" FromRole="MsgTrackingLogsAttachments" ToRole="MsgTrackingLogs" />
+          <NavigationProperty Name="MsgTrackingLogsAttachments" Relationship="ExchangeModel.FK_MsgTrackingLogsAttachments_MsgTrackingLogs" FromRole="MsgTrackingLog" ToRole="MsgTrackingLogsAttachment" />
         </EntityType>
         <EntityType Name="MsgTrackingLogsBounce">
           <Key>
@@ -683,20 +668,6 @@ warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtendedPromotions' do
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="MsgTrackingExtendedLogs">
-              <PropertyRef Name="MsgTrackingLogsID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_MsgTrackingLogsAttachments_MsgTrackingLogs">
-          <End Role="MsgTrackingLogs" Type="Self.MsgTrackingLog" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="MsgTrackingLogsAttachments" Type="Self.MsgTrackingLogsAttachment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MsgTrackingLogs">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="MsgTrackingLogsAttachments">
               <PropertyRef Name="MsgTrackingLogsID" />
             </Dependent>
           </ReferentialConstraint>
@@ -774,7 +745,6 @@ warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtendedPromotions' do
         <EntityContainer Name="ExchangeEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="MsgTrackingExtendedLogs" EntityType="Self.MsgTrackingExtendedLog" />
           <EntitySet Name="MsgTrackingLogs" EntityType="Self.MsgTrackingLog" />
-          <EntitySet Name="MsgTrackingLogsAttachments" EntityType="Self.MsgTrackingLogsAttachment" />
           <EntitySet Name="MsgTrackingLogsBounces" EntityType="Self.MsgTrackingLogsBounce" />
           <EntitySet Name="MsgTrackingLogsCategories" EntityType="Self.MsgTrackingLogsCategory" />
           <EntitySet Name="MsgTrackingLogsHeaders" EntityType="Self.MsgTrackingLogsHeader" />
@@ -783,10 +753,6 @@ warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtendedPromotions' do
           <AssociationSet Name="FK_MsgTrackingExtendedLogs_MsgTrackingLogs" Association="Self.FK_MsgTrackingExtendedLogs_MsgTrackingLogs">
             <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
             <End Role="MsgTrackingExtendedLogs" EntitySet="MsgTrackingExtendedLogs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_MsgTrackingLogsAttachments_MsgTrackingLogs" Association="Self.FK_MsgTrackingLogsAttachments_MsgTrackingLogs">
-            <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
-            <End Role="MsgTrackingLogsAttachments" EntitySet="MsgTrackingLogsAttachments" />
           </AssociationSet>
           <AssociationSet Name="FK_MsgTrackingLogsBounces_MsgTrackingLogs" Association="Self.FK_MsgTrackingLogsBounces_MsgTrackingLogs">
             <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
@@ -812,6 +778,11 @@ warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtendedPromotions' do
           <EntitySet Name="MsgTrackingLogsExtendedJunks" EntityType="ExchangeModel.MsgTrackingLogsExtendedJunk" />
           <EntitySet Name="MsgTrackingLogsExtendedMains" EntityType="ExchangeModel.MsgTrackingLogsExtendedMain" />
           <EntitySet Name="MsgTrackingLogsExtendedPromotions" EntityType="ExchangeModel.MsgTrackingLogsExtendedPromotion" />
+          <EntitySet Name="MsgTrackingLogsAttachments" EntityType="ExchangeModel.MsgTrackingLogsAttachment" />
+          <AssociationSet Name="FK_MsgTrackingLogsAttachments_MsgTrackingLogs" Association="ExchangeModel.FK_MsgTrackingLogsAttachments_MsgTrackingLogs">
+            <End Role="MsgTrackingLog" EntitySet="MsgTrackingLogs" />
+            <End Role="MsgTrackingLogsAttachment" EntitySet="MsgTrackingLogsAttachments" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="MsgTrackingLogsExtended">
           <Key>
@@ -949,6 +920,37 @@ warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtendedPromotions' do
           <Property Name="display_to" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="display_cc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="MsgTrackingLogsAttachment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MsgTrackingLogsID" Type="Int64" Nullable="false" />
+          <Property Name="attachment_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="attachment_location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="attachment_content_type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="attachment_size" Type="Int64" />
+          <Property Name="attachment_is_inline" Type="Boolean" />
+          <Property Name="attachment_content_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SHA256" Type="String" MaxLength="64" FixedLength="true" Unicode="false" />
+          <Property Name="verified" Type="Boolean" />
+          <Property Name="verified_time" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="MsgTrackingLog" Relationship="ExchangeModel.FK_MsgTrackingLogsAttachments_MsgTrackingLogs" FromRole="MsgTrackingLogsAttachment" ToRole="MsgTrackingLog" />
+        </EntityType>
+        <Association Name="FK_MsgTrackingLogsAttachments_MsgTrackingLogs">
+          <End Type="ExchangeModel.MsgTrackingLog" Role="MsgTrackingLog" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="ExchangeModel.MsgTrackingLogsAttachment" Role="MsgTrackingLogsAttachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MsgTrackingLog">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="MsgTrackingLogsAttachment">
+              <PropertyRef Name="MsgTrackingLogsID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1002,22 +1004,6 @@ warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtendedPromotions' do
                 <ScalarProperty Name="message_info" ColumnName="message-info" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="date_time" ColumnName="date-time" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="MsgTrackingLogsAttachments">
-            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLogsAttachment">
-              <MappingFragment StoreEntitySet="MsgTrackingLogsAttachments">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="MsgTrackingLogsID" ColumnName="MsgTrackingLogsID" />
-                <ScalarProperty Name="attachment_name" ColumnName="attachment-name" />
-                <ScalarProperty Name="attachment_location" ColumnName="attachment-location" />
-                <ScalarProperty Name="attachment_content_type" ColumnName="attachment-content-type" />
-                <ScalarProperty Name="attachment_size" ColumnName="attachment-size" />
-                <ScalarProperty Name="attachment_is_inline" ColumnName="attachment-is-inline" />
-                <ScalarProperty Name="SHA256" ColumnName="SHA256" />
-                <ScalarProperty Name="verified" ColumnName="verified" />
-                <ScalarProperty Name="verified_time" ColumnName="verified-time" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1215,6 +1201,23 @@ warning 6002: The table/view 'Exchange.dbo.MsgTrackingLogsExtendedPromotions' do
                 <ScalarProperty Name="client_hostname" ColumnName="client-hostname" />
                 <ScalarProperty Name="client_ip" ColumnName="client-ip" />
                 <ScalarProperty Name="date_time" ColumnName="date-time" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MsgTrackingLogsAttachments">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLogsAttachment">
+              <MappingFragment StoreEntitySet="MsgTrackingLogsAttachments">
+                <ScalarProperty Name="verified_time" ColumnName="verified-time" />
+                <ScalarProperty Name="verified" ColumnName="verified" />
+                <ScalarProperty Name="SHA256" ColumnName="SHA256" />
+                <ScalarProperty Name="attachment_content_id" ColumnName="attachment_content_id" />
+                <ScalarProperty Name="attachment_is_inline" ColumnName="attachment-is-inline" />
+                <ScalarProperty Name="attachment_size" ColumnName="attachment-size" />
+                <ScalarProperty Name="attachment_content_type" ColumnName="attachment-content-type" />
+                <ScalarProperty Name="attachment_location" ColumnName="attachment-location" />
+                <ScalarProperty Name="attachment_name" ColumnName="attachment-name" />
+                <ScalarProperty Name="MsgTrackingLogsID" ColumnName="MsgTrackingLogsID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
