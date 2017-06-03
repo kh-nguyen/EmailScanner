@@ -28,18 +28,18 @@
                         </div>
                     </div>
 
-                    <div jq-tabs>
+                    <div class="ui-tabs ui-corner-all ui-widget ui-widget-conten" jq-tabs>
                         <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-                            <li class="ui-state-default ui-corner-top">
-                                <a href="#communications-main">
+                            <li class="ui-state-default ui-corner-top ui-tabs-tab ui-tab ui-tabs-active ui-state-active">
+                                <a class="ui-tabs-anchor" href="#communications-main">
                                     <i class="fa fa-comments"></i>
                                     &nbsp;<span class="hidden-xs">Main&nbsp;</span>
                                     <span class='badge' ng-bind="emailMainCounter | number"></span>
                                     <i class="fa fa-spinner fa-spin" ng-show="emailMainCounterLoading"></i>
                                 </a>
                             </li>
-                            <li class="ui-state-default ui-corner-top">
-                                <a class="bg-warning"
+                            <li class="ui-state-default ui-corner-top ui-tabs-tab ui-tab">
+                                <a class="ui-tabs-anchor bg-warning"
                                    href="#communications-promotion">
                                     <i class="fa fa-bullhorn"></i>
                                     &nbsp;<span class="hidden-xs">Promotion&nbsp;</span>
@@ -47,8 +47,8 @@
                                     <i class="fa fa-spinner fa-spin" ng-show="emailPromotionsCounterLoading"></i>
                                 </a>
                             </li>
-                            <li class="ui-state-default ui-corner-top">
-                                <a class="bg-danger"
+                            <li class="ui-state-default ui-corner-top ui-tabs-tab ui-tab">
+                                <a class="ui-tabs-anchor bg-danger"
                                    href="#communications-junk">
                                     <i class="fa fa-trash-o"></i>
                                     &nbsp;<span class="hidden-xs">Junk&nbsp;</span>
@@ -56,8 +56,8 @@
                                     <i class="fa fa-spinner fa-spin" ng-show="emailJunksCounterLoading"></i>
                                 </a>
                             </li>
-                            <li class="ui-state-default ui-corner-top">
-                                <a class="bg-info"
+                            <li class="ui-state-default ui-corner-top ui-tabs-tab ui-tab">
+                                <a class="ui-tabs-anchor bg-info"
                                    href="#communications-all">
                                     <i class="fa fa-newspaper-o"></i>
                                     &nbsp;<span class="hidden-xs">All&nbsp;</span>

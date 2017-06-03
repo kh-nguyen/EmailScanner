@@ -41,7 +41,7 @@ namespace EmailScanner
 
         const string JQUERY_VERSION = "3.2.1";
         const string JQUERY_UI_VERSION = "1.12.1";
-        const string JQGRID_VERSION = "4.14.0";
+        const string JQGRID_VERSION = "4.14.1";
         const string BOOTSTRAP_VERSION = "3.3.7";
         const string TIMEAGO_VERSION = "1.5.3";
         const string TIMEPICKER_VERSION = "1.6.1";
@@ -195,6 +195,16 @@ namespace EmailScanner
             bundles.Add(new ScriptBundle("~/bundles/qtip/js",
                 "//cdnjs.cloudflare.com/ajax/libs/qtip2/3.0.3/jquery.qtip.min.js")
                 .Include("~/Scripts/jquery/plugins/qtip2/jquery.qtip.min.js"));
+            #endregion
+
+            #region iFrameResize
+            bundles.Add(new ScriptBundle("~/bundles/iframe-resizer",
+                "//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.8/iframeResizer.min.js")
+                .Include("~/Scripts/jquery/plugins/iframe-resizer/iframeResizer.min.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/iframe-resizer/content-window",
+                "//cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.8/iframeResizer.contentWindow.min.js")
+                .Include("~/Scripts/jquery/plugins/iframe-resizer/iframeResizer.contentWindow.min.js"));
             #endregion
         }
     }

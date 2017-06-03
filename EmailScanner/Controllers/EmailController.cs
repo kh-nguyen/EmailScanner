@@ -5,6 +5,7 @@ using System.Infrastructure;
 using System.Linq;
 using System.Models.jqGrid.Helpers;
 using System.Services.EmailStorage;
+using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.SessionState;
@@ -36,7 +37,7 @@ namespace EmailScanner.Controllers
                 return null;
             }
 
-            using (var scope = Scope.New(System.Transactions.IsolationLevel.ReadUncommitted)) {
+            using (var scope = Scope.New(IsolationLevel.ReadUncommitted)) {
                 // turn off change tracking for high performance
                 exchangeDatabase.Configuration.AutoDetectChangesEnabled = false;
                 // UseDatabaseNullSemantics should be set true to improve filter performance
@@ -56,7 +57,7 @@ namespace EmailScanner.Controllers
                 return null;
             }
 
-            using (var scope = Scope.New(System.Transactions.IsolationLevel.ReadUncommitted)) {
+            using (var scope = Scope.New(IsolationLevel.ReadUncommitted)) {
                 // turn off change tracking for high performance
                 exchangeDatabase.Configuration.AutoDetectChangesEnabled = false;
                 // UseDatabaseNullSemantics should be set true to improve filter performance
@@ -76,7 +77,7 @@ namespace EmailScanner.Controllers
                 return null;
             }
 
-            using (var scope = Scope.New(System.Transactions.IsolationLevel.ReadUncommitted)) {
+            using (var scope = Scope.New(IsolationLevel.ReadUncommitted)) {
                 // turn off change tracking for high performance
                 exchangeDatabase.Configuration.AutoDetectChangesEnabled = false;
                 // UseDatabaseNullSemantics should be set true to improve filter performance
@@ -96,7 +97,7 @@ namespace EmailScanner.Controllers
                 return null;
             }
 
-            using (var scope = Scope.New(System.Transactions.IsolationLevel.ReadUncommitted)) {
+            using (var scope = Scope.New(IsolationLevel.ReadUncommitted)) {
                 // turn off change tracking for high performance
                 exchangeDatabase.Configuration.AutoDetectChangesEnabled = false;
                 // UseDatabaseNullSemantics should be set true to improve filter performance
@@ -116,7 +117,7 @@ namespace EmailScanner.Controllers
                 return null;
             }
 
-            using (var scope = Scope.New(System.Transactions.IsolationLevel.ReadUncommitted)) {
+            using (var scope = Scope.New(IsolationLevel.ReadUncommitted)) {
                 // turn off change tracking for high performance
                 exchangeDatabase.Configuration.AutoDetectChangesEnabled = false;
                 // UseDatabaseNullSemantics should be set true to improve filter performance
@@ -151,7 +152,7 @@ namespace EmailScanner.Controllers
                 return null;
             }
 
-            using (var scope = Scope.New(System.Transactions.IsolationLevel.ReadUncommitted)) {
+            using (var scope = Scope.New(IsolationLevel.ReadUncommitted)) {
                 // turn off change tracking for high performance
                 exchangeDatabase.Configuration.AutoDetectChangesEnabled = false;
                 // UseDatabaseNullSemantics should be set true to improve filter performance
@@ -170,32 +171,40 @@ namespace EmailScanner.Controllers
         }
 
         [HttpGet]
-        public ActionResult View(long ID) {
-            var model = exchangeDatabase.MsgTrackingLogs.Find(ID);
+        public ActionResult View(long ID, bool EnforcePrivacy = true) {
+            using (var scope = Scope.New(IsolationLevel.ReadUncommitted)) {
+                var model = exchangeDatabase.MsgTrackingLogs.Find(ID);
 
-            // To
-            ViewBag.to_recipients = model.MsgTrackingLogsRecipientAddresses
-                .Where(x => x.recipient_type == "to").ToList();
+                // To
+                ViewBag.to_recipients = model.MsgTrackingLogsRecipientAddresses
+                    .Where(x => x.recipient_type == "to").ToList();
 
-            // CC
-            ViewBag.cc_recipients = model.MsgTrackingLogsRecipientAddresses
-                .Where(x => x.recipient_type == "cc").ToList();
+                // CC
+                ViewBag.cc_recipients = model.MsgTrackingLogsRecipientAddresses
+                    .Where(x => x.recipient_type == "cc").ToList();
 
-            // Headers
-            ViewBag.messageInternetHeaders = model.MsgTrackingLogsHeaders.ToList();
+                // Headers
+                ViewBag.messageInternetHeaders = model.MsgTrackingLogsHeaders.ToList();
 
-            // compose the attachments list
-            if (model != null && !String.IsNullOrEmpty(model.MsgTrackingExtendedLog.attachments)) {
-                ViewBag.attachments =
-                    from n in model.MsgTrackingExtendedLog.attachments.Split(
-                        EmailStorageService.ATTACHMENT_SEPARATOR[0])
-                    join b in model.MsgTrackingLogsAttachments
-                    on n equals b.attachment_name into g
-                    from b in g.DefaultIfEmpty()
-                    select b;
+                if (EnforcePrivacy)
+                    ViewBag.EnforedViewingEmailPrivacy = EmailStorageService.enforeViewingEmailPrivacy(model);
+
+                // load all the inline attachments
+                EmailStorageService.loadInlineAttachments(model);
+
+                // compose the attachments list
+                if (model != null && !String.IsNullOrEmpty(model.MsgTrackingExtendedLog.attachments)) {
+                    ViewBag.attachments =
+                        from n in model.MsgTrackingExtendedLog.attachments.Split(
+                            EmailStorageService.ATTACHMENT_SEPARATOR[0])
+                        join b in model.MsgTrackingLogsAttachments
+                        on n equals b.attachment_name into g
+                        from b in g.DefaultIfEmpty()
+                        select b;
+                }
+
+                return View(model);
             }
-
-            return View(model);
         }
 
         [HttpGet]

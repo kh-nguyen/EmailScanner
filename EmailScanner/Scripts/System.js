@@ -231,6 +231,14 @@ if (!System) {
             }
         });
 
+        $.extend($.jgrid.defaults, {
+            iconSet: "fontAwesome",
+            searching: {
+                searchOperators: true,
+                defaultSearch: "cn"
+            }
+        });
+
         function positionForm(formid, minWidth) {
             setTimeout(function () {
                 var $dialog = $(formid).closest('div.ui-jqdialog');
@@ -321,6 +329,28 @@ if (!System) {
                 }
             };
         })
+        .directive('iframeResizer', ['$compile', function ($compile) {
+            return {
+                restrict: 'A',
+                link: function (scope, element, attr) {
+                    var $element = $(element);
+                    var $options = $.extend({}, scope.$eval(attr.iframeResizer));
+
+                    $element.iFrameResize($options);
+                }
+            };
+        }])
+        .directive('grandchildIframeResizer', ['$compile', function ($compile) {
+            return {
+                restrict: 'A',
+                link: function (scope, element, attr) {
+                    var $element = $(element);
+                    var $options = $.extend({}, scope.$eval(attr.grandchildIframeResizer));
+
+                    $('> * > iframe', element).iFrameResize($options);
+                }
+            };
+        }])
         .directive('accordion', ['$compile', '$timeout', function ($compile, $timeout) {
             return {
                 restrict: 'A',
@@ -702,38 +732,42 @@ if (!System) {
     System.angular.controller('EmailMessageController',
     ['$scope', '$element', '$http', '$timeout',
     function ($scope, $element, $http, $timeout) {
-        // The "instanceCreated" event is fired for every editor instance created.
-        CKEDITOR.on('instanceCreated', function (event) {
-            var editor = event.editor;
+        $.extend($scope, $element.data('model'));
 
-            editor.on('configLoaded', function () {
-                editor.config = $.extend(editor.config, {
-                    extraPlugins: 'autogrow',
-                    autoGrow_minHeight: 600,
-                    autoGrow_onStartup: true,
-                    allowedContent: true,
-                    startupShowBorders: false,
-                    resize_enabled: true,
-                    removePlugins: 'elementspath',
-                    //height: $(window).height(),
-                    toolbar: [
-                        { name: 'tools', items: ['Maximize', 'ShowBlocks', 'Print', 'Copy'] },
-                        { name: 'document', groups: ['mode', 'document', 'doctools'], items: ['Source'] }
-                    ]
+        if (typeof CKEDITOR !== 'undefined') {
+            // The "instanceCreated" event is fired for every editor instance created.
+            CKEDITOR.on('instanceCreated', function (event) {
+                var editor = event.editor;
+
+                editor.on('configLoaded', function () {
+                    editor.config = $.extend(editor.config, {
+                        extraPlugins: 'autogrow',
+                        autoGrow_minHeight: 600,
+                        autoGrow_onStartup: true,
+                        allowedContent: true,
+                        startupShowBorders: false,
+                        resize_enabled: true,
+                        removePlugins: 'elementspath',
+                        //height: $(window).height(),
+                        toolbar: [
+                            { name: 'tools', items: ['Maximize', 'ShowBlocks', 'Print', 'Copy'] },
+                            { name: 'document', groups: ['mode', 'document', 'doctools'], items: ['Source'] }
+                        ]
+                    });
                 });
             });
-        });
 
-        CKEDITOR.on('instanceReady', function (event) {
-            event.editor.setReadOnly(true);
+            CKEDITOR.on('instanceReady', function (event) {
+                event.editor.setReadOnly(true);
 
-            //catch clicks on <a>'s to open hrefs in a new tab/window
-            $('iframe').contents().click(function (e) {
-                if (typeof e.target.href !== 'undefined') {
-                    window.open(e.target.href, e.target.href.indexOf("http") === 0 ? '_blank' : '_top');
-                }
+                //catch clicks on <a>'s to open hrefs in a new tab/window
+                $('iframe').contents().click(function (e) {
+                    if (typeof e.target.href !== 'undefined') {
+                        window.open(e.target.href, e.target.href.indexOf("http") === 0 ? '_blank' : '_top');
+                    }
+                });
             });
-        });
+        }
     }]);
 
     System.angular.directive('systemLogs',

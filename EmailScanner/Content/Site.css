@@ -33,14 +33,11 @@ textarea {
     min-height: 600px;
 }
 
-.ui-tabs-panel > iframe,
-.ui-accordion-content > iframe {
+iframe {
     width: 100%;
-    min-height: 800px;
     background-color: transparent;
     border: 0 none transparent;
     padding: 0;
-    overflow: hidden;
 }
 
 .mail-body pre {

@@ -11,19 +11,29 @@
     IEnumerable<MsgTrackingLogsRecipientAddress> cc_recipients = ViewBag.cc_recipients;
     IEnumerable<MsgTrackingLogsHeader> messageInternetHeaders = ViewBag.messageInternetHeaders;
 
+    var hasBodyText = !String.IsNullOrEmpty(Model.MsgTrackingExtendedLog.message_body_text);
     var hasReferences = messageInternetHeaders != null && messageInternetHeaders.Where(x => x.FieldName == "References").Any();
     var hasReceipts = Model.MsgTrackingLogsReceipts.Any();
+
+    dynamic viewModel = new {
+
+    };
 }
 
 <div class="site-width">
     <div class="content-wrapper col-xs-12">
-        <div class="exchange-message" jq-tabs="{ active: 0 }" ng-controller="EmailMessageController">
-            <ul>
-                <li><a href="#exchange-message"><i class="fa fa-envelope-o"></i>&nbsp;Message</a></li>
-                <li><a href="#message-headers"><i class="fa fa-file-text"></i>&nbsp;Headers</a></li>
+        <div class="exchange-message ui-tabs ui-corner-all ui-widget ui-widget-content" jq-tabs="{ active: 0 }" ng-controller="EmailMessageController"
+             data-view-model="@Newtonsoft.Json.JsonConvert.SerializeObject(viewModel)">
+            <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+                <li class="ui-state-default ui-corner-top ui-tabs-tab ui-tab ui-tabs-active ui-state-active">
+                    <a class="ui-tabs-anchor" href="#exchange-message"><i class="fa fa-envelope-o"></i>&nbsp;Message</a>
+                </li>
+                <li class="ui-state-default ui-corner-top ui-tabs-tab ui-tab">
+                    <a class="ui-tabs-anchor" href="#message-headers"><i class="fa fa-file-text"></i>&nbsp;Headers</a>
+                </li>
                 @if (hasReferences) {
-                    <li>
-                        <a href="#message-references">
+                    <li class="ui-state-default ui-corner-top">
+                        <a class="ui-tabs-anchor" href="#message-references">
                             <i class="fa fa-commenting"></i>&nbsp;References
                             <span class='badge' ng-bind="emailReferencesCounter | number"></span>
                             <i class="fa fa-spinner fa-spin" ng-show="emailReferencesCounterLoading"></i>
@@ -31,8 +41,8 @@
                     </li>
                 }
                 @if (hasReceipts) {
-                    <li>
-                        <a href="#message-receipts">
+                    <li class="ui-state-default ui-corner-top">
+                        <a class="ui-tabs-anchor" href="#message-receipts">
                             <i class="fa fa-tags"></i>&nbsp;Receipts
                             <span class='badge' ng-bind="emailReceiptsCounter | number"></span>
                             <i class="fa fa-spinner fa-spin" ng-show="emailReceiptsCounterLoading"></i>
@@ -40,7 +50,7 @@
                     </li>
                 }
             </ul>
-            <div id="exchange-message" class="container-fluid">
+            <div id="exchange-message" class="container-fluid ui-tabs-panel ui-widget-content">
                 <div class="row">
                     <dl class="dl-horizontal">
                         <dt>From:</dt>
@@ -105,20 +115,61 @@
 
                     <div class="clearfix"></div>
 
+                    @if (ViewBag.EnforedViewingEmailPrivacy ?? false) {
+                        <div class="form-group bg-warning">
+                            <i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;
+                            <a href="@Url.Action("View", new { ID = Model.ID, EnforcePrivacy = false })">
+                                Click here to download pictures. To help protect your privacy, this program prevented automatic download of some pictures in this message.
+                            </a>
+                        </div>
+                    }
+
                     <div>
-                        @if (Model.MsgTrackingExtendedLog.message_body_type == "HTML") {
-                            <div jq-tabs="{ active: 0 }">
-                                <ul>
-                                    <li><a href="#message-html"><i class="fa fa-file-code-o"></i>&nbsp;HTML</a></li>
-                                    <li><a href="#message-text"><i class="fa fa-file-text-o"></i>&nbsp;Text</a></li>
+                        @if (Model.MsgTrackingExtendedLog.message_body_type == "HTML" && hasBodyText) {
+                            <div class="ui-tabs ui-corner-all ui-widget ui-widget-content" jq-tabs="{ active: 0 }">
+                                <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+                                    <li class="ui-state-default ui-corner-top ui-tabs-tab ui-tab ui-tabs-active ui-state-active">
+                                        <a class="ui-tabs-anchor" href="#message-html"><i class="fa fa-file-code-o"></i>&nbsp;HTML</a>
+                                    </li>
+@if (hasBodyText) {
+                                    <li class="ui-state-default ui-corner-top ui-tabs-tab ui-tab">
+                                        <a class="ui-tabs-anchor" href="#message-text"><i class="fa fa-file-text-o"></i>&nbsp;Text</a>
+                                    </li>
+}
                                 </ul>
-                                <div id="message-html" class="padding-zero">
-                                    <textarea class="ckeditor" name="editor1" id="editor1">
-                                        @Model.MsgTrackingExtendedLog.message_body
-                                    </textarea>
+                                <div id="message-html" class="ui-tabs-panel ui-widget-content padding-zero">
+                                    <div class="row" grandchild-iframe-resizer="{ checkOrigin: false }">
+                                        <div class="col-xs-12" ng-non-bindable>
+                                            @if (Model.MsgTrackingExtendedLog.message_body_type == "HTML") {
+                                                <iframe frameborder="0" seamless srcdoc="
+                                                    @Scripts.Render("~/bundles/iframe-resizer/content-window").ToHtmlString()
+                                                    @Model.MsgTrackingExtendedLog.message_body"></iframe>
+                                            }
+                                            else {
+                                                <pre>@Model.MsgTrackingExtendedLog.message_body</pre>
+                                            }
+                                        </div>
+                                    </div>
                                 </div>
-                                <div id="message-text" class="padding-zero">
+@if (hasBodyText) {
+                                <div id="message-text" class="ui-tabs-panel ui-widget-content padding-zero">
                                     <textarea autosize class="form-control">@(Model.MsgTrackingExtendedLog.message_body_text)</textarea>
+                                </div>
+}
+                            </div>
+                        }
+                        else if (Model.MsgTrackingExtendedLog.message_body_type == "HTML") {
+                            <hr/>
+                            <div class="row" grandchild-iframe-resizer="{ checkOrigin: false }">
+                                <div class="col-xs-12" ng-non-bindable>
+                                    @if (Model.MsgTrackingExtendedLog.message_body_type == "HTML") {
+                                        <iframe frameborder="0" seamless srcdoc="
+                                            @Scripts.Render("~/bundles/iframe-resizer/content-window").ToHtmlString()
+                                            @Model.MsgTrackingExtendedLog.message_body"></iframe>
+                                    }
+                                    else {
+                                        <pre>@Model.MsgTrackingExtendedLog.message_body</pre>
+                                    }
                                 </div>
                             </div>
                         }
@@ -128,7 +179,7 @@
                     </div>
                 </div>
             </div>
-            <div id="message-headers">
+            <div id="message-headers" class="ui-tabs-panel ui-widget-content">
                 @if (messageInternetHeaders.Any()) {
                     <dl class="dl-horizontal">
                         @foreach (var item in messageInternetHeaders) {
@@ -142,13 +193,13 @@
                 }
             </div>
             @if (hasReferences) {
-                <div id="message-references">
+                <div id="message-references" class="ui-tabs-panel ui-widget-content">
                     <table mails-list data-counter-name="emailReferencesCounter"
                            data-url='@Url.Action("References", "Email", new { ID = Model.ID })'></table>
                 </div>
             }
             @if (hasReceipts) {
-                <div id="message-receipts">
+                <div id="message-receipts" class="ui-tabs-panel ui-widget-content">
                     <table mails-list data-counter-name="emailReceiptsCounter"
                            data-url='@Url.Action("Receipts", "Email", new { ID = Model.ID })'></table>
                 </div>
@@ -165,7 +216,7 @@
     @if (!isLanguageEnglish) { @Scripts.Render(String.Format("~/bundles/timepicker/js/i18n/jquery-ui-timepicker-{0}.js", language)) }
     @Scripts.Render("~/bundles/timeago.js")
     @if (!isLanguageEnglish) { @Scripts.Render(String.Format("~/bundles/timeago.js/locales/jquery.timeago.{0}.js", language)) }
-    @Scripts.Render("~/bundles/ckeditor")
+    @Scripts.Render("~/bundles/iframe-resizer")
 }
 
 @section scripts {
