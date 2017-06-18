@@ -32,7 +32,7 @@ namespace EmailScanner.Controllers
         }
 
         [HttpGet]
-        public JsonNetResult Index(jqGridParamModel grid) {
+        public JsonNetResult All(jqGridParamModel grid) {
             if (!ModelState.IsValid) {
                 return null;
             }

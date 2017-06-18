@@ -251,6 +251,7 @@
     <Compile Include="App_Start\NinjectConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\SignalRConfig.cs" />
+    <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Properties\AssemblyInfo.log4net.cs" />
     <Compile Include="Controllers\SystemController.cs" />
@@ -314,6 +315,8 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\System\Index.cshtml" />
     <Content Include="Views\Email\View.cshtml" />
+    <Content Include="Views\Contact\Detail.cshtml" />
+    <Content Include="Views\Shared\_Emails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -39,11 +39,32 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -85,13 +106,25 @@
     <Compile Include="Exchange\MsgTrackingLogsExtended.cs">
       <DependentUpon>ExchangeEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Exchange\MsgTrackingLogsExtendedContact.cs">
+      <DependentUpon>ExchangeEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Exchange\MsgTrackingLogsExtendedJunk.cs">
+      <DependentUpon>ExchangeEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Exchange\MsgTrackingLogsExtendedJunksContact.cs">
       <DependentUpon>ExchangeEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Exchange\MsgTrackingLogsExtendedMain.cs">
       <DependentUpon>ExchangeEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Exchange\MsgTrackingLogsExtendedMainContact.cs">
+      <DependentUpon>ExchangeEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Exchange\MsgTrackingLogsExtendedPromotion.cs">
+      <DependentUpon>ExchangeEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Exchange\MsgTrackingLogsExtendedPromotionsContact.cs">
       <DependentUpon>ExchangeEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Exchange\MsgTrackingLogsHeader.cs">
@@ -103,6 +136,19 @@
     <Compile Include="Exchange\MsgTrackingLogsRecipientAddress.cs">
       <DependentUpon>ExchangeEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="MainDatabase\Contact.cs">
+      <DependentUpon>MainDatabaseEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MainDatabase\ContactsEmail.cs">
+      <DependentUpon>MainDatabaseEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MainDatabase\ContactsEmailsExtended.cs">
+      <DependentUpon>MainDatabaseEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MainDatabase\ContactsExtended.cs">
+      <DependentUpon>MainDatabaseEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MainDatabase\Extensions.cs" />
     <Compile Include="MainDatabase\ImportMail.cs">
       <DependentUpon>MainDatabaseEntities.tt</DependentUpon>
     </Compile>
@@ -117,6 +163,11 @@
       <DependentUpon>MainDatabaseEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="MainDatabase\MainDatabaseEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MainDatabaseEntities.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="MainDatabase\MainDatabaseEntities1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>MainDatabaseEntities.edmx</DependentUpon>
@@ -137,7 +188,7 @@
     </None>
     <EntityDeploy Include="MainDatabase\MainDatabaseEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MainDatabaseEntities.Designer.cs</LastGenOutput>
+      <LastGenOutput>MainDatabaseEntities1.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="MainDatabase\MainDatabaseEntities.edmx.diagram">
       <DependentUpon>MainDatabaseEntities.edmx</DependentUpon>

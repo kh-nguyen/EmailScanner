@@ -1,6 +1,29 @@
 ﻿var System;
 if (!System) {
-    System = { };
+    System = {};
+
+    System.getThemeColor = function () {
+        var widgetColor = $('.ui-widget-header').css('backgroundColor');
+        var themeColor = typeof widgetColor === 'undefined' ? '#deedf7' : rgb2hex(widgetColor);
+
+        return themeColor;
+
+        function rgb2hex(rgb) {
+            if (rgb.search("rgb") === -1) {
+                return rgb;
+            } else if (rgb === 'rgba(0, 0, 0, 0)') {
+                return 'transparent';
+            } else {
+                rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
+
+                return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+            }
+
+            function hex(x) {
+                return ("0" + parseInt(x).toString(16)).slice(-2);
+            }
+        }
+    };
 
     //----------------------------------------------------------------
     // Overwrite default options of jqGrid
@@ -215,13 +238,11 @@ if (!System) {
                     return;
                 }
 
-                var pagerName = gridParameters.pager;
-
-                if (pagerName) {
-                    $grid.jqGrid('navButtonAdd', pagerName, {
+                if (gridParameters.pager) {
+                    $grid.jqGrid('navButtonAdd', {
                         caption: "",
                         title: "Export the list to an CSV file",
-                        buttonicon: "ui-icon-disk",
+                        buttonicon: "fa-disk",
                         onClickButton: function () {
                             $.jgrid.exportToCSV({ table: $grid });
                         },
@@ -329,6 +350,162 @@ if (!System) {
                 }
             };
         })
+        .directive('ckeditor', function () {
+            return {
+                restrict: 'A',
+                require: '?ngModel',
+                link: function (scope, element, attr, ngModel) {
+                    var options = scope.$eval(attr.ckeditor);
+                    var $element = $(element);
+                    var $formTextId = 'editor-' + System.nextUniqueID();
+                    var ckeditorOptions = $.extend({}, System.CKEDITOR_DEFAULT_CONFIG, options);
+
+                    // assign a unique ID to the textarea if not having one
+                    // because the CKEDITOR requires an ID
+                    if (!$element[0].id) {
+                        $element.attr('ID', $formTextId);
+                    } else {
+                        $formTextId = $element[0].id;
+                    }
+
+                    // remove the toolbar when in read-only mode
+                    if (options.readOnly === true) {
+                        $.extend(ckeditorOptions, {
+                            allowedContent: true,
+                            startupShowBorders: false,
+                            toolbar: [
+                                { name: 'tools', items: ['Maximize', 'ShowBlocks', 'Print', 'Copy'] },
+                                { name: 'document', groups: ['mode', 'document', 'doctools'], items: ['Source'] }
+                            ]
+                        });
+                    }
+
+                    // setup the editor for the notes
+                    var editor = CKEDITOR.replace($formTextId, ckeditorOptions);
+
+                    if (options.linkClickable === true) {
+                        editor.on('instanceReady', function (event) {
+                            //catch clicks on <a>'s to open hrefs in a new tab/window
+                            $('iframe').contents().click(function (e) {
+                                if (typeof e.target.href !== 'undefined') {
+                                    window.open(e.target.href, e.target.href.indexOf("http") === 0 ? '_blank' : '_top');
+                                }
+                            });
+                        });
+                    }
+
+                    //---------------------------------------------
+                    // setup as an angularJS model for editing
+                    if (!ngModel) {
+                        return;
+                    }
+
+                    editor.on('instanceReady', function () {
+                        editor.setData(ngModel.$viewValue);
+                    });
+
+                    editor.on('change', function () {
+                        scope.$apply(function () {
+                            ngModel.$setViewValue(editor.getData());
+                        });
+                    });
+
+                    ngModel.$render = function (value) {
+                        editor.setData(ngModel.$modelValue);
+                    };
+                    //---------------------------------------------
+                }
+            };
+        })
+        .directive('submitAjax', ['$compile', function ($compile) {
+            return {
+                restrict: 'A',
+                link: function (scope, element, attributes) {
+                    var $form = $(element);
+                    var $options = scope.$eval(attributes.submitAjax);
+
+                    if (typeof ($options) === 'undefined') {
+                        $options = { replaceContent: false };
+                    }
+
+                    $form.submit(function (event) {
+                        /* stop form from submitting normally */
+                        event.preventDefault();
+
+                        /* get some values from elements on the page: */
+                        var url = $form.attr('action');
+                        var messageHolder = getMessageHolder();
+                        var successMessage = $('<span style="margin-left:5px" class="ui-state-highlight">Saved</span>');
+                        var loadingMessage = $('<i style="margin-left:5px" class="fa fa-spinner fa-spin fa-lg"></i>');
+
+                        // skip submitting if the form is not valid
+                        if (!$form.valid()) {
+                            return;
+                        }
+
+                        /* Send the data using post */
+                        var posting = $.post(url, $form.serialize());
+
+                        /* print the success message */
+                        posting.done(function (data) {
+                            if ($options.replaceContent === true) {
+                                $form.html(data);
+                                $compile($form.contents())(scope);
+                            }
+
+                            messageHolder.parent().append(successMessage);
+
+                            // remove after 3 seconds
+                            setTimeout(function () { successMessage.remove(); }, 3000);
+
+                            var formTitle = $form.attr('title');
+
+                            if (typeof formTitle === 'undefined') {
+                                formTitle = 'Success';
+                            }
+
+                            System.notify("Saved!", formTitle, "success");
+                        });
+
+                        /* print the error message */
+                        posting.fail(function (data) {
+                            $form[0].reset();
+
+                            System.notify("Failed to save the data!", "Error", "error");
+                        });
+
+                        /* display a loading message */
+                        messageHolder.parent().append(loadingMessage);
+
+                        /* disable the holder or submit button */
+                        messageHolder.prop("disabled", true);
+
+                        /* remove the loading mesage */
+                        posting.always(function (data) {
+                            loadingMessage.remove();
+
+                            messageHolder.prop("disabled", false);
+                        });
+
+                        function getMessageHolder() {
+                            var messageHolder = $form.find('input[type=submit]');
+
+                            if (messageHolder.length === 0) {
+                                messageHolder = $form.find('button[type=submit]');
+                            }
+
+                            // if there is no submit button, then use
+                            // the form to display the message.
+                            if (messageHolder.length === 0) {
+                                messageHolder = $form;
+                            }
+
+                            return messageHolder;
+                        }
+                    });
+                }
+            };
+        }])
         .directive('iframeResizer', ['$compile', function ($compile) {
             return {
                 restrict: 'A',
@@ -474,10 +651,72 @@ if (!System) {
     }
     //----------------------------------------------------------------
 
+    // setup default CKeditor's config
+    //----------------------------------------------------------------
+    if (typeof CKEDITOR !== "undefined") {
+        System.CKEDITOR_DEFAULT_CONFIG = {
+            uiColor: System.getThemeColor(),
+            toolbarCanCollapse: false,
+            toolbar: [
+                { name: 'file', items: ['Save'] },
+                { name: 'clipboard', items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'] },
+                { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'] },
+                { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'] },
+                { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+                { name: 'insert', items: ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe'] },
+                { name: 'colors', items: ['TextColor', 'BGColor'] },
+                { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
+                { name: 'forms', items: ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'] },
+                { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
+                { name: 'tools', items: ['Maximize', 'ShowBlocks'] },
+                { name: 'document', items: ['Source', '-', 'NewPage', 'Preview', 'Print', '-', 'Templates'] }
+            ],
+            height: 400,
+            autoGrow_minHeight: 400,
+            autoGrow_onStartup: true,
+            enterMode: CKEDITOR.ENTER_DIV,
+            extraPlugins: 'autogrow',
+            customConfig: '' // avoid loading an external configuration file
+        };
+
+        // load extra plugins not available by default
+
+        // modify the save plugin of the ckeditor to allow Ajax submit
+        CKEDITOR.plugins.registered.save = {
+            icons: 'save',
+            hidpi: true,
+            init: function (editor) {
+                var pluginName = 'save';
+
+                // Save plugin is for replace mode only.
+                if (editor.elementMode !== CKEDITOR.ELEMENT_MODE_REPLACE)
+                    return;
+
+                var command = editor.addCommand(pluginName, {
+                    modes: { wysiwyg: !!(editor.element.$.form) },
+                    exec: function (editor) {
+                        if (editor.fire(pluginName)) {
+                            editor.updateElement();
+                            jQuery(editor.element.$.form).submit();
+                        }
+                    }
+                });
+
+                editor.ui.addButton && editor.ui.addButton('Save', {
+                    //label: editor.lang.save.toolbar,
+                    label: 'Save',
+                    command: pluginName,
+                    toolbar: 'document,10'
+                });
+            }
+        };
+    }
+    //----------------------------------------------------------------
+
     System.jqGridDefaultColumnChooserOptions = {
         caption: "",
         title: "Show/Hide Columns",
-        buttonicon: "ui-icon-calculator",
+        buttonicon: "fa-table",
         onClickButton: function () {
             jQuery(this).jqGrid('columnChooser', {
                 width: 550,
@@ -585,6 +824,25 @@ if (!System) {
         }
     };
 
+    System.notify = function (message, title, type) {
+        console.log(message);
+
+        // do nothing if there is no PNotify loaded
+        if (typeof PNotify === 'undefined') {
+            return;
+        }
+
+        if (typeof title === 'undefined') {
+            title = "Notice";
+        }
+
+        new PNotify({
+            title: title,
+            text: message,
+            type: type
+        });
+    };
+
     System.formatBytes = function (bytes, decimals) {
         if (bytes == 0) {
             return '0 Byte';
@@ -631,14 +889,10 @@ if (!System) {
             restrict: 'A',
             link: function (scope, element, attr) {
                 var tableName = "import-mails-list-" + System.nextUniqueID();
-                var pagerName = '#' + tableName + '-pager';
                 var options = scope.$eval(attr.importMailsList);
                 var $table = $(element);
 
                 $table.attr('ID', tableName);
-
-                // create the pager element
-                $('<div/>').attr('ID', pagerName.substring(1)).insertAfter($table);
 
                 $table.jqGrid($.extend({
                     caption: '<i class="fa fa-envelope-o"></i>&nbsp;Mail Sources',
@@ -674,10 +928,9 @@ if (!System) {
                     ],
                     rowNum: 10,
                     rowList: [10, 20, 30, 50, 100, 200, 500, 1000],
-                    pager: pagerName,
+                    pager: true,
                     sortname: 'Type',
                     sortorder: "asc",
-                    loadui: 'disable',
                     viewrecords: true,
                     autowidth: true,
                     gridview: false, // required for afterInsertRow event
@@ -702,14 +955,14 @@ if (!System) {
                         // are expanded to full width when switch tabs
                         $(window).trigger('resize');
                     }
-                }, options)).jqGrid('navGrid', pagerName,
+                }, options)).jqGrid('navGrid',
                    { search: false, view: false, del: true, add: false, edit: false },
                    {}, // default settings for edit
                    {}, // default settings for add
                    {}, // delete instead that del:false we need this
                    {}, // search options
                    {} /* view parameters*/
-                ).jqGrid('inlineNav', pagerName, {
+                ).jqGrid('inlineNav', {
                     addParams: {
                         rowID: '00000000-0000-0000-0000-000000000000',
                         addRowParams: {
@@ -724,7 +977,7 @@ if (!System) {
                             $table.trigger("reloadGrid");
                         }
                     }
-                }).jqGrid('navButtonAdd', pagerName, System.jqGridDefaultColumnChooserOptions);
+                }).jqGrid('navButtonAdd', System.jqGridDefaultColumnChooserOptions);
             }
         };
     });
@@ -732,43 +985,86 @@ if (!System) {
     System.angular.controller('EmailMessageController',
     ['$scope', '$element', '$http', '$timeout',
     function ($scope, $element, $http, $timeout) {
-        $.extend($scope, $element.data('model'));
-
-        if (typeof CKEDITOR !== 'undefined') {
-            // The "instanceCreated" event is fired for every editor instance created.
-            CKEDITOR.on('instanceCreated', function (event) {
-                var editor = event.editor;
-
-                editor.on('configLoaded', function () {
-                    editor.config = $.extend(editor.config, {
-                        extraPlugins: 'autogrow',
-                        autoGrow_minHeight: 600,
-                        autoGrow_onStartup: true,
-                        allowedContent: true,
-                        startupShowBorders: false,
-                        resize_enabled: true,
-                        removePlugins: 'elementspath',
-                        //height: $(window).height(),
-                        toolbar: [
-                            { name: 'tools', items: ['Maximize', 'ShowBlocks', 'Print', 'Copy'] },
-                            { name: 'document', groups: ['mode', 'document', 'doctools'], items: ['Source'] }
-                        ]
-                    });
-                });
-            });
-
-            CKEDITOR.on('instanceReady', function (event) {
-                event.editor.setReadOnly(true);
-
-                //catch clicks on <a>'s to open hrefs in a new tab/window
-                $('iframe').contents().click(function (e) {
-                    if (typeof e.target.href !== 'undefined') {
-                        window.open(e.target.href, e.target.href.indexOf("http") === 0 ? '_blank' : '_top');
-                    }
-                });
-            });
-        }
+        $.extend($scope, $element.data('view-model'));
     }]);
+
+    System.angular.controller('ContactDetailController',
+    ['$scope', '$element', '$http', '$timeout',
+        function ($scope, $element, $http, $timeout) {
+            $.extend($scope, $element.data('view-model'));
+        }
+    ])
+    .directive('contactEmailsList', function () {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attr) {
+                var tableName = "contact-emails-list-" + System.nextUniqueID();
+                var options = scope.$eval(attr.contactEmailsList);
+                var $table = $(element);
+
+                $table.attr('ID', tableName);
+
+                $table.jqGrid($.extend({
+                    caption: '<i class="fa fa-envelope-o"></i>&nbsp;E-mail Addresses',
+                    url: $table.data('url'),
+                    editurl: $table.data('url'),
+                    datatype: "json",
+                    colNames: [
+                        'ID', 'Contact ID', 'E-mail Address'
+                    ],
+                    colModel: [
+                        { name: 'ID', width: 10, editable: false, key: true, hidden: true },
+                        { name: 'ContactID', width: 10, editable: false, hidden: true },
+                        { name: 'E_mail_Address', width: 30, editable: true, sortable: true, search: true, searchoptions: { searchhidden: true } }
+                    ],
+                    rowNum: 10,
+                    rowList: [10, 20, 30, 50, 100, 200, 500, 1000],
+                    pager: true,
+                    sortname: 'E_mail_Address',
+                    sortorder: "asc",
+                    viewrecords: true,
+                    autowidth: true,
+                    gridview: false, // required for afterInsertRow event
+                    height: 'auto',
+                    mtype: 'GET',
+                    jsonReader: {
+                        root: "rows",
+                        page: "page",
+                        total: "total",
+                        records: "records",
+                        repeatitems: false,
+                        userdata: "userdata"
+                    },
+                    gridComplete: function () {
+                        // resize the grid when window's resize event triggers
+                        $.jgrid.resizeOnWindowResizeEvent($(this));
+                    }
+                }, options)).jqGrid('navGrid',
+                    { search: false, view: false, del: true, add: false, edit: false },
+                    {}, // default settings for edit
+                    {}, // default settings for add
+                    {}, // delete instead that del:false we need this
+                    {}, // search options
+                    {} /* view parameters*/
+                    ).jqGrid('inlineNav', {
+                        addParams: {
+                            rowID: 0,
+                            addRowParams: {
+                                extraparam: {},
+                                aftersavefunc: function () {
+                                    $table.trigger("reloadGrid");
+                                }
+                            }
+                        },
+                        editParams: {
+                            aftersavefunc: function () {
+                                $table.trigger("reloadGrid");
+                            }
+                        }
+                    }).jqGrid('navButtonAdd', System.jqGridDefaultColumnChooserOptions);
+            }
+        };
+    });
 
     System.angular.directive('systemLogs',
     ['$compile', '$timeout', function ($compile, $timeout) {
@@ -778,15 +1074,17 @@ if (!System) {
                 var parameters = $.extend({
                     tableid: '#' + element[0].id,
                 }, scope.$eval(attributes.systemLogs));
-                var rowid = 0; // row counter
                 var pause = false;
                 var $caption = typeof parameters.caption === 'undefined'
                     ? 'System Logs' : parameters.caption;
+                var rowid = 0; // row counter
                 var rowsLimit = 100;
 
                 $timeout(function () {
                     var $table = $(parameters.tableid);
-                    var pagerName = parameters.tableid + '-pager';
+
+                    // construct the row limit selector
+                    var rowLimitSelector = $('select', $table.next());
 
                     $table.jqGrid({
                         caption: $caption,
@@ -808,7 +1106,7 @@ if (!System) {
                             { name: 'Message', width: 180, sortable: false, formatter: function (v) { return '<div>' + $.jgrid.htmlEncode(v) + '</div>'; } },
                             { name: 'ExceptionString', width: 180, sortable: false, hidden: true, search: true, searchoptions: { searchhidden: true }, formatter: function (v) { return '<div>' + $.jgrid.htmlEncode(v) + '</div>'; } }
                         ],
-                        pager: pagerName,
+                        pager: true,
                         rowList: [], // disable page size dropdown
                         pgbuttons: false, // disable page control like next, back button
                         pgtext: null, // disable pager text like 'Page 0 of 10'
@@ -857,16 +1155,12 @@ if (!System) {
                             var tid = parameters.tableid.substring(1); // table id
 
                             // move the rows limit select to the center of the grid's bottom bar
-                            $(parameters.tableid + '-pager_center').append(
-                                $(parameters.tableid + '-rows-limit').on('change', function () {
-                                    var newValue = this.value;
-                                    // should remove rows with higher id value than the new value
-                                    // so that the list can eliminate them properly, else those
-                                    // with higher rows value will stay on the list forever
-                                    for (var i = newValue; i < rowsLimit; ++i) {
-                                        $table.jqGrid('delRowData', i);
-                                    }
-                                    rowsLimit = newValue;
+                            $($table[0].p.pager + '_center').append(
+                                rowLimitSelector.on('change', function () {
+                                    $table.jqGrid("clearGridData");
+                                    // reset the row limit value
+                                    rowid = 0;
+                                    rowsLimit = this.value;
                                 }).parent()
                             ).css('white-space', 'initial'); /* correct the pager height */
 
@@ -900,7 +1194,7 @@ if (!System) {
 
                             $.connection.hub.start({ transport: ['longPolling', 'webSockets'] });
                         }
-                    }).jqGrid('navGrid', pagerName,
+                    }).jqGrid('navGrid',
                         { search: true, view: true, del: false, add: false, edit: false },
                         {}, // default settings for edit
                         {}, // default settings for add
@@ -928,20 +1222,20 @@ if (!System) {
                             }
                         }, // search options
                         {} /* view parameters*/
-                    ).jqGrid('navButtonAdd', pagerName, System.jqGridDefaultColumnChooserOptions)
-                    .jqGrid('navButtonAdd', pagerName, {
+                    ).jqGrid('navButtonAdd', System.jqGridDefaultColumnChooserOptions)
+                    .jqGrid('navButtonAdd', {
                         caption: "",
                         title: "Clear the whole list",
-                        buttonicon: "ui-icon-trash",
+                        buttonicon: "fa-trash",
                         onClickButton: function () {
                             $table.jqGrid('clearGridData');
                         },
                         position: "first"
                     })
-                    .jqGrid('navButtonAdd', pagerName, {
+                    .jqGrid('navButtonAdd', {
                         caption: "",
                         title: "Pause the log",
-                        buttonicon: "ui-icon-pause",
+                        buttonicon: "fa-pause",
                         onClickButton: function (parameters, event) {
                             togglePause(event);
                         },
@@ -964,12 +1258,12 @@ if (!System) {
                     // change the play/pause icon of the button
                     if (pause) {
                         $target
-                            .removeClass('ui-icon-pause')
-                            .addClass('ui-icon-play');
+                            .removeClass('fa-pause')
+                            .addClass('fa-play');
                     } else {
                         $target
-                            .removeClass('ui-icon-play')
-                            .addClass('ui-icon-pause');
+                            .removeClass('fa-play')
+                            .addClass('fa-pause');
                     }
 
                     showCaption(pause ? "<b class='ui-state-highlight'>PAUSING</b>" : "");
@@ -996,14 +1290,10 @@ if (!System) {
             restrict: 'A',
             link: function (scope, element, attr) {
                 var tableName = "mails-list-" + System.nextUniqueID();
-                var pagerName = '#' + tableName + '-pager';
-                var options = scope.$eval(attr.importMailsList);
+                var options = scope.$eval(attr.mailsList);
                 var $table = $(element);
 
                 $table.attr('ID', tableName);
-
-                // create the pager element
-                $('<div/>').attr('ID', pagerName.substring(1)).insertAfter($table);
 
                 $table.jqGrid($.extend({
                     caption: '<i class="fa fa-envelope-o"></i>&nbsp;Mailbox',
@@ -1029,10 +1319,9 @@ if (!System) {
                     ],
                     rowNum: 20,
                     rowList: [5, 10, 20, 30, 50, 100, 200, 500, 1000, 5000, 10000],
-                    pager: pagerName,
+                    pager: true,
                     sortname: 'date_time',
                     sortorder: 'desc',
-                    loadui: 'disable',
                     viewrecords: true,
                     autowidth: true,
                     gridview: false, // required for afterInsertRow event
@@ -1076,7 +1365,7 @@ if (!System) {
                         $(window).trigger('resize');
                     }
                 }, options))
-                .jqGrid('navGrid', pagerName,
+                .jqGrid('navGrid',
                    { search: true, view: true, del: false, add: false, edit: false },
                    {}, // default settings for edit
                    {}, // default settings for add
@@ -1102,7 +1391,7 @@ if (!System) {
                        }
                    }, // search options
                    {} /* view parameters*/
-                ).jqGrid('navButtonAdd', pagerName, System.jqGridDefaultColumnChooserOptions);
+                ).jqGrid('navButtonAdd', System.jqGridDefaultColumnChooserOptions);
 
                 $.jgrid.addExportToCSVButton($table);
 
@@ -1140,6 +1429,125 @@ if (!System) {
                     var result = [];
 
                     result.push('<a target="_blank" title="Click to view the email" href="/Email/View/');
+                    result.push(cellvalue);
+                    result.push('">');
+                    result.push(cellvalue);
+                    result.push('</a>');
+
+                    return result.join('');
+                }
+            }
+        };
+        }]);
+
+    System.angular.directive('contactsList',
+    ['$sce', '$compile', '$timeout', function ($sce, $compile, $timeout) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attr) {
+                var tableName = "contacts-list-" + System.nextUniqueID();
+                var options = scope.$eval(attr.contactsList);
+                var $table = $(element);
+
+                $table.attr('ID', tableName);
+
+                $table.jqGrid($.extend({
+                    caption: '',
+                    url: $table.data('url'),
+                    editurl: $table.data('url'),
+                    datatype: "json",
+                    colNames: [
+                        'ID', 'Name', 'First Name', 'Last Name', 'Notes'
+                    ],
+                    colModel: [
+                        { name: 'ID', width: 50, fixed: true, editable: false, key: true, search: true, searchoptions: { searchhidden: true, sopt: ['eq', 'ne', 'lt', 'le', 'gt', 'ge'] }, formatter: contactDetailFormatter },
+                        { name: 'Name', width: 10, editable: false, hidden: true, search: true, searchoptions: { searchhidden: true } },
+                        { name: 'First_Name', width: 10, editable: true },
+                        { name: 'Last_Name', width: 10, editable: true },
+                        { name: 'Notes', width: 30, editable: true, editrules: { edithidden: true }, edittype: "textarea", editoptions: { rows: "2", cols: "40" } }
+                    ],
+                    rowNum: 20,
+                    rowList: [5, 10, 20, 30, 50, 100, 200, 500, 1000, 5000, 10000],
+                    pager: true,
+                    sortname: 'Last_Name',
+                    sortorder: 'asc',
+                    viewrecords: true,
+                    autowidth: true,
+                    gridview: false, // required for afterInsertRow event
+                    height: 'auto',
+                    mtype: 'GET',
+                    jsonReader: {
+                        root: "rows",
+                        page: "page",
+                        total: "total",
+                        records: "records",
+                        repeatitems: false,
+                        userdata: "userdata"
+                    },
+                    beforeRequest: function () {
+
+                    },
+                    loadComplete: function (data) {
+
+                    },
+                    gridComplete: function () {
+                        // resize the grid when window's resize event triggers
+                        $.jgrid.resizeOnWindowResizeEvent($(this));
+
+                        // trigger resize to make sure the grids
+                        // are expanded to full width when switch tabs
+                        $(window).trigger('resize');
+                    }
+                }, options))
+                    .jqGrid('navGrid',
+                    { search: true, view: false, del: true, add: false, edit: false },
+                    {}, // default settings for edit
+                    {}, // default settings for add
+                    {}, // delete instead that del:false we need this
+                    { // create the searching dialog
+                        multipleSearch: true,
+                        multipleGroup: true,
+                        recreateFilter: true,
+                        sopt: [
+                            'cn', 'nc', 'eq', 'ne', 'lt', 'le', 'gt', 'ge',
+                            'bw', 'bn', 'in', 'ni', 'ew', 'en', 'nu', 'nn'
+                        ],
+                        showQuery: true,
+                        overlay: false,
+                        drag: false,
+                        resize: false,
+                        afterShowSearch: function () {
+                            var $searchDialog = $.jgrid.placeSearchDialogAboveGrid({
+                                tableid: '#' + tableName,
+                                searchOnEnter: true,
+                                displaySearchDialogCloseButton: true
+                            }).searchDialog;
+                        }
+                    }, // search options
+                    {} /* view parameters*/
+                ).jqGrid('inlineNav', {
+                    addParams: {
+                        rowID: 0,
+                        addRowParams: {
+                            extraparam: {},
+                            aftersavefunc: function () {
+                                $table.trigger("reloadGrid");
+                            }
+                        }
+                    },
+                    editParams: {
+                        aftersavefunc: function () {
+                            $table.trigger("reloadGrid");
+                        }
+                    }
+                }).jqGrid('navButtonAdd', System.jqGridDefaultColumnChooserOptions);
+
+                $.jgrid.addExportToCSVButton($table);
+
+                function contactDetailFormatter(cellvalue, formatoptions, rowObject) {
+                    var result = [];
+
+                    result.push('<a target="_blank" title="Click to view the contact detail" href="/Contact/Detail/');
                     result.push(cellvalue);
                     result.push('">');
                     result.push(cellvalue);

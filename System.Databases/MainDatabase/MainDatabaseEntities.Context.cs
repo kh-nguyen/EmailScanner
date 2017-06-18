@@ -27,5 +27,9 @@ namespace System.Databases.MainDatabase
     
         public virtual DbSet<ImportMail> ImportMails { get; set; }
         public virtual DbSet<MainDatabasePostProcessingQueue> MainDatabasePostProcessingQueues { get; set; }
+        public virtual DbSet<Contact> Contacts { get; set; }
+        public virtual DbSet<ContactsEmail> ContactsEmails { get; set; }
+        public virtual DbSet<ContactsExtended> ContactsExtendeds { get; set; }
+        public virtual DbSet<ContactsEmailsExtended> ContactsEmailsExtendeds { get; set; }
     }
 }

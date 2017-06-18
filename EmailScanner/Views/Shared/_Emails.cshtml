@@ -1,0 +1,67 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="ui-tabs ui-corner-all ui-widget ui-widget-conten" jq-tabs>
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+        <li class="ui-state-default ui-corner-top ui-tabs-tab ui-tab ui-tabs-active ui-state-active">
+            <a class="ui-tabs-anchor" href="#communications-main">
+                <i class="fa fa-comments"></i>
+                &nbsp;<span class="hidden-xs">Main&nbsp;</span>
+                <span class='badge' ng-bind="emailMainCounter | number"></span>
+                <i class="fa fa-spinner fa-spin" ng-show="emailMainCounterLoading"></i>
+            </a>
+        </li>
+        <li class="ui-state-default ui-corner-top ui-tabs-tab ui-tab">
+            <a class="ui-tabs-anchor bg-warning"
+               href="#communications-promotion">
+                <i class="fa fa-bullhorn"></i>
+                &nbsp;<span class="hidden-xs">Promotion&nbsp;</span>
+                <span class='badge' ng-bind="emailPromotionsCounter | number"></span>
+                <i class="fa fa-spinner fa-spin" ng-show="emailPromotionsCounterLoading"></i>
+            </a>
+        </li>
+        <li class="ui-state-default ui-corner-top ui-tabs-tab ui-tab">
+            <a class="ui-tabs-anchor bg-danger"
+               href="#communications-junk">
+                <i class="fa fa-trash-o"></i>
+                &nbsp;<span class="hidden-xs">Junk&nbsp;</span>
+                <span class='badge' ng-bind="emailJunksCounter | number"></span>
+                <i class="fa fa-spinner fa-spin" ng-show="emailJunksCounterLoading"></i>
+            </a>
+        </li>
+        <li class="ui-state-default ui-corner-top ui-tabs-tab ui-tab">
+            <a class="ui-tabs-anchor bg-info"
+               href="#communications-all">
+                <i class="fa fa-newspaper-o"></i>
+                &nbsp;<span class="hidden-xs">All&nbsp;</span>
+                <span class='badge' ng-bind="emailAllCounter | number"></span>
+                <i class="fa fa-spinner fa-spin" ng-show="emailAllCounterLoading"></i>
+            </a>
+        </li>
+    </ul>
+    <div id="communications-main" class="ui-tabs-panel ui-widget-content">
+        <table mails-list data-counter-name="emailMainCounter"
+               data-url='@Url.Action("Main", (string)ViewBag.controller, ViewBag.routeValues)'></table>
+
+        <div class="clearfix"></div>
+    </div>
+    <div id="communications-promotion" class="ui-tabs-panel ui-widget-content">
+        <table mails-list data-counter-name="emailPromotionsCounter"
+               data-url='@Url.Action("Promotions", (string)ViewBag.controller, ViewBag.routeValues)'></table>
+
+        <div class="clearfix"></div>
+    </div>
+    <div id="communications-junk" class="ui-tabs-panel ui-widget-content">
+        <table mails-list data-counter-name="emailJunksCounter"
+               data-url='@Url.Action("Junks", (string)ViewBag.controller, ViewBag.routeValues)'></table>
+
+        <div class="clearfix"></div>
+    </div>
+    <div id="communications-all" class="ui-tabs-panel ui-widget-content">
+        <table mails-list data-counter-name="emailAllCounter"
+               data-url='@Url.Action("All", (string)ViewBag.controller, ViewBag.routeValues)'></table>
+
+        <div class="clearfix"></div>
+    </div>
+</div>

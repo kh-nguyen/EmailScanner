@@ -37,5 +37,9 @@ namespace System.Databases.Exchange
         public virtual DbSet<MsgTrackingLogsExtendedMain> MsgTrackingLogsExtendedMains { get; set; }
         public virtual DbSet<MsgTrackingLogsExtendedPromotion> MsgTrackingLogsExtendedPromotions { get; set; }
         public virtual DbSet<MsgTrackingLogsAttachment> MsgTrackingLogsAttachments { get; set; }
+        public virtual DbSet<MsgTrackingLogsExtendedContact> MsgTrackingLogsExtendedContacts { get; set; }
+        public virtual DbSet<MsgTrackingLogsExtendedJunksContact> MsgTrackingLogsExtendedJunksContacts { get; set; }
+        public virtual DbSet<MsgTrackingLogsExtendedMainContact> MsgTrackingLogsExtendedMainContacts { get; set; }
+        public virtual DbSet<MsgTrackingLogsExtendedPromotionsContact> MsgTrackingLogsExtendedPromotionsContacts { get; set; }
     }
 }

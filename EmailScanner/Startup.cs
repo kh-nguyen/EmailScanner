@@ -1,5 +1,4 @@
-﻿using EmailScanner.App_Start;
-using Microsoft.AspNet.SignalR;
+﻿using Microsoft.AspNet.SignalR;
 using Microsoft.Owin;
 using Owin;
 

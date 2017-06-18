@@ -1,0 +1,70 @@
+﻿@model System.Databases.MainDatabase.ContactsExtended
+@{
+    ViewBag.Title = String.Format("{0} - Contact Detail", Model.Name);
+
+    var language = "en";
+    var isLanguageEnglish = true;
+
+    dynamic viewModel = new {
+        contact = Model
+    };
+}
+
+<div class="site-width">
+    <div class="content-wrapper col-xs-12" ng-controller="ContactDetailController"
+         data-view-model="@Newtonsoft.Json.JsonConvert.SerializeObject(viewModel)">
+        <h2 ng-bind="contact.Name"></h2>
+        <div class="exchange-message ui-tabs ui-corner-all ui-widget ui-widget-content" jq-tabs="{ active: 0 }">
+            <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+                <li class="ui-state-default ui-corner-top ui-tabs-tab ui-tab ui-tabs-active ui-state-active">
+                    <a class="ui-tabs-anchor" href="#contact-detail"><i class="fa fa-user"></i>&nbsp;Detail</a>
+                </li>
+            </ul>
+            <div id="contact-detail" class="container-fluid ui-tabs-panel ui-widget-content">
+                <div class="form-group">
+                    @Html.Partial("_Emails", viewData: new ViewDataDictionary {
+                        { "controller", "Contact" },
+                        { "routeValues", new { ContactID = Model.ID } }
+                    })
+                </div>
+
+                <div class="form-group">
+                    <table contact-emails-list data-url='@Url.Action("Emails", new { ContactID = Model.ID })'></table>
+                </div>
+
+                <div>
+                    <form method="post" action="@Url.Action("Notes", new { ContactID = Model.ID })" submit-ajax>
+                        <textarea name="notes" ckeditor="{ extraPlugins: 'autogrow,save' }" ng-model="contact.Notes"></textarea>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+@section externalScripts {
+    @if (!isLanguageEnglish) { @Scripts.Render(String.Format("~/bundles/jqgrid.js/js/i18n/grid.locale-{0}.js", language)) }
+    @Scripts.Render("~/bundles/jqgrid.js/plugins/ui.multiselect.js")
+    @Scripts.Render("~/bundles/jqgrid.js")
+    @Scripts.Render("~/bundles/timeago.js")
+    @if (!isLanguageEnglish) { @Scripts.Render(String.Format("~/bundles/timeago.js/locales/jquery.timeago.{0}.js", language)) }
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/ckeditor")
+    @Scripts.Render("~/bundles/pnotify/js")
+    <!--Reference the SignalR library. -->
+    @Scripts.Render("~/bundles/signalR/js")
+    <!--Reference the auto-generated SignalR hub script. -->
+    <script src="~/signalr/hubs"></script>
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/system/js")
+}
+
+@section styles {
+    @Styles.Render("~/bundles/jqgrid.css/plugins/ui.multiselect.css")
+    @Styles.Render("~/bundles/jqgrid.css")
+    @Styles.Render("~/bundles/pnotify/css")
+}
+

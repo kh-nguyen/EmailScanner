@@ -162,11 +162,87 @@ warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtended' does not have 
           <Property Name="display-cc" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedContacts' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MsgTrackingLogsExtendedContacts">
+          <Key>
+            <PropertyRef Name="ContactID" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ContactID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="date-time" Type="datetime2" Precision="7" />
+          <Property Name="client-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="client-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="source-context" Type="nvarchar(max)" />
+          <Property Name="connector-id" Type="nvarchar(max)" />
+          <Property Name="source" Type="nvarchar" MaxLength="11" />
+          <Property Name="event-id" Type="nvarchar" MaxLength="13" />
+          <Property Name="internal-message-id" Type="bigint" />
+          <Property Name="message-id" Type="nvarchar" MaxLength="255" />
+          <Property Name="recipient-address" Type="nvarchar(max)" />
+          <Property Name="recipient-status" Type="nvarchar(max)" />
+          <Property Name="total-bytes" Type="bigint" />
+          <Property Name="recipient-count" Type="int" />
+          <Property Name="related-recipient-address" Type="nvarchar(max)" />
+          <Property Name="reference" Type="nvarchar(max)" />
+          <Property Name="message-subject" Type="nvarchar(max)" />
+          <Property Name="sender-address" Type="nvarchar" MaxLength="255" />
+          <Property Name="return-path" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-info" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-body" Type="nvarchar(max)" />
+          <Property Name="message-body-text" Type="nvarchar(max)" />
+          <Property Name="message-body-type" Type="nvarchar" MaxLength="4" />
+          <Property Name="attachments" Type="nvarchar(max)" />
+          <Property Name="sender-name" Type="nvarchar" MaxLength="255" />
+          <Property Name="display-to" Type="nvarchar(max)" />
+          <Property Name="display-cc" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedJunks' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="MsgTrackingLogsExtendedJunks">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="date-time" Type="datetime2" Precision="7" />
+          <Property Name="client-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="client-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="source-context" Type="nvarchar(max)" />
+          <Property Name="connector-id" Type="nvarchar(max)" />
+          <Property Name="source" Type="nvarchar" MaxLength="11" />
+          <Property Name="event-id" Type="nvarchar" MaxLength="13" />
+          <Property Name="internal-message-id" Type="bigint" />
+          <Property Name="message-id" Type="nvarchar" MaxLength="255" />
+          <Property Name="recipient-address" Type="nvarchar(max)" />
+          <Property Name="recipient-status" Type="nvarchar(max)" />
+          <Property Name="total-bytes" Type="bigint" />
+          <Property Name="recipient-count" Type="int" />
+          <Property Name="related-recipient-address" Type="nvarchar(max)" />
+          <Property Name="reference" Type="nvarchar(max)" />
+          <Property Name="message-subject" Type="nvarchar(max)" />
+          <Property Name="sender-address" Type="nvarchar" MaxLength="255" />
+          <Property Name="return-path" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-info" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-body" Type="nvarchar(max)" />
+          <Property Name="message-body-text" Type="nvarchar(max)" />
+          <Property Name="message-body-type" Type="nvarchar" MaxLength="4" />
+          <Property Name="attachments" Type="nvarchar(max)" />
+          <Property Name="sender-name" Type="nvarchar" MaxLength="255" />
+          <Property Name="display-to" Type="nvarchar(max)" />
+          <Property Name="display-cc" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedJunksContacts' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MsgTrackingLogsExtendedJunksContacts">
+          <Key>
+            <PropertyRef Name="ContactID" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ContactID" Type="int" Nullable="false" />
           <Property Name="ID" Type="bigint" Nullable="false" />
           <Property Name="date-time" Type="datetime2" Precision="7" />
           <Property Name="client-ip" Type="nvarchar" MaxLength="255" />
@@ -234,11 +310,87 @@ warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedMain' does not h
           <Property Name="display-cc" Type="nvarchar(max)" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedMainContacts' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MsgTrackingLogsExtendedMainContacts">
+          <Key>
+            <PropertyRef Name="ContactID" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ContactID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="date-time" Type="datetime2" Precision="7" />
+          <Property Name="client-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="client-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="source-context" Type="nvarchar(max)" />
+          <Property Name="connector-id" Type="nvarchar(max)" />
+          <Property Name="source" Type="nvarchar" MaxLength="11" />
+          <Property Name="event-id" Type="nvarchar" MaxLength="13" />
+          <Property Name="internal-message-id" Type="bigint" />
+          <Property Name="message-id" Type="nvarchar" MaxLength="255" />
+          <Property Name="recipient-address" Type="nvarchar(max)" />
+          <Property Name="recipient-status" Type="nvarchar(max)" />
+          <Property Name="total-bytes" Type="bigint" />
+          <Property Name="recipient-count" Type="int" />
+          <Property Name="related-recipient-address" Type="nvarchar(max)" />
+          <Property Name="reference" Type="nvarchar(max)" />
+          <Property Name="message-subject" Type="nvarchar(max)" />
+          <Property Name="sender-address" Type="nvarchar" MaxLength="255" />
+          <Property Name="return-path" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-info" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-body" Type="nvarchar(max)" />
+          <Property Name="message-body-text" Type="nvarchar(max)" />
+          <Property Name="message-body-type" Type="nvarchar" MaxLength="4" />
+          <Property Name="attachments" Type="nvarchar(max)" />
+          <Property Name="sender-name" Type="nvarchar" MaxLength="255" />
+          <Property Name="display-to" Type="nvarchar(max)" />
+          <Property Name="display-cc" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedPromotions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="MsgTrackingLogsExtendedPromotions">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
+          <Property Name="ID" Type="bigint" Nullable="false" />
+          <Property Name="date-time" Type="datetime2" Precision="7" />
+          <Property Name="client-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="client-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-ip" Type="nvarchar" MaxLength="255" />
+          <Property Name="server-hostname" Type="nvarchar" MaxLength="255" />
+          <Property Name="source-context" Type="nvarchar(max)" />
+          <Property Name="connector-id" Type="nvarchar(max)" />
+          <Property Name="source" Type="nvarchar" MaxLength="11" />
+          <Property Name="event-id" Type="nvarchar" MaxLength="13" />
+          <Property Name="internal-message-id" Type="bigint" />
+          <Property Name="message-id" Type="nvarchar" MaxLength="255" />
+          <Property Name="recipient-address" Type="nvarchar(max)" />
+          <Property Name="recipient-status" Type="nvarchar(max)" />
+          <Property Name="total-bytes" Type="bigint" />
+          <Property Name="recipient-count" Type="int" />
+          <Property Name="related-recipient-address" Type="nvarchar(max)" />
+          <Property Name="reference" Type="nvarchar(max)" />
+          <Property Name="message-subject" Type="nvarchar(max)" />
+          <Property Name="sender-address" Type="nvarchar" MaxLength="255" />
+          <Property Name="return-path" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-info" Type="nvarchar" MaxLength="255" />
+          <Property Name="message-body" Type="nvarchar(max)" />
+          <Property Name="message-body-text" Type="nvarchar(max)" />
+          <Property Name="message-body-type" Type="nvarchar" MaxLength="4" />
+          <Property Name="attachments" Type="nvarchar(max)" />
+          <Property Name="sender-name" Type="nvarchar" MaxLength="255" />
+          <Property Name="display-to" Type="nvarchar(max)" />
+          <Property Name="display-cc" Type="nvarchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedPromotionsContacts' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="MsgTrackingLogsExtendedPromotionsContacts">
+          <Key>
+            <PropertyRef Name="ContactID" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ContactID" Type="int" Nullable="false" />
           <Property Name="ID" Type="bigint" Nullable="false" />
           <Property Name="date-time" Type="datetime2" Precision="7" />
           <Property Name="client-ip" Type="nvarchar" MaxLength="255" />
@@ -409,6 +561,40 @@ warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedPromotions' does
     [MsgTrackingLogsExtended].[display-cc] AS [display-cc]
     FROM [dbo].[MsgTrackingLogsExtended] AS [MsgTrackingLogsExtended]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="MsgTrackingLogsExtendedContacts" EntityType="Self.MsgTrackingLogsExtendedContacts" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MsgTrackingLogsExtendedContacts].[ContactID] AS [ContactID], 
+    [MsgTrackingLogsExtendedContacts].[ID] AS [ID], 
+    [MsgTrackingLogsExtendedContacts].[date-time] AS [date-time], 
+    [MsgTrackingLogsExtendedContacts].[client-ip] AS [client-ip], 
+    [MsgTrackingLogsExtendedContacts].[client-hostname] AS [client-hostname], 
+    [MsgTrackingLogsExtendedContacts].[server-ip] AS [server-ip], 
+    [MsgTrackingLogsExtendedContacts].[server-hostname] AS [server-hostname], 
+    [MsgTrackingLogsExtendedContacts].[source-context] AS [source-context], 
+    [MsgTrackingLogsExtendedContacts].[connector-id] AS [connector-id], 
+    [MsgTrackingLogsExtendedContacts].[source] AS [source], 
+    [MsgTrackingLogsExtendedContacts].[event-id] AS [event-id], 
+    [MsgTrackingLogsExtendedContacts].[internal-message-id] AS [internal-message-id], 
+    [MsgTrackingLogsExtendedContacts].[message-id] AS [message-id], 
+    [MsgTrackingLogsExtendedContacts].[recipient-address] AS [recipient-address], 
+    [MsgTrackingLogsExtendedContacts].[recipient-status] AS [recipient-status], 
+    [MsgTrackingLogsExtendedContacts].[total-bytes] AS [total-bytes], 
+    [MsgTrackingLogsExtendedContacts].[recipient-count] AS [recipient-count], 
+    [MsgTrackingLogsExtendedContacts].[related-recipient-address] AS [related-recipient-address], 
+    [MsgTrackingLogsExtendedContacts].[reference] AS [reference], 
+    [MsgTrackingLogsExtendedContacts].[message-subject] AS [message-subject], 
+    [MsgTrackingLogsExtendedContacts].[sender-address] AS [sender-address], 
+    [MsgTrackingLogsExtendedContacts].[return-path] AS [return-path], 
+    [MsgTrackingLogsExtendedContacts].[message-info] AS [message-info], 
+    [MsgTrackingLogsExtendedContacts].[message-body] AS [message-body], 
+    [MsgTrackingLogsExtendedContacts].[message-body-text] AS [message-body-text], 
+    [MsgTrackingLogsExtendedContacts].[message-body-type] AS [message-body-type], 
+    [MsgTrackingLogsExtendedContacts].[attachments] AS [attachments], 
+    [MsgTrackingLogsExtendedContacts].[sender-name] AS [sender-name], 
+    [MsgTrackingLogsExtendedContacts].[display-to] AS [display-to], 
+    [MsgTrackingLogsExtendedContacts].[display-cc] AS [display-cc]
+    FROM [dbo].[MsgTrackingLogsExtendedContacts] AS [MsgTrackingLogsExtendedContacts]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="MsgTrackingLogsExtendedJunks" EntityType="Self.MsgTrackingLogsExtendedJunks" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [MsgTrackingLogsExtendedJunks].[ID] AS [ID], 
@@ -441,6 +627,40 @@ warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedPromotions' does
     [MsgTrackingLogsExtendedJunks].[display-to] AS [display-to], 
     [MsgTrackingLogsExtendedJunks].[display-cc] AS [display-cc]
     FROM [dbo].[MsgTrackingLogsExtendedJunks] AS [MsgTrackingLogsExtendedJunks]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MsgTrackingLogsExtendedJunksContacts" EntityType="Self.MsgTrackingLogsExtendedJunksContacts" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MsgTrackingLogsExtendedJunksContacts].[ContactID] AS [ContactID], 
+    [MsgTrackingLogsExtendedJunksContacts].[ID] AS [ID], 
+    [MsgTrackingLogsExtendedJunksContacts].[date-time] AS [date-time], 
+    [MsgTrackingLogsExtendedJunksContacts].[client-ip] AS [client-ip], 
+    [MsgTrackingLogsExtendedJunksContacts].[client-hostname] AS [client-hostname], 
+    [MsgTrackingLogsExtendedJunksContacts].[server-ip] AS [server-ip], 
+    [MsgTrackingLogsExtendedJunksContacts].[server-hostname] AS [server-hostname], 
+    [MsgTrackingLogsExtendedJunksContacts].[source-context] AS [source-context], 
+    [MsgTrackingLogsExtendedJunksContacts].[connector-id] AS [connector-id], 
+    [MsgTrackingLogsExtendedJunksContacts].[source] AS [source], 
+    [MsgTrackingLogsExtendedJunksContacts].[event-id] AS [event-id], 
+    [MsgTrackingLogsExtendedJunksContacts].[internal-message-id] AS [internal-message-id], 
+    [MsgTrackingLogsExtendedJunksContacts].[message-id] AS [message-id], 
+    [MsgTrackingLogsExtendedJunksContacts].[recipient-address] AS [recipient-address], 
+    [MsgTrackingLogsExtendedJunksContacts].[recipient-status] AS [recipient-status], 
+    [MsgTrackingLogsExtendedJunksContacts].[total-bytes] AS [total-bytes], 
+    [MsgTrackingLogsExtendedJunksContacts].[recipient-count] AS [recipient-count], 
+    [MsgTrackingLogsExtendedJunksContacts].[related-recipient-address] AS [related-recipient-address], 
+    [MsgTrackingLogsExtendedJunksContacts].[reference] AS [reference], 
+    [MsgTrackingLogsExtendedJunksContacts].[message-subject] AS [message-subject], 
+    [MsgTrackingLogsExtendedJunksContacts].[sender-address] AS [sender-address], 
+    [MsgTrackingLogsExtendedJunksContacts].[return-path] AS [return-path], 
+    [MsgTrackingLogsExtendedJunksContacts].[message-info] AS [message-info], 
+    [MsgTrackingLogsExtendedJunksContacts].[message-body] AS [message-body], 
+    [MsgTrackingLogsExtendedJunksContacts].[message-body-text] AS [message-body-text], 
+    [MsgTrackingLogsExtendedJunksContacts].[message-body-type] AS [message-body-type], 
+    [MsgTrackingLogsExtendedJunksContacts].[attachments] AS [attachments], 
+    [MsgTrackingLogsExtendedJunksContacts].[sender-name] AS [sender-name], 
+    [MsgTrackingLogsExtendedJunksContacts].[display-to] AS [display-to], 
+    [MsgTrackingLogsExtendedJunksContacts].[display-cc] AS [display-cc]
+    FROM [dbo].[MsgTrackingLogsExtendedJunksContacts] AS [MsgTrackingLogsExtendedJunksContacts]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="MsgTrackingLogsExtendedMain" EntityType="Self.MsgTrackingLogsExtendedMain" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -475,6 +695,40 @@ warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedPromotions' does
     [MsgTrackingLogsExtendedMain].[display-cc] AS [display-cc]
     FROM [dbo].[MsgTrackingLogsExtendedMain] AS [MsgTrackingLogsExtendedMain]</DefiningQuery>
           </EntitySet>
+          <EntitySet Name="MsgTrackingLogsExtendedMainContacts" EntityType="Self.MsgTrackingLogsExtendedMainContacts" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MsgTrackingLogsExtendedMainContacts].[ContactID] AS [ContactID], 
+    [MsgTrackingLogsExtendedMainContacts].[ID] AS [ID], 
+    [MsgTrackingLogsExtendedMainContacts].[date-time] AS [date-time], 
+    [MsgTrackingLogsExtendedMainContacts].[client-ip] AS [client-ip], 
+    [MsgTrackingLogsExtendedMainContacts].[client-hostname] AS [client-hostname], 
+    [MsgTrackingLogsExtendedMainContacts].[server-ip] AS [server-ip], 
+    [MsgTrackingLogsExtendedMainContacts].[server-hostname] AS [server-hostname], 
+    [MsgTrackingLogsExtendedMainContacts].[source-context] AS [source-context], 
+    [MsgTrackingLogsExtendedMainContacts].[connector-id] AS [connector-id], 
+    [MsgTrackingLogsExtendedMainContacts].[source] AS [source], 
+    [MsgTrackingLogsExtendedMainContacts].[event-id] AS [event-id], 
+    [MsgTrackingLogsExtendedMainContacts].[internal-message-id] AS [internal-message-id], 
+    [MsgTrackingLogsExtendedMainContacts].[message-id] AS [message-id], 
+    [MsgTrackingLogsExtendedMainContacts].[recipient-address] AS [recipient-address], 
+    [MsgTrackingLogsExtendedMainContacts].[recipient-status] AS [recipient-status], 
+    [MsgTrackingLogsExtendedMainContacts].[total-bytes] AS [total-bytes], 
+    [MsgTrackingLogsExtendedMainContacts].[recipient-count] AS [recipient-count], 
+    [MsgTrackingLogsExtendedMainContacts].[related-recipient-address] AS [related-recipient-address], 
+    [MsgTrackingLogsExtendedMainContacts].[reference] AS [reference], 
+    [MsgTrackingLogsExtendedMainContacts].[message-subject] AS [message-subject], 
+    [MsgTrackingLogsExtendedMainContacts].[sender-address] AS [sender-address], 
+    [MsgTrackingLogsExtendedMainContacts].[return-path] AS [return-path], 
+    [MsgTrackingLogsExtendedMainContacts].[message-info] AS [message-info], 
+    [MsgTrackingLogsExtendedMainContacts].[message-body] AS [message-body], 
+    [MsgTrackingLogsExtendedMainContacts].[message-body-text] AS [message-body-text], 
+    [MsgTrackingLogsExtendedMainContacts].[message-body-type] AS [message-body-type], 
+    [MsgTrackingLogsExtendedMainContacts].[attachments] AS [attachments], 
+    [MsgTrackingLogsExtendedMainContacts].[sender-name] AS [sender-name], 
+    [MsgTrackingLogsExtendedMainContacts].[display-to] AS [display-to], 
+    [MsgTrackingLogsExtendedMainContacts].[display-cc] AS [display-cc]
+    FROM [dbo].[MsgTrackingLogsExtendedMainContacts] AS [MsgTrackingLogsExtendedMainContacts]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="MsgTrackingLogsExtendedPromotions" EntityType="Self.MsgTrackingLogsExtendedPromotions" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [MsgTrackingLogsExtendedPromotions].[ID] AS [ID], 
@@ -507,6 +761,40 @@ warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedPromotions' does
     [MsgTrackingLogsExtendedPromotions].[display-to] AS [display-to], 
     [MsgTrackingLogsExtendedPromotions].[display-cc] AS [display-cc]
     FROM [dbo].[MsgTrackingLogsExtendedPromotions] AS [MsgTrackingLogsExtendedPromotions]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="MsgTrackingLogsExtendedPromotionsContacts" EntityType="Self.MsgTrackingLogsExtendedPromotionsContacts" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [MsgTrackingLogsExtendedPromotionsContacts].[ContactID] AS [ContactID], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[ID] AS [ID], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[date-time] AS [date-time], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[client-ip] AS [client-ip], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[client-hostname] AS [client-hostname], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[server-ip] AS [server-ip], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[server-hostname] AS [server-hostname], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[source-context] AS [source-context], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[connector-id] AS [connector-id], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[source] AS [source], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[event-id] AS [event-id], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[internal-message-id] AS [internal-message-id], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[message-id] AS [message-id], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[recipient-address] AS [recipient-address], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[recipient-status] AS [recipient-status], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[total-bytes] AS [total-bytes], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[recipient-count] AS [recipient-count], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[related-recipient-address] AS [related-recipient-address], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[reference] AS [reference], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[message-subject] AS [message-subject], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[sender-address] AS [sender-address], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[return-path] AS [return-path], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[message-info] AS [message-info], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[message-body] AS [message-body], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[message-body-text] AS [message-body-text], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[message-body-type] AS [message-body-type], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[attachments] AS [attachments], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[sender-name] AS [sender-name], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[display-to] AS [display-to], 
+    [MsgTrackingLogsExtendedPromotionsContacts].[display-cc] AS [display-cc]
+    FROM [dbo].[MsgTrackingLogsExtendedPromotionsContacts] AS [MsgTrackingLogsExtendedPromotionsContacts]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_MsgTrackingExtendedLogs_MsgTrackingLogs" Association="Self.FK_MsgTrackingExtendedLogs_MsgTrackingLogs">
             <End Role="MsgTrackingLogs" EntitySet="MsgTrackingLogs" />
@@ -783,6 +1071,10 @@ warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedPromotions' does
             <End Role="MsgTrackingLog" EntitySet="MsgTrackingLogs" />
             <End Role="MsgTrackingLogsAttachment" EntitySet="MsgTrackingLogsAttachments" />
           </AssociationSet>
+          <EntitySet Name="MsgTrackingLogsExtendedContacts" EntityType="ExchangeModel.MsgTrackingLogsExtendedContact" />
+          <EntitySet Name="MsgTrackingLogsExtendedJunksContacts" EntityType="ExchangeModel.MsgTrackingLogsExtendedJunksContact" />
+          <EntitySet Name="MsgTrackingLogsExtendedMainContacts" EntityType="ExchangeModel.MsgTrackingLogsExtendedMainContact" />
+          <EntitySet Name="MsgTrackingLogsExtendedPromotionsContacts" EntityType="ExchangeModel.MsgTrackingLogsExtendedPromotionsContact" />
         </EntityContainer>
         <EntityType Name="MsgTrackingLogsExtended">
           <Key>
@@ -951,6 +1243,150 @@ warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedPromotions' does
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="MsgTrackingLogsExtendedContact">
+          <Key>
+            <PropertyRef Name="ContactID" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ContactID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="date_time" Type="DateTime" Precision="7" />
+          <Property Name="client_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="client_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="source_context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="connector_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="source" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="event_id" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="internal_message_id" Type="Int64" />
+          <Property Name="message_id" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="total_bytes" Type="Int64" />
+          <Property Name="recipient_count" Type="Int32" />
+          <Property Name="related_recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="reference" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="return_path" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_info" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_type" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="attachments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="display_to" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="display_cc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsExtendedJunksContact">
+          <Key>
+            <PropertyRef Name="ContactID" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ContactID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="date_time" Type="DateTime" Precision="7" />
+          <Property Name="client_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="client_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="source_context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="connector_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="source" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="event_id" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="internal_message_id" Type="Int64" />
+          <Property Name="message_id" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="total_bytes" Type="Int64" />
+          <Property Name="recipient_count" Type="Int32" />
+          <Property Name="related_recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="reference" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="return_path" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_info" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_type" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="attachments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="display_to" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="display_cc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsExtendedMainContact">
+          <Key>
+            <PropertyRef Name="ContactID" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ContactID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="date_time" Type="DateTime" Precision="7" />
+          <Property Name="client_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="client_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="source_context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="connector_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="source" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="event_id" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="internal_message_id" Type="Int64" />
+          <Property Name="message_id" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="total_bytes" Type="Int64" />
+          <Property Name="recipient_count" Type="Int32" />
+          <Property Name="related_recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="reference" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="return_path" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_info" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_type" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="attachments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="display_to" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="display_cc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MsgTrackingLogsExtendedPromotionsContact">
+          <Key>
+            <PropertyRef Name="ContactID" />
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ContactID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int64" Nullable="false" />
+          <Property Name="date_time" Type="DateTime" Precision="7" />
+          <Property Name="client_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="client_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_ip" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="server_hostname" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="source_context" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="connector_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="source" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <Property Name="event_id" Type="String" MaxLength="13" FixedLength="false" Unicode="true" />
+          <Property Name="internal_message_id" Type="Int64" />
+          <Property Name="message_id" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="recipient_status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="total_bytes" Type="Int64" />
+          <Property Name="recipient_count" Type="Int32" />
+          <Property Name="related_recipient_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="reference" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="return_path" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_info" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="message_body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="message_body_type" Type="String" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Name="attachments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sender_name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="display_to" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="display_cc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1219,6 +1655,150 @@ warning 6002: The table/view 'Emails.dbo.MsgTrackingLogsExtendedPromotions' does
                 <ScalarProperty Name="attachment_name" ColumnName="attachment-name" />
                 <ScalarProperty Name="MsgTrackingLogsID" ColumnName="MsgTrackingLogsID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MsgTrackingLogsExtendedContacts">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLogsExtendedContact">
+              <MappingFragment StoreEntitySet="MsgTrackingLogsExtendedContacts">
+                <ScalarProperty Name="display_cc" ColumnName="display-cc" />
+                <ScalarProperty Name="display_to" ColumnName="display-to" />
+                <ScalarProperty Name="sender_name" ColumnName="sender-name" />
+                <ScalarProperty Name="attachments" ColumnName="attachments" />
+                <ScalarProperty Name="message_body_type" ColumnName="message-body-type" />
+                <ScalarProperty Name="message_body_text" ColumnName="message-body-text" />
+                <ScalarProperty Name="message_body" ColumnName="message-body" />
+                <ScalarProperty Name="message_info" ColumnName="message-info" />
+                <ScalarProperty Name="return_path" ColumnName="return-path" />
+                <ScalarProperty Name="sender_address" ColumnName="sender-address" />
+                <ScalarProperty Name="message_subject" ColumnName="message-subject" />
+                <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="related_recipient_address" ColumnName="related-recipient-address" />
+                <ScalarProperty Name="recipient_count" ColumnName="recipient-count" />
+                <ScalarProperty Name="total_bytes" ColumnName="total-bytes" />
+                <ScalarProperty Name="recipient_status" ColumnName="recipient-status" />
+                <ScalarProperty Name="recipient_address" ColumnName="recipient-address" />
+                <ScalarProperty Name="message_id" ColumnName="message-id" />
+                <ScalarProperty Name="internal_message_id" ColumnName="internal-message-id" />
+                <ScalarProperty Name="event_id" ColumnName="event-id" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="connector_id" ColumnName="connector-id" />
+                <ScalarProperty Name="source_context" ColumnName="source-context" />
+                <ScalarProperty Name="server_hostname" ColumnName="server-hostname" />
+                <ScalarProperty Name="server_ip" ColumnName="server-ip" />
+                <ScalarProperty Name="client_hostname" ColumnName="client-hostname" />
+                <ScalarProperty Name="client_ip" ColumnName="client-ip" />
+                <ScalarProperty Name="date_time" ColumnName="date-time" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MsgTrackingLogsExtendedJunksContacts">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLogsExtendedJunksContact">
+              <MappingFragment StoreEntitySet="MsgTrackingLogsExtendedJunksContacts">
+                <ScalarProperty Name="display_cc" ColumnName="display-cc" />
+                <ScalarProperty Name="display_to" ColumnName="display-to" />
+                <ScalarProperty Name="sender_name" ColumnName="sender-name" />
+                <ScalarProperty Name="attachments" ColumnName="attachments" />
+                <ScalarProperty Name="message_body_type" ColumnName="message-body-type" />
+                <ScalarProperty Name="message_body_text" ColumnName="message-body-text" />
+                <ScalarProperty Name="message_body" ColumnName="message-body" />
+                <ScalarProperty Name="message_info" ColumnName="message-info" />
+                <ScalarProperty Name="return_path" ColumnName="return-path" />
+                <ScalarProperty Name="sender_address" ColumnName="sender-address" />
+                <ScalarProperty Name="message_subject" ColumnName="message-subject" />
+                <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="related_recipient_address" ColumnName="related-recipient-address" />
+                <ScalarProperty Name="recipient_count" ColumnName="recipient-count" />
+                <ScalarProperty Name="total_bytes" ColumnName="total-bytes" />
+                <ScalarProperty Name="recipient_status" ColumnName="recipient-status" />
+                <ScalarProperty Name="recipient_address" ColumnName="recipient-address" />
+                <ScalarProperty Name="message_id" ColumnName="message-id" />
+                <ScalarProperty Name="internal_message_id" ColumnName="internal-message-id" />
+                <ScalarProperty Name="event_id" ColumnName="event-id" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="connector_id" ColumnName="connector-id" />
+                <ScalarProperty Name="source_context" ColumnName="source-context" />
+                <ScalarProperty Name="server_hostname" ColumnName="server-hostname" />
+                <ScalarProperty Name="server_ip" ColumnName="server-ip" />
+                <ScalarProperty Name="client_hostname" ColumnName="client-hostname" />
+                <ScalarProperty Name="client_ip" ColumnName="client-ip" />
+                <ScalarProperty Name="date_time" ColumnName="date-time" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MsgTrackingLogsExtendedMainContacts">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLogsExtendedMainContact">
+              <MappingFragment StoreEntitySet="MsgTrackingLogsExtendedMainContacts">
+                <ScalarProperty Name="display_cc" ColumnName="display-cc" />
+                <ScalarProperty Name="display_to" ColumnName="display-to" />
+                <ScalarProperty Name="sender_name" ColumnName="sender-name" />
+                <ScalarProperty Name="attachments" ColumnName="attachments" />
+                <ScalarProperty Name="message_body_type" ColumnName="message-body-type" />
+                <ScalarProperty Name="message_body_text" ColumnName="message-body-text" />
+                <ScalarProperty Name="message_body" ColumnName="message-body" />
+                <ScalarProperty Name="message_info" ColumnName="message-info" />
+                <ScalarProperty Name="return_path" ColumnName="return-path" />
+                <ScalarProperty Name="sender_address" ColumnName="sender-address" />
+                <ScalarProperty Name="message_subject" ColumnName="message-subject" />
+                <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="related_recipient_address" ColumnName="related-recipient-address" />
+                <ScalarProperty Name="recipient_count" ColumnName="recipient-count" />
+                <ScalarProperty Name="total_bytes" ColumnName="total-bytes" />
+                <ScalarProperty Name="recipient_status" ColumnName="recipient-status" />
+                <ScalarProperty Name="recipient_address" ColumnName="recipient-address" />
+                <ScalarProperty Name="message_id" ColumnName="message-id" />
+                <ScalarProperty Name="internal_message_id" ColumnName="internal-message-id" />
+                <ScalarProperty Name="event_id" ColumnName="event-id" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="connector_id" ColumnName="connector-id" />
+                <ScalarProperty Name="source_context" ColumnName="source-context" />
+                <ScalarProperty Name="server_hostname" ColumnName="server-hostname" />
+                <ScalarProperty Name="server_ip" ColumnName="server-ip" />
+                <ScalarProperty Name="client_hostname" ColumnName="client-hostname" />
+                <ScalarProperty Name="client_ip" ColumnName="client-ip" />
+                <ScalarProperty Name="date_time" ColumnName="date-time" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MsgTrackingLogsExtendedPromotionsContacts">
+            <EntityTypeMapping TypeName="ExchangeModel.MsgTrackingLogsExtendedPromotionsContact">
+              <MappingFragment StoreEntitySet="MsgTrackingLogsExtendedPromotionsContacts">
+                <ScalarProperty Name="display_cc" ColumnName="display-cc" />
+                <ScalarProperty Name="display_to" ColumnName="display-to" />
+                <ScalarProperty Name="sender_name" ColumnName="sender-name" />
+                <ScalarProperty Name="attachments" ColumnName="attachments" />
+                <ScalarProperty Name="message_body_type" ColumnName="message-body-type" />
+                <ScalarProperty Name="message_body_text" ColumnName="message-body-text" />
+                <ScalarProperty Name="message_body" ColumnName="message-body" />
+                <ScalarProperty Name="message_info" ColumnName="message-info" />
+                <ScalarProperty Name="return_path" ColumnName="return-path" />
+                <ScalarProperty Name="sender_address" ColumnName="sender-address" />
+                <ScalarProperty Name="message_subject" ColumnName="message-subject" />
+                <ScalarProperty Name="reference" ColumnName="reference" />
+                <ScalarProperty Name="related_recipient_address" ColumnName="related-recipient-address" />
+                <ScalarProperty Name="recipient_count" ColumnName="recipient-count" />
+                <ScalarProperty Name="total_bytes" ColumnName="total-bytes" />
+                <ScalarProperty Name="recipient_status" ColumnName="recipient-status" />
+                <ScalarProperty Name="recipient_address" ColumnName="recipient-address" />
+                <ScalarProperty Name="message_id" ColumnName="message-id" />
+                <ScalarProperty Name="internal_message_id" ColumnName="internal-message-id" />
+                <ScalarProperty Name="event_id" ColumnName="event-id" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="connector_id" ColumnName="connector-id" />
+                <ScalarProperty Name="source_context" ColumnName="source-context" />
+                <ScalarProperty Name="server_hostname" ColumnName="server-hostname" />
+                <ScalarProperty Name="server_ip" ColumnName="server-ip" />
+                <ScalarProperty Name="client_hostname" ColumnName="client-hostname" />
+                <ScalarProperty Name="client_ip" ColumnName="client-ip" />
+                <ScalarProperty Name="date_time" ColumnName="date-time" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -5,6 +5,23 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="MainDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Contacts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="First Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Last Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ContactsEmails">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ContactID" Type="int" Nullable="false" />
+          <Property Name="E-mail Address" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="ImportMails">
           <Key>
             <PropertyRef Name="ID" />
@@ -56,9 +73,70 @@
           <Property Name="Abort" Type="bit" />
           <Property Name="CreationTime" Type="datetime" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Emails.dbo.ContactsEmailsExtended' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ContactsEmailsExtended">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ContactID" Type="int" Nullable="false" />
+          <Property Name="E-mail Address" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Emails.dbo.ContactsExtended' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ContactsExtended">
+          <Key>
+            <PropertyRef Name="ID" />
+            
+            
+            
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="First Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Last Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="101" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_ContactsEmails_Contacts">
+          <End Role="Contacts" Type="Self.Contacts" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ContactsEmails" Type="Self.ContactsEmails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contacts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ContactsEmails">
+              <PropertyRef Name="ContactID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="MainDatabaseModelStoreContainer">
+          <EntitySet Name="Contacts" EntityType="Self.Contacts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ContactsEmails" EntityType="Self.ContactsEmails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ImportMails" EntityType="Self.ImportMails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MainDatabasePostProcessingQueues" EntityType="Self.MainDatabasePostProcessingQueues" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ContactsEmailsExtended" EntityType="Self.ContactsEmailsExtended" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ContactsEmailsExtended].[ID] AS [ID], 
+    [ContactsEmailsExtended].[ContactID] AS [ContactID], 
+    [ContactsEmailsExtended].[E-mail Address] AS [E-mail Address]
+    FROM [dbo].[ContactsEmailsExtended] AS [ContactsEmailsExtended]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ContactsExtended" EntityType="Self.ContactsExtended" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ContactsExtended].[ID] AS [ID], 
+    [ContactsExtended].[First Name] AS [First Name], 
+    [ContactsExtended].[Last Name] AS [Last Name], 
+    [ContactsExtended].[Name] AS [Name], 
+    [ContactsExtended].[Notes] AS [Notes]
+    FROM [dbo].[ContactsExtended] AS [ContactsExtended]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ContactsEmails_Contacts" Association="Self.FK_ContactsEmails_Contacts">
+            <End Role="Contacts" EntitySet="Contacts" />
+            <End Role="ContactsEmails" EntitySet="ContactsEmails" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -67,6 +145,14 @@
         <EntityContainer Name="MainDatabaseEntities" annotation:LazyLoadingEnabled="true" >
           <EntitySet Name="ImportMails" EntityType="MainDatabaseModel.ImportMail" />
           <EntitySet Name="MainDatabasePostProcessingQueues" EntityType="MainDatabaseModel.MainDatabasePostProcessingQueue" />
+          <EntitySet Name="Contacts" EntityType="MainDatabaseModel.Contact" />
+          <EntitySet Name="ContactsEmails" EntityType="MainDatabaseModel.ContactsEmail" />
+          <EntitySet Name="ContactsExtendeds" EntityType="MainDatabaseModel.ContactsExtended" />
+          <AssociationSet Name="FK_ContactsEmails_Contacts" Association="MainDatabaseModel.FK_ContactsEmails_Contacts">
+            <End Role="Contact" EntitySet="Contacts" />
+            <End Role="ContactsEmail" EntitySet="ContactsEmails" />
+          </AssociationSet>
+          <EntitySet Name="ContactsEmailsExtendeds" EntityType="MainDatabaseModel.ContactsEmailsExtended" />
         </EntityContainer>
         <EntityType Name="ImportMail">
           <Key>
@@ -118,6 +204,57 @@
           <Property Name="AutoDelete" Type="Boolean" />
           <Property Name="Abort" Type="Boolean" />
           <Property Name="CreationTime" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="First_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Last_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ContactsEmails" Relationship="MainDatabaseModel.FK_ContactsEmails_Contacts" FromRole="Contact" ToRole="ContactsEmail" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ContactsEmail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContactID" Type="Int32" Nullable="false" />
+          <Property Name="E_mail_Address" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Contact" Relationship="MainDatabaseModel.FK_ContactsEmails_Contacts" FromRole="ContactsEmail" ToRole="Contact" />
+        </EntityType>
+        <EntityType Name="ContactsExtended">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="First_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Last_Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="101" FixedLength="false" Unicode="true" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_ContactsEmails_Contacts">
+          <End Type="MainDatabaseModel.Contact" Role="Contact" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="MainDatabaseModel.ContactsEmail" Role="ContactsEmail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contact">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ContactsEmail">
+              <PropertyRef Name="ContactID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ContactsEmailsExtended">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContactID" Type="Int32" Nullable="false" />
+          <Property Name="E_mail_Address" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -175,6 +312,45 @@
                 <ScalarProperty Name="TaskArg1" ColumnName="TaskArg1" />
                 <ScalarProperty Name="TaskCommand" ColumnName="TaskCommand" />
                 <ScalarProperty Name="TaskID" ColumnName="TaskID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contacts">
+            <EntityTypeMapping TypeName="MainDatabaseModel.Contact">
+              <MappingFragment StoreEntitySet="Contacts">
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last Name" />
+                <ScalarProperty Name="First_Name" ColumnName="First Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContactsEmails">
+            <EntityTypeMapping TypeName="MainDatabaseModel.ContactsEmail">
+              <MappingFragment StoreEntitySet="ContactsEmails">
+                <ScalarProperty Name="E_mail_Address" ColumnName="E-mail Address" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContactsExtendeds">
+            <EntityTypeMapping TypeName="MainDatabaseModel.ContactsExtended">
+              <MappingFragment StoreEntitySet="ContactsExtended">
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Last_Name" ColumnName="Last Name" />
+                <ScalarProperty Name="First_Name" ColumnName="First Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ContactsEmailsExtendeds">
+            <EntityTypeMapping TypeName="MainDatabaseModel.ContactsEmailsExtended">
+              <MappingFragment StoreEntitySet="ContactsEmailsExtended">
+                <ScalarProperty Name="E_mail_Address" ColumnName="E-mail Address" />
+                <ScalarProperty Name="ContactID" ColumnName="ContactID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

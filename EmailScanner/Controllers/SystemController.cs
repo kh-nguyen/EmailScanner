@@ -38,6 +38,41 @@ namespace EmailScanner.Controllers
         }
 
         [HttpGet]
+        public ActionResult Contacts(jqGridParamModel grid) {
+            if (!ModelState.IsValid)
+                throw new ArgumentException(ModelState.GetFormattedErrorMessage());
+
+            using (var scope = Scope.New(System.Transactions.IsolationLevel.ReadUncommitted)) {
+                var query = mainDatabase.ContactsExtendeds.AsQueryable();
+
+                var result = jqGridResponseDefaultModel.getDefaultResponse(query, grid);
+
+                //convert to JSON and return to client
+                return this.JsonEx(result);
+            }
+        }
+
+        [HttpPost]
+        public void Contacts(jqGridOperType oper, Contact model) {
+            if (!ModelState.IsValid && oper != jqGridOperType.DEL) {
+                throw new ArgumentException(ModelState.GetFormattedErrorMessage());
+            }
+
+            if (oper == jqGridOperType.ADD) {
+                mainDatabase.Entry(model).State = System.Data.Entity.EntityState.Added;
+                mainDatabase.SaveChanges();
+            }
+            else if (oper == jqGridOperType.EDIT) {
+                mainDatabase.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                mainDatabase.SaveChanges();
+            }
+            else if (oper == jqGridOperType.DEL) {
+                mainDatabase.Entry(model).State = System.Data.Entity.EntityState.Deleted;
+                mainDatabase.SaveChanges();
+            }
+        }
+
+        [HttpGet]
         public ActionResult Mail(jqGridParamModel grid, int? ContactID) {
             if (!ModelState.IsValid)
                 throw new ArgumentException(ModelState.GetFormattedErrorMessage());

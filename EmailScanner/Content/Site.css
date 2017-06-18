@@ -28,14 +28,9 @@
     padding: 15px !important;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-textarea {
-    min-height: 600px;
-}
-
 iframe {
     width: 100%;
-    background-color: transparent;
+    background-color: white;
     border: 0 none transparent;
     padding: 0;
 }
