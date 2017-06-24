@@ -1,4 +1,5 @@
-﻿@using System.Databases.Exchange
+﻿@using System.Configuration
+@using System.Databases.Exchange
 @using System.Services.EmailStorage
 @model MsgTrackingLog
 @{
@@ -14,6 +15,7 @@
     var hasBodyText = !String.IsNullOrEmpty(Model.MsgTrackingExtendedLog.message_body_text);
     var hasReferences = messageInternetHeaders != null && messageInternetHeaders.Where(x => x.FieldName == "References").Any();
     var hasReceipts = Model.MsgTrackingLogsReceipts.Any();
+    var hasSpamFilterServer = !String.IsNullOrEmpty(ConfigurationManager.AppSettings["SpamAssassinServerAddress"]);
 
     dynamic viewModel = new {
 
@@ -46,6 +48,15 @@
                             <i class="fa fa-tags"></i>&nbsp;Receipts
                             <span class='badge' ng-bind="emailReceiptsCounter | number"></span>
                             <i class="fa fa-spinner fa-spin" ng-show="emailReceiptsCounterLoading"></i>
+                        </a>
+                    </li>
+                }
+                @if (hasSpamFilterServer) {
+                    <li class="ui-state-default ui-corner-top">
+                        <a class="ui-tabs-anchor" href="#message-spamscore">
+                            <i class="fa fa-filter"></i>&nbsp;Spam Score
+                            <span ng-class="emailSpamScoreCounter < 5 ? 'text-success' : 'text-danger'" ng-bind="emailSpamScoreCounter | number : 2"></span>
+                            <i class="fa fa-spinner fa-spin" ng-show="emailSpamScoreCounterLoading"></i>
                         </a>
                     </li>
                 }
@@ -202,6 +213,12 @@
                 <div id="message-receipts" class="ui-tabs-panel ui-widget-content">
                     <table mails-list data-counter-name="emailReceiptsCounter"
                            data-url='@Url.Action("Receipts", "Email", new { ID = Model.ID })'></table>
+                </div>
+            }
+            @if (hasSpamFilterServer) {
+                <div id="message-spamscore" class="ui-tabs-panel ui-widget-content">
+                    <table spam-score-list data-counter-name="emailSpamScoreCounter"
+                           data-url='@Url.Action("SpamScore", "Email", new { ID = Model.ID })'></table>
                 </div>
             }
         </div>

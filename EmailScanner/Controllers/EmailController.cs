@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Databases.Exchange;
 using System.Databases.MainDatabase;
 using System.Infrastructure;
@@ -167,6 +168,23 @@ namespace EmailScanner.Controllers
 
                 //convert to JSON and return to client
                 return this.JsonEx(result);
+            }
+        }
+
+        [HttpGet]
+        public JsonNetResult SpamScore(long ID) {
+            var spamServerAddress = ConfigurationManager
+                .AppSettings["SpamAssassinServerAddress"];
+
+            using (var scope = Scope.New(IsolationLevel.ReadUncommitted)) {
+                var mailMessage = MailMessageExtended
+                    .getMailMessageExtended(ID, exchangeDatabase);
+                var rawMessage = mailMessage.RawMessage();
+                var reports = SimpleSpamAssassin
+                    .GetReport(spamServerAddress, rawMessage);
+
+                //convert to JSON and return to client
+                return this.JsonEx(reports);
             }
         }
 

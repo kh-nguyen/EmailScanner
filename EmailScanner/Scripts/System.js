@@ -1557,5 +1557,106 @@ if (!System) {
                 }
             }
         };
+        }]);
+
+    System.angular.directive('spamScoreList',
+    ['$sce', '$compile', '$timeout', function ($sce, $compile, $timeout) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attr) {
+                var tableName = "spam-score-list-" + System.nextUniqueID();
+                var options = scope.$eval(attr.spamScoreList);
+                var $table = $(element);
+                var url = $table.data('url');
+
+                $table.attr('ID', tableName);
+
+                $timeout(function () {
+                    // show a loading icon
+                    scope[$table.data('counter-name') + 'Loading'] = true;
+
+                    // reset the record counters
+                    scope[$table.data('counter-name')] = null;
+                });
+
+                $.getJSON(url, function (data) {
+                    $table.jqGrid($.extend({
+                        caption: '',
+                        data: data,
+                        datatype: "local",
+                        colNames: [
+                            'Rule', 'Score', 'Description'
+                        ],
+                        colModel: [
+                            { name: 'Rule', width: 20, key: true },
+                            { name: 'Score', width: 10, template: "number" },
+                            { name: 'Description', width: 30 }
+                        ],
+                        rowNum: 20,
+                        rowList: [5, 10, 20, 30, 50, 100, 200, 500, 1000, 5000, 10000],
+                        pager: true,
+                        sortname: 'Score',
+                        sortorder: 'desc',
+                        viewrecords: true,
+                        autowidth: true,
+                        gridview: false, // required for afterInsertRow event
+                        height: 'auto',
+                        footerrow: true,
+                        beforeRequest: function () {
+
+                        },
+                        loadComplete: function (data) {
+                            var scoreSum = $table.jqGrid('getCol', 'Score', false, 'sum');
+                            $table.jqGrid('footerData', 'set', { 'Rule': 'Total', 'Score': scoreSum });
+
+                            $timeout(function () {
+                                // hide the loading icon
+                                scope[$table.data('counter-name') + 'Loading'] = false;
+
+                                // update the record counters
+                                scope[$table.data('counter-name')] = scoreSum;
+                            });
+                        },
+                        gridComplete: function () {
+                            // resize the grid when window's resize event triggers
+                            $.jgrid.resizeOnWindowResizeEvent($(this));
+
+                            // trigger resize to make sure the grids
+                            // are expanded to full width when switch tabs
+                            $(window).trigger('resize');
+                        }
+                    }, options))
+                        .jqGrid('navGrid',
+                        { search: true, view: true, del: false, add: false, edit: false },
+                        {}, // default settings for edit
+                        {}, // default settings for add
+                        {}, // delete instead that del:false we need this
+                        { // create the searching dialog
+                            multipleSearch: true,
+                            multipleGroup: true,
+                            recreateFilter: true,
+                            sopt: [
+                                'cn', 'nc', 'eq', 'ne', 'lt', 'le', 'gt', 'ge',
+                                'bw', 'bn', 'in', 'ni', 'ew', 'en', 'nu', 'nn'
+                            ],
+                            showQuery: true,
+                            overlay: false,
+                            drag: false,
+                            resize: false,
+                            afterShowSearch: function () {
+                                var $searchDialog = $.jgrid.placeSearchDialogAboveGrid({
+                                    tableid: '#' + tableName,
+                                    searchOnEnter: true,
+                                    displaySearchDialogCloseButton: true
+                                }).searchDialog;
+                            }
+                        }, // search options
+                        {} /* view parameters*/
+                        ).jqGrid('navButtonAdd', System.jqGridDefaultColumnChooserOptions);
+
+                    $.jgrid.addExportToCSVButton($table);
+                });
+            }
+        };
     }]);
 }());

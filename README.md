@@ -21,4 +21,5 @@ BitCoin - [1PMXuwXE3iQ2DZiwgKF48EqkpiEaWdMCWU](bitcoin:1PMXuwXE3iQ2DZiwgKF48Eqkp
 # Screenshots
 ![ScreenShot 1](https://github.com/kh-nguyen/EmailScanner/blob/master/ScreenShoots/system.png)
 ![ScreenShot 2](https://github.com/kh-nguyen/EmailScanner/blob/master/ScreenShoots/email_view.png)
-![ScreenShot 3](https://github.com/kh-nguyen/EmailScanner/blob/master/ScreenShoots/contact_detail.png)
+![ScreenShot 3](https://github.com/kh-nguyen/EmailScanner/blob/master/ScreenShoots/email_view_spamscore.png)
+![ScreenShot 4](https://github.com/kh-nguyen/EmailScanner/blob/master/ScreenShoots/contact_detail.png)

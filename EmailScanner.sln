@@ -18,6 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScreenShoots", "ScreenShoot
 	ProjectSection(SolutionItems) = preProject
 		ScreenShoots\contact_detail.png = ScreenShoots\contact_detail.png
 		ScreenShoots\email_view.png = ScreenShoots\email_view.png
+		ScreenShoots\email_view_spamscore.png = ScreenShoots\email_view_spamscore.png
 		ScreenShoots\system.png = ScreenShoots\system.png
 	EndProjectSection
 EndProject
