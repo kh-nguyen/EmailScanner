@@ -20,10 +20,8 @@
                         <div>
                             <span>License Type: @License.Current.LicenseType</span>
                             <span>@License.Current.Status</span>
-                            @if (License.Current.LicenseType != License.LicenseType.Trial) {
-                                <span>Expiration: @License.Current.ExpirationDate.ToShortDateString()</span>
-                            } else {
-
+                            @if (License.Current.LicenseType != License.LicenseType.Trial && License.Current.ExpirationDate != null) {
+                                <span>Expiration: @License.Current.ExpirationDate?.ToShortDateString()</span>
                             }
                         </div>
                     </div>
