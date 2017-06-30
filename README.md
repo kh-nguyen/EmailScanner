@@ -1,5 +1,5 @@
 # EmailScanner
-This is a software library tool with a demo web-based interface to retrieve/download emails from multiple email accounts and store the records in a basic database structure for archiving, querying or researching purposes. It stores only unique email attachments in a regular folder, helping to reduce database and storage space. It currently supports IMAP, POP3, Exchange, and Exchange Journal accounts. The trial license has a limit of 10,000 records.
+This is a software library tool with a demo web-based interface to retrieve/download emails from multiple email accounts and store the records in a basic database structure for archiving, querying or researching purposes. It stores only unique email attachments in a regular folder, helping to reduce database and storage space. It can query a spam filtering SpamAssassin server to identify junk mails. It currently supports IMAP, POP3, Exchange, and Exchange Journal accounts. The trial license has a limit of 10,000 records.
 
 # Install
 Use Schemas\MSSQL\Exchange.sql file to install the database schema to a MS SQL Server Express.
