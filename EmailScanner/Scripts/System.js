@@ -242,7 +242,7 @@ if (!System) {
                     $grid.jqGrid('navButtonAdd', {
                         caption: "",
                         title: "Export the list to an CSV file",
-                        buttonicon: "fa-disk",
+                        buttonicon: "fa-save",
                         onClickButton: function () {
                             $.jgrid.exportToCSV({ table: $grid });
                         },
@@ -542,9 +542,22 @@ if (!System) {
 
                             if (panel.html() === '' && typeof url !== 'undefined') {
                                 var panelType = panel.data('type');
+                                var panelStyle = panel.data('style');
 
                                 if (panelType === 'iframe') {
-                                    panel.append('<iframe seamless src="' + url + '" />');
+                                    var element = [];
+
+                                    element.push('<iframe seamless');
+                                    if (typeof panelStyle !== 'undefined') {
+                                        element.push(' style="');
+                                        element.push(panelStyle);
+                                        element.push('"');
+                                    }
+                                    element.push(' src="');
+                                    element.push(url);
+                                    element.push('" />');
+
+                                    panel.append(element.join(''));
                                 }
                                 else {
                                     panel.load(url, function () {
@@ -1293,6 +1306,10 @@ if (!System) {
                 var options = scope.$eval(attr.mailsList);
                 var $table = $(element);
 
+                var moveToBoxes = $table.data('move-to-boxes');
+                var moveToUrl = $table.data('move-to-url');
+                var requestSpamCheckUrl = $table.data('request-spam-check-url');
+
                 $table.attr('ID', tableName);
 
                 $table.jqGrid($.extend({
@@ -1323,6 +1340,7 @@ if (!System) {
                     sortname: 'date_time',
                     sortorder: 'desc',
                     viewrecords: true,
+                    multiselect: true,
                     autowidth: true,
                     gridview: false, // required for afterInsertRow event
                     height: 'auto',
@@ -1394,6 +1412,80 @@ if (!System) {
                 ).jqGrid('navButtonAdd', System.jqGridDefaultColumnChooserOptions);
 
                 $.jgrid.addExportToCSVButton($table);
+
+                if (typeof moveToBoxes !== 'undefined' && typeof moveToUrl !== 'undefined') {
+                    $.each(moveToBoxes.split(","), function (index, mailBox) {
+                        var button_id = 'move-to-box-button-' + System.nextUniqueID();
+
+                        mailBox = mailBox.trim();
+
+                        var buttonicon = "fa-comments";
+                        if (mailBox === 'Junk') {
+                            buttonicon = "fa-trash";
+                        } else if (mailBox === 'Promotion') {
+                            buttonicon = "fa-bullhorn";
+                        }
+
+                        $table.jqGrid('navButtonAdd', {
+                            id: button_id,
+                            caption: "",
+                            title: "Move selected to " + mailBox + " box",
+                            buttonicon: buttonicon,
+                            onClickButton: function () {
+                                var selectedRows = $table.jqGrid('getGridParam', 'selarrrow');
+
+                                var button_icon = $('.fa', $('#' + button_id)).removeClass(buttonicon)
+                                    .addClass('fa-spinner').addClass('fa-spin');
+
+                                var posting = $.post(moveToUrl, {
+                                    selectedRows: selectedRows,
+                                    mailBox: mailBox
+                                }, function () {
+                                    $table.trigger("reloadGrid");
+                                });
+
+                                posting.always(function () {
+                                    button_icon.addClass(buttonicon)
+                                        .removeClass('fa-spin')
+                                        .removeClass('fa-spinner');
+                                });
+                            },
+                            position: "last"
+                        });
+                    });
+
+                }
+
+                if (typeof requestSpamCheckUrl !== 'undefined') {
+                    var button_id = 'request-spam-check-button-' + System.nextUniqueID();
+                    var buttonicon = "fa-balance-scale";
+
+                    $table.jqGrid('navButtonAdd', {
+                        id: button_id,
+                        caption: "",
+                        title: "Schedule spam check for selected messages",
+                        buttonicon: buttonicon,
+                        onClickButton: function () {
+                            var selectedRows = $table.jqGrid('getGridParam', 'selarrrow');
+
+                            var button_icon = $('.fa', $('#' + button_id)).removeClass(buttonicon)
+                                .addClass('fa-spinner').addClass('fa-spin');
+
+                            var posting = $.post(requestSpamCheckUrl, {
+                                selectedRows: selectedRows
+                            }, function () {
+                                $table.trigger("reloadGrid");
+                            });
+
+                            posting.always(function () {
+                                button_icon.addClass(buttonicon)
+                                    .removeClass('fa-spin')
+                                    .removeClass('fa-spinner');
+                            });
+                        },
+                        position: "last"
+                    });
+                }
 
                 function cellattrBody(rowId, tv, rowObject, cm, rdata) {
                     return 'ng-non-bindable="" class="mail-body"';
