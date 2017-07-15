@@ -7,6 +7,7 @@ using System.Infrastructure;
 using System.Linq;
 using System.Models.jqGrid.Helpers;
 using System.Services.EmailStorage;
+using System.Transactions;
 using System.Utilities;
 using System.Web;
 using System.Web.Mvc;
@@ -117,6 +118,32 @@ namespace EmailScanner.Controllers
             else if (oper == jqGridOperType.DEL) {
                 mainDatabase.Entry(model).State = System.Data.Entity.EntityState.Deleted;
                 mainDatabase.SaveChanges();
+            }
+        }
+
+        [HttpPost]
+        public void MoveToFolder(long[] selectedRows, CallCategory mailBox) {
+            EmailStorageService.markMessagesWithCategory(exchangeDatabase, selectedRows, mailBox);
+        }
+
+        [HttpPost]
+        public void RequestSpamCheck(long[] selectedRows) {
+            foreach(var ID in selectedRows) {
+                BackgroundJob.Enqueue(() => checkMailForJunk(ID));
+            }
+        }
+
+        public static void checkMailForJunk(long ID) {
+            using (var exchangeDatabase = new ExchangeEntities())
+            using (var scope = Scope.New(IsolationLevel.ReadUncommitted)) {
+                var mailMessage = MailMessageExtended
+                    .getMailMessageExtended(ID, exchangeDatabase);
+
+                if (EmailStorageService.checkSpamFilterServer(mailMessage)) {
+                    EmailStorageService.markMessagesWithCategory(
+                        exchangeDatabase, new long[] { ID }, CallCategory.Junk);
+                }
+
             }
         }
 

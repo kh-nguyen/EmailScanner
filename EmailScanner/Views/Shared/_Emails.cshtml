@@ -13,8 +13,7 @@
             </a>
         </li>
         <li class="ui-state-default ui-corner-top ui-tabs-tab ui-tab">
-            <a class="ui-tabs-anchor bg-warning"
-               href="#communications-promotion">
+            <a class="ui-tabs-anchor bg-warning" href="#communications-promotion">
                 <i class="fa fa-bullhorn"></i>
                 &nbsp;<span class="hidden-xs">Promotion&nbsp;</span>
                 <span class='badge' ng-bind="emailPromotionsCounter | number"></span>
@@ -22,8 +21,7 @@
             </a>
         </li>
         <li class="ui-state-default ui-corner-top ui-tabs-tab ui-tab">
-            <a class="ui-tabs-anchor bg-danger"
-               href="#communications-junk">
+            <a class="ui-tabs-anchor bg-danger" href="#communications-junk">
                 <i class="fa fa-trash-o"></i>
                 &nbsp;<span class="hidden-xs">Junk&nbsp;</span>
                 <span class='badge' ng-bind="emailJunksCounter | number"></span>
@@ -31,8 +29,7 @@
             </a>
         </li>
         <li class="ui-state-default ui-corner-top ui-tabs-tab ui-tab">
-            <a class="ui-tabs-anchor bg-info"
-               href="#communications-all">
+            <a class="ui-tabs-anchor bg-info" href="#communications-all">
                 <i class="fa fa-newspaper-o"></i>
                 &nbsp;<span class="hidden-xs">All&nbsp;</span>
                 <span class='badge' ng-bind="emailAllCounter | number"></span>
@@ -42,24 +39,35 @@
     </ul>
     <div id="communications-main" class="ui-tabs-panel ui-widget-content">
         <table mails-list data-counter-name="emailMainCounter"
+               data-move-to-boxes="Promotion, Junk"
+               data-move-to-url="@Url.Action("MoveToFolder")"
+               data-request-spam-check-url="@Url.Action("RequestSpamCheck")"
                data-url='@Url.Action("Main", (string)ViewBag.controller, ViewBag.routeValues)'></table>
 
         <div class="clearfix"></div>
     </div>
     <div id="communications-promotion" class="ui-tabs-panel ui-widget-content">
         <table mails-list data-counter-name="emailPromotionsCounter"
+               data-move-to-boxes="Main, Junk"
+               data-move-to-url="@Url.Action("MoveToFolder")"
+               data-request-spam-check-url="@Url.Action("RequestSpamCheck")"
                data-url='@Url.Action("Promotions", (string)ViewBag.controller, ViewBag.routeValues)'></table>
 
         <div class="clearfix"></div>
     </div>
     <div id="communications-junk" class="ui-tabs-panel ui-widget-content">
         <table mails-list data-counter-name="emailJunksCounter"
+               data-move-to-boxes="Main, Promotion"
+               data-move-to-url="@Url.Action("MoveToFolder")"
                data-url='@Url.Action("Junks", (string)ViewBag.controller, ViewBag.routeValues)'></table>
 
         <div class="clearfix"></div>
     </div>
     <div id="communications-all" class="ui-tabs-panel ui-widget-content">
         <table mails-list data-counter-name="emailAllCounter"
+               data-move-to-boxes="Main, Promotion, Junk"
+               data-move-to-url="@Url.Action("MoveToFolder")"
+               data-request-spam-check-url="@Url.Action("RequestSpamCheck")"
                data-url='@Url.Action("All", (string)ViewBag.controller, ViewBag.routeValues)'></table>
 
         <div class="clearfix"></div>
