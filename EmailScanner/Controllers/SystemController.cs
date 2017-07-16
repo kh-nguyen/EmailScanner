@@ -142,9 +142,8 @@ namespace EmailScanner.Controllers
                 if (EmailStorageService.checkSpamFilterServer(mailMessage)) {
                     EmailStorageService.markMessagesWithCategory(
                         exchangeDatabase, new long[] { ID }, CallCategory.Junk);
-
-                    scope.Complete();
                 }
+
             }
         }
 
