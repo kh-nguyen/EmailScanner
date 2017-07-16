@@ -134,16 +134,13 @@ namespace EmailScanner.Controllers
         }
 
         public static void checkMailForJunk(long ID) {
-            using (var exchangeDatabase = new ExchangeEntities())
-            using (var scope = Scope.New(IsolationLevel.ReadUncommitted)) {
+            using (var exchangeDatabase = new ExchangeEntities()) {
                 var mailMessage = MailMessageExtended
                     .getMailMessageExtended(ID, exchangeDatabase);
 
                 if (EmailStorageService.checkSpamFilterServer(mailMessage)) {
                     EmailStorageService.markMessagesWithCategory(
                         exchangeDatabase, new long[] { ID }, CallCategory.Junk);
-
-                    scope.Complete();
                 }
             }
         }
