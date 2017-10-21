@@ -227,7 +227,7 @@ namespace EmailScanner.Controllers
 
         [HttpGet]
         public ActionResult Attachment(long ID, bool download = true) {
-            var attachment = emailStorageService.getAttachment(ID);
+            var attachment = emailStorageService.GetAttachment(ID);
 
             if (attachment == null)
                 throw new ArgumentOutOfRangeException("ID");

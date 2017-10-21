@@ -152,9 +152,7 @@
                                     <div class="row" grandchild-iframe-resizer="{ checkOrigin: false }">
                                         <div class="col-xs-12" ng-non-bindable>
                                             @if (Model.MsgTrackingExtendedLog.message_body_type == "HTML") {
-                                                <iframe frameborder="0" seamless srcdoc="
-                                                    @Scripts.Render("~/bundles/iframe-resizer/content-window").ToHtmlString()
-                                                    @Model.MsgTrackingExtendedLog.message_body"></iframe>
+                                                <iframe frameborder="0" seamless srcdoc="@Scripts.Render("~/bundles/iframe-resizer/content-window").ToHtmlString() <base target='_blank' /> @Model.MsgTrackingExtendedLog.message_body"></iframe>
                                             }
                                             else {
                                                 <pre>@Model.MsgTrackingExtendedLog.message_body</pre>
